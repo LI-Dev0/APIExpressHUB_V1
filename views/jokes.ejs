@@ -6,11 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Jokes</h1>
+    <h1>JokeHub</h1>
     <ul>
         <% jokes.forEach(function(joke) { %>
-            <li><%= joke %></li>
+            <li><%= joke %></li> <!-- This escapes HTML by default, safe for untrusted content -->
         <% }); %>
     </ul>
 </body>
+
+<script src="jokes.js"></script>
 </html>
