@@ -5,6 +5,17 @@ const port = 2000;
 // Removed static time assignment; will generate timestamp dynamically in middleware
 const jokes = require("./jokes");
 
+axios.get("https://official-joke-api.appspot.com/jokes/ten")
+    .then(response => {
+        const newJokes = response.data.map(joke => joke.setup + " " + joke.punchline);
+        jokes.push(...newJokes);
+        document.getElementById("jokes").innerHTML += jokes.join("<br>");
+    })
+    .catch(error => {
+        console.error("Error fetching jokes:", error);
+    });
+
+
 app.set('view engine', 'ejs');
 
 app.get('/jokes', (req, res) => {
