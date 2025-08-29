@@ -5,7 +5,7 @@ const port = 3000;
 // Removed static time assignment; will generate timestamp dynamically in middleware
 
 app.set('view engine', 'ejs');
-app.use(express.static('resources/images'));
+//app.use(express.static('resources/images'));
 
 app.get('/', (req, res) => {
   res.render('home.ejs');
