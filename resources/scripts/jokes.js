@@ -14,7 +14,7 @@ const port = 2000;
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render('jokes.ejs');
+    res.render('jokes');
     //    const randomIndex = Math.floor(Math.random() * jokes.length);
 //    res.render('jokes.ejs', { joke: jokes[randomIndex] });
 });

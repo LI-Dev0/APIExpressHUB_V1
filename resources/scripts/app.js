@@ -13,6 +13,7 @@ const addNewJoke = async () => {
   const newLI = document.createElement("LI");
   newLI.append(jokeText);
   jokes.append(newLI);
+  console.log("New joke added!");
 };
 
 const getDadJoke = async () => {
@@ -24,3 +25,11 @@ const getDadJoke = async () => {
     return "NO JOKES AVAILABLE! SORRY :(";
   }
 };
+
+button.addEventListener("click", addNewJoke);
+
+
+const jokebox = document.querySelector("#jokeContainer");
+    jokebox.style.backgroundColor = 'lightblue';
+	jokebox.style.color = 'cyan';
+	jokebox.style.fontFamily = 'Roboto-Mono, sans-serif';

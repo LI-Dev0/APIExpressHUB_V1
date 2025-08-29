@@ -12,12 +12,7 @@
         <p>Welcome to JokeHub, your go-to place for the bestest-est jokes in town! (more like my localnetwork)</p>
         <button>Get a New Joke</button>
     </div>
-<!--
-    <ul>
-        <% jokes.forEach(function(joke) { %> -->
-        <!-- <li><%= joke %></li> -->   <!-- This escapes HTML by default, safe for untrusted content -->
-<!--        <% }); %>
-    </ul>  -->
+
 
     <div id="jokeContainer">
 
@@ -27,19 +22,6 @@
 
     </div>
     
-    <!-- 
-    <script>
-    axios.get("https://official-joke-api.appspot.com/jokes/ten")
-        .then(response => {
-        const jokes = response.data.map(joke => joke.setup + " " + joke.punchline);
-        document.getElementById("jokes").innerHTML = jokes.join("<br>");
-        })
-        .catch(error => {
-        document.getElementById("jokes").innerHTML = "Failed to load jokes.";
-        console.error("Error fetching jokes:", error);
-        });
-    </script>
-    -->
 <script src="app.js"></script>
 </body>
 
