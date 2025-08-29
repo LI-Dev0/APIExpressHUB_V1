@@ -42,7 +42,9 @@ const chuckNorrisJoke = document.querySelector("#chuckNorrisJoke");
 chuckNorrisBtn.addEventListener("click", async () => {
     try {
         const res = await axios.get("https://api.chucknorris.io/jokes/random");
-        chuckNorrisJoke.append(res.data.value);
+        const chuckNorrisJokeText = document.createElement("p");
+        chuckNorrisJokeText.textContent = res.data.value;
+        chuckNorrisJoke.append(chuckNorrisJokeText);
     } catch (e) {
         chuckNorrisJoke.textContent = "No Chuck Norris jokes available!";
     }
