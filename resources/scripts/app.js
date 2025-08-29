@@ -20,9 +20,6 @@ const getDadJoke = async () => {
 };
 
 button.addEventListener("click", addNewJoke);
-button.bringToFront = function() {
-  jokebox.style.zIndex = 1000;
-};
 
 
 const jokebox = document.querySelector("#jokeContainer");
