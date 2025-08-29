@@ -3,7 +3,7 @@ const app = express();
 //console.dir(app);
 const port = 2000;
 // Removed static time assignment; will generate timestamp dynamically in middleware
-const giveMeAJoke = require('give-me-a-joke');
+//const giveMeAJoke = require('give-me-a-joke');
 
 //let jokes = [
 //    "Why don't scientists trust atoms? Because they make up everything!",

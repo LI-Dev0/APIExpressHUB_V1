@@ -4,17 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    
     <h1>JokeHub</h1>
+    <div class="start">
+        <p>Welcome to JokeHub, your go-to place for the bestest-est jokes in town! (more like my localnetwork)</p>
+        <button>Get a New Joke</button>
+    </div>
 <!--
     <ul>
         <% jokes.forEach(function(joke) { %> -->
         <!-- <li><%= joke %></li> -->   <!-- This escapes HTML by default, safe for untrusted content -->
 <!--        <% }); %>
     </ul>  -->
-    <div id="jokes"></div>
+
+    <div id="jokeContainer">
+
+        <p>Here is a random joke for you:</p>
+
+        <ul id="jokes"></ul>
+
+    </div>
+    
+    <!-- 
     <script>
     axios.get("https://official-joke-api.appspot.com/jokes/ten")
         .then(response => {
@@ -26,8 +39,8 @@
         console.error("Error fetching jokes:", error);
         });
     </script>
+    -->
+<script src="app.js"></script>
 </body>
 
-<script src="jokes.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </html>
