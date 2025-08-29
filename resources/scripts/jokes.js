@@ -1,4 +1,5 @@
 const express = require("express");
+const colors = require('colors');
 const app = express();
 //console.dir(app);
 const port = 2000;
@@ -18,6 +19,8 @@ app.get('/', (req, res) => {
     //    const randomIndex = Math.floor(Math.random() * jokes.length);
 //    res.render('jokes.ejs', { joke: jokes[randomIndex] });
 });
+
+app.use(express.static('resources'));
 
 app.use((req, res, next) => {
     console.log("We have been pinged! Take a look!" + `Stamp: ${new Date()}`);

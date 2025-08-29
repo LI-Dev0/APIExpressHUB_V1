@@ -1,5 +1,3 @@
-
-
 const jokes = document.querySelector("#jokes");
 const button = document.querySelector("button");
 
@@ -26,5 +24,6 @@ button.addEventListener("click", addNewJoke);
 
 const jokebox = document.querySelector("#jokeContainer");
     jokebox.style.backgroundColor = 'lightblue';
-	jokebox.style.color = 'cyan';
-	jokebox.style.fontFamily = 'Roboto-Mono, sans-serif';
+    jokebox.style.color = 'magenta';
+	  jokebox.querySelector("ul").bgCyan;
+	  jokebox.style.fontFamily = 'Roboto-Mono, sans-serif';
