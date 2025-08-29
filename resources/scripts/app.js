@@ -20,10 +20,12 @@ const getDadJoke = async () => {
 };
 
 button.addEventListener("click", addNewJoke);
+button.brightRed;
 
 
 const jokebox = document.querySelector("#jokeContainer");
     jokebox.style.backgroundColor = 'lightblue';
     jokebox.style.color = 'magenta';
-	  jokebox.querySelector("ul").bgCyan;
-	  jokebox.style.fontFamily = 'Roboto-Mono, sans-serif';
+    jokebox.querySelector("ul").style.backgroundColor = 'cyan';
+    jokebox.querySelector("ul").style.color = 'white';
+    jokebox.style.fontFamily = 'Roboto-Mono, sans-serif';
