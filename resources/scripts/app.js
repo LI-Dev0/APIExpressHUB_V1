@@ -1,16 +1,11 @@
-const siteTheme = document.querySelector('body');
-if (siteTheme) {
-	siteTheme.style.backgroundColor = 'lightblue';
-	siteTheme.style.color = 'cyan';
-	siteTheme.style.fontFamily = 'Roboto-Mono, sans-serif';
-}
+
 
 const jokes = document.querySelector("#jokes");
 const button = document.querySelector("button");
 
 const addNewJoke = async () => {
   const jokeText = await getDadJoke();
-  const newLI = document.createElement("LI");
+  const newLI = document.createElement("li");
   newLI.append(jokeText);
   jokes.append(newLI);
   console.log("New joke added!");
