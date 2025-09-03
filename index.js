@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
   res.render('home.ejs');
 });
 
-app.get('/jokes', (req, res) => {
+app.get('/', (req, res) => {
     res.render('jokes.ejs', { jokes: jokes });
 });
 
