@@ -20,12 +20,12 @@ app.get('/', (req, res) => {
 //    res.render('jokes.ejs', { joke: jokes[randomIndex] });
 });
 
-app.get('/api/jokes', (req, res) => {
-    // Fetch jokes from an external API or database
-    res.json({ jokes: ["Joke 1", "Joke 2", "Joke 3"] });
-    console.log("Jokes have been requested!" + `Stamp: ${new Date()}`);
-    console.table({ jokes: ["Joke 1", "Joke 2", "Joke 3"] });
-});
+// app.get('/api/jokes', (req, res) => {
+//     // Fetch jokes from an external API or database
+//     res.json({ jokes: ["Joke 1", "Joke 2", "Joke 3"] });
+//     console.log("Jokes have been requested!" + `Stamp: ${new Date()}`);
+//     console.table({ jokes: ["Joke 1", "Joke 2", "Joke 3"] });
+// });
 
 app.use(express.static('resources'));
 
