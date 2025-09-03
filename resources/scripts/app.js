@@ -23,13 +23,13 @@ button.addEventListener("click", addNewJoke);
 
 
 const jokebox = document.querySelector("#jokeContainer");
-    jokebox.style.backgroundColor = 'darkblue';
+    jokebox.style.backgroundColor = '';
     jokebox.style.color = 'magenta';
-    jokebox.querySelector("ul").style.backgroundColor = 'cyan';
-    jokebox.querySelector("ul").style.color = 'green';
+    jokebox.querySelector("ul").style.backgroundColor = 'lightgrey';
+    jokebox.querySelector("ul").style.color = '#cc3232';
     jokebox.style.fontFamily = 'Roboto-Mono, sans-serif';
-    jokebox.style.border = '3px dashed magenta';
-    jokebox.style.borderRadius = '5px';
+    jokebox.style.border = '5px groove rgb(204, 50, 50)';
+    jokebox.style.borderRadius = '10px';
 
 const siteTheme = document.querySelector('body');
     siteTheme.style.backgroundColor = 'black';
