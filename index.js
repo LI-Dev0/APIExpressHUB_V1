@@ -4,8 +4,14 @@ const app = express();
 const port = 3000;
 // Removed static time assignment; will generate timestamp dynamically in middleware
 
+const path = require('path');
 app.set('view engine', 'ejs');
-app.use(express.static('resources/scripts/app.js'));
+app.set('views', path.join(__dirname, 'views'));
+
+
+// Included to serve static files such as CSS and JS
+app.use('/scripts', express.static('resources/scripts'));
+app.use('/styles', express.static('resources/styles'));
 
 app.get('/', (req, res) => {
   res.render('home.ejs');
