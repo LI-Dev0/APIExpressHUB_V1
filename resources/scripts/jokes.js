@@ -15,7 +15,7 @@ const port = 2000;
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render('jokes.ejs', { header: { title: "Joke Generator" }, footer: { text: "Footer Text" } });
+    res.render('jokes.ejs');
     });
 
 // app.get('/api/jokes', (req, res) => {
