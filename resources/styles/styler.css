@@ -7,6 +7,16 @@
     height: fit-content;
     margin-bottom: 0;
 }
+.footer-main, .footer-info {
+    flex: 0.5;
+    padding: 10px;
+}
+.start {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
 body {
     margin: 0;
     font-family: Roboto-mono, sans-serif;

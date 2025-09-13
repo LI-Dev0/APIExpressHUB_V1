@@ -35,6 +35,15 @@ const jokebox = document.querySelectorAll("#jokeContainer");
       element.style.width = 'fit-content';
       element.getElementsByTagName('h2')[0].style.textAlign = 'center';
       element.getElementsByTagName('h2')[0].style.color = 'rgb(11, 82, 29)';
+      element.getElementsByTagName('button')[0].style.backgroundColor = 'rgba(81, 245, 154, 1)';
+      element.getElementsByTagName('button')[0].style.color = 'black';
+      element.getElementsByTagName('button')[0].style.fontFamily = 'Roboto-Mono, sans-serif';
+      element.getElementsByTagName('button')[0].style.fontWeight = 'bold';
+      element.getElementsByTagName('button')[0].style.border = '2px solid black';
+      element.getElementsByTagName('button')[0].style.borderRadius = '5px';
+      element.getElementsByTagName('button')[0].style.padding = '10px';
+      element.getElementsByTagName('button')[0].style.margin = '10px';
+      element.getElementsByTagName('button')[0].style.cursor = 'pointer';
 });
 
 const siteTheme = document.querySelector('body');
