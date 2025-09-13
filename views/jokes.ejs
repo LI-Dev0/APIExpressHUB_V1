@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><%= title %></title>
 </head>
 <body class="centered-bg">
     <h1>JokeHub</h1>
@@ -23,10 +23,11 @@
 
     <div class="chuck-norris-jokes">
         <button class="chuckNorrisBtn">Get a Chuck Norris Joke</button>
-        <p>Here is a random Chuck Norris joke for you:</p>
-        <div id="chuckNorrisJoke"></div>
 
-    </div>
+        <div id="jokeContainer">
+            <h2>Chuck Joke(s):</h2>
+            <ul id="chuckNorrisJoke"></ul>
+        </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/scripts/app.js"></script>
 </body>
@@ -34,6 +35,8 @@
 <footer class="footer">
         <div class="end"><p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p></div>
     <p>&copy; 2023 JokeHub. All rights reserved.</p>
-</footer>
-
-</html>
+    <div>
+        <p>Additional information on request.</p>
+        <p>Contact us at: info@jokehub.com</p>
+        <p>Follow us on social media!</p>
+    </div>

@@ -22,14 +22,16 @@ const getDadJoke = async () => {
 button.addEventListener("click", addNewJoke);
 
 
-const jokebox = document.querySelector("#jokeContainer");
-    jokebox.style.backgroundColor = '';
-    jokebox.style.color = 'magenta';
-    jokebox.querySelector("ul").style.backgroundColor = 'lightgrey';
-    jokebox.querySelector("ul").style.color = '#cc3232';
-    jokebox.style.fontFamily = 'Roboto-Mono, sans-serif';
-    jokebox.style.border = '5px groove rgb(204, 50, 50)';
-    jokebox.style.borderRadius = '10px';
+const jokebox = document.querySelectorAll("#jokeContainer");
+    jokebox.forEach(element => {
+      element.style.backgroundColor = '';
+      element.style.color = 'magenta';
+      element.querySelector("ul").style.backgroundColor = 'lightgrey';
+      element.querySelector("ul").style.color = '#cc3232';
+      element.style.fontFamily = 'Roboto-Mono, sans-serif';
+      element.style.border = '5px groove rgb(204, 50, 50)';
+      element.style.borderRadius = '10px';
+    });
 
 const siteTheme = document.querySelector('body');
     siteTheme.style.backgroundColor = 'black';
@@ -49,3 +51,5 @@ chuckNorrisBtn.addEventListener("click", async () => {
         chuckNorrisJoke.textContent = "No Chuck Norris jokes available!";
     }
 });
+
+console.log("App.js is connected and running!");

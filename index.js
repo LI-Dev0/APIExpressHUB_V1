@@ -5,6 +5,7 @@ const port = 3000;
 // Removed static time assignment; will generate timestamp dynamically in middleware
 
 const path = require('path');
+const { title } = require("process");
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -14,11 +15,11 @@ app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
 
 app.get('/', (req, res) => {
-  res.render('home.ejs');
+  res.render('home.ejs', { title: "API Express Server" });
 });
 
 app.get('/jokes', (req, res) => {
-    res.render('jokes.ejs');
+    res.render('jokes.ejs', { title: "Joke Generator" });
 });
 
 // To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
