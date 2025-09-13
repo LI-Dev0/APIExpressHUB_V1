@@ -21,10 +21,13 @@ app.get('/jokes', (req, res) => {
     res.render('jokes.ejs');
 });
 
-//app.use((req, res, next) => {
-//	console.log("We have been pinged! Take a look!" + `Stamp: ${new Date()}`, res.getHeaders());
-//	next();
-//});
+// To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
+// This middleware will execute for every request to '/jokes' and log the timestamp and request details.
+
+app.use('/jokes', (req, res, next) => {
+	console.log("We have been pinged! Take a look! Stamp:", new Date(), "Headers:", req.headers);
+	next();
+});
 
 
 app.listen(port, () => {
