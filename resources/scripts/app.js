@@ -13,6 +13,7 @@ const getDadJoke = async () => {
   try {
     const config = { headers: { Accept: "application/json" } };
     const res = await axios.get("https://icanhazdadjoke.com/", config);
+    console.table("Joke fetched:", res.data.joke());
     return res.data.joke;
   } catch (e) {
     return "NO JOKES AVAILABLE! SORRY :(";
@@ -25,7 +26,7 @@ button.addEventListener("click", addNewJoke);
 const jokebox = document.querySelectorAll("#jokeContainer");
     jokebox.forEach(element => {
       element.style.backgroundColor = '';
-      element.style.color = 'magenta';
+      element.style.color = 'rgba(248, 123, 179, 1)';
       element.querySelector("ul").style.backgroundColor = 'lightgrey';
       element.querySelector("ul").style.color = '#cc3232';
       element.style.fontFamily = 'Roboto-Mono, sans-serif';
@@ -34,7 +35,7 @@ const jokebox = document.querySelectorAll("#jokeContainer");
     });
 
 const siteTheme = document.querySelector('body');
-    siteTheme.style.backgroundColor = 'black';
+    siteTheme.style.backgroundColor = 'cornflowerblue';
     siteTheme.style.color = 'white';
     siteTheme.style.fontFamily = 'Roboto-Mono, sans-serif';
 
@@ -53,3 +54,17 @@ chuckNorrisBtn.addEventListener("click", async () => {
 });
 
 console.log("App.js is connected and running!");
+
+const footers = document.querySelectorAll('footer');
+footers.forEach(footer => {
+  footer.style.display = 'flex';
+  footer.style.flexDirection = 'column';
+  footer.style.alignItems = 'center';
+  footer.style.justifyContent = 'space-around';
+  footer.style.color = 'black';
+  footer.style.fontFamily = 'Roboto-Mono, sans-serif';
+  footer.style.textAlign = 'center';
+  footer.style.padding = '10px';
+  footer.style.marginTop = '20px';
+  footer.style.borderTop = '2px solid black';
+});
