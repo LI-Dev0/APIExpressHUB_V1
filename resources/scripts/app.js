@@ -13,7 +13,7 @@ const getDadJoke = async () => {
   try {
     const config = { headers: { Accept: "application/json" } };
     const res = await axios.get("https://icanhazdadjoke.com/", config);
-    console.table("Joke fetched:", res.data.joke());
+    console.table("Joke fetched:", res.data.joke);
     return res.data.joke;
   } catch (e) {
     return "NO JOKES AVAILABLE! SORRY :(";
@@ -26,11 +26,11 @@ button.addEventListener("click", addNewJoke);
 const jokebox = document.querySelectorAll("#jokeContainer");
     jokebox.forEach(element => {
       element.style.backgroundColor = '';
-      element.style.color = 'rgba(248, 123, 179, 1)';
+      element.style.color = 'rgba(81, 245, 154, 1)';
       element.querySelector("ul").style.backgroundColor = 'lightgrey';
       element.querySelector("ul").style.color = '#cc3232';
       element.style.fontFamily = 'Roboto-Mono, sans-serif';
-      element.style.border = '5px groove rgb(204, 50, 50)';
+      element.style.border = '5px groove rgba(35, 247, 70, 1)';
       element.style.borderRadius = '10px';
     });
 
