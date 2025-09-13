@@ -15,10 +15,8 @@ const port = 2000;
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render('jokes.ejs');
-    //    const randomIndex = Math.floor(Math.random() * jokes.length);
-//    res.render('jokes.ejs', { joke: jokes[randomIndex] });
-});
+    res.render('jokes.ejs', { header: { title: "Joke Generator" }, footer: { text: "Footer Text" } });
+    });
 
 // app.get('/api/jokes', (req, res) => {
 //     // Fetch jokes from an external API or database
