@@ -28,11 +28,14 @@ const jokebox = document.querySelectorAll("#jokeContainer");
       element.style.backgroundColor = '';
       element.style.color = 'rgba(81, 245, 154, 1)';
       element.querySelector("ul").style.backgroundColor = 'lightgrey';
-      element.querySelector("ul").style.color = '#cc3232';
+      element.querySelector("ul").style.color = '#238eafff';
       element.style.fontFamily = 'Roboto-Mono, sans-serif';
-      element.style.border = '5px groove rgba(35, 247, 70, 1)';
-      element.style.borderRadius = '10px';
-    });
+      element.style.border = '5px groove rgba(7, 48, 14, 1)';
+      element.style.borderRadius = '5px';
+      element.style.width = 'fit-content';
+      element.getElementsByTagName('h2')[0].style.textAlign = 'center';
+      element.getElementsByTagName('h2')[0].style.color = 'rgb(11, 82, 29)';
+});
 
 const siteTheme = document.querySelector('body');
     siteTheme.style.backgroundColor = 'cornflowerblue';
@@ -58,7 +61,7 @@ console.log("App.js is connected and running!");
 const footers = document.querySelectorAll('footer');
 footers.forEach(footer => {
   footer.style.display = 'flex';
-  footer.style.flexDirection = 'column';
+  footer.style.flexDirection = 'row';
   footer.style.alignItems = 'center';
   footer.style.justifyContent = 'space-around';
   footer.style.color = 'black';

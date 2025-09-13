@@ -1,6 +1,6 @@
 .footer {
     display: flex;
-    background-color: #cc3232;
+    background-color: #388631;
     padding: 10px;
     align-items: baseline;
     text-align: center;
@@ -9,10 +9,30 @@
 }
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Roboto-mono, sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: #7e3d3d;
+    font-size: 1rem;
+}   
+.end {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.4em;
+    font-family: comic sans ms, cursive, sans-serif;
+    color: rgb(11, 82, 29);
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-shadow: 3px 3px 6px #10860c;
+    background-color: black;
+    margin: 0;
+    height: 8rem;
 }
