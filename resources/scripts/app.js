@@ -25,8 +25,12 @@ button.addEventListener("click", addNewJoke);
 
 const jokebox = document.querySelectorAll("#jokeContainer");
     jokebox.forEach(element => {
-      element.style.backgroundColor = '';
-      element.style.color = 'rgba(81, 245, 154, 1)';
+      element.style.display = 'flex';
+      element.style.margin = '20px';
+      element.style.padding = '20px';
+      element.style.backgroundColor = 'rgba(158, 187, 197, 0.7)';
+      element.style.flexDirection = 'column';
+      element.style.alignItems = 'center';
       element.querySelector("ul").style.backgroundColor = 'lightgrey';
       element.querySelector("ul").style.color = '#238eafff';
       element.style.fontFamily = 'Roboto-Mono, sans-serif';
@@ -36,7 +40,7 @@ const jokebox = document.querySelectorAll("#jokeContainer");
       element.getElementsByTagName('h2')[0].style.textAlign = 'center';
       element.getElementsByTagName('h2')[0].style.color = 'rgb(11, 82, 29)';
       element.getElementsByTagName('button')[0].style.backgroundColor = 'rgba(81, 245, 154, 1)';
-      element.getElementsByTagName('button')[0].style.color = 'black';
+      element.getElementsByTagName('button')[0].style.color = 'rgb(11, 82, 29)';
       element.getElementsByTagName('button')[0].style.fontFamily = 'Roboto-Mono, sans-serif';
       element.getElementsByTagName('button')[0].style.fontWeight = 'bold';
       element.getElementsByTagName('button')[0].style.border = '2px solid black';
@@ -57,7 +61,10 @@ const chuckNorrisJoke = document.querySelector("#chuckNorrisJoke");
 chuckNorrisBtn.addEventListener("click", async () => {
     try {
         const res = await axios.get("https://api.chucknorris.io/jokes/random");
-        const chuckNorrisJokeText = document.createElement("p");
+        const chuckNorrisJokeText = document.createElement("li");
+        chuckNorrisJokeText.style.color = '#238eafff';
+        chuckNorrisJokeText.style.fontFamily = 'Roboto-Mono, sans-serif';
+        chuckNorrisJokeText.style.marginTop = '10px';
         chuckNorrisJokeText.textContent = res.data.value;
         chuckNorrisJoke.append(chuckNorrisJokeText);
     } catch (e) {
