@@ -13,6 +13,16 @@ app.set('views', path.join(__dirname, 'views'));
 // Included to serve static files such as CSS and JS
 app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
+app.use('/images', express.static('resources/images'));
+
+app.get('/resources/styles/styler.css', (req, res) => {
+  // Make sure the path to the file is correct on your server
+  res.sendFile(__dirname + '/resources/styles/styler.css', {
+    headers: {
+      'Content-Type': 'text/css'
+    }
+  });
+});
 
 app.get('/', (req, res) => {
   res.render('home.ejs', { title: "API Express Server" });
