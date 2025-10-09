@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/jokes', (req, res) => {
-    res.render('jokes.ejs', { title: "Joke Generator" });
+    res.render('jokes.ejs', { title: "Joke Generator", description: "Get your daily dose of laughter =)" });
 });
 
 // To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.

@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <img src="/images/jokehub.png" alt="JokeHub Logo" class="logo">
     <link rel="stylesheet" href="/styles/styler.css">
 </head>
 <body class="centered-bg">
     <h1>JokeHub</h1>
     <div class="start">
         <h2>Welcome to JokeHub, your go-to place for the bestest-est jokes in town! (more like my localnetwork)</h2>
+        <p><%= description %></p>
     </div>
 
 
@@ -27,13 +29,14 @@
             <h2>Chuck Joke(s):</h2>
             <ul id="chuckNorrisJoke"></ul>
         </div>
+    </div>
+    <div class="end">
+        <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/scripts/app.js"></script>
 </body>
 
-<div class="end">
-        <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
-</div>
 <footer class="footer">
     <div class="footer-main">
         <p>&copy; 2025 JokeHub. All rights reserved.</p>

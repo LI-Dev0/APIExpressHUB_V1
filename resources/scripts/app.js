@@ -16,7 +16,8 @@ const getDadJoke = async () => {
     console.table("Joke fetched:", res.data.joke);
     return res.data.joke;
   } catch (e) {
-    return "NO JOKES AVAILABLE! SORRY :(";
+    console.warn("No jokes available at the moment. Please try again later.");
+    return "NO MORE JOKES AVAILABLE SORRY! :( || TRY AGAIN LATER :)".bgBlue;
   }
 };
 
@@ -33,7 +34,7 @@ const jokebox = document.querySelectorAll("#jokeContainer");
       element.style.alignItems = 'center';
       element.querySelector("ul").style.backgroundColor = 'lightgrey';
       element.querySelector("ul").style.color = '#238eafff';
-      element.style.fontFamily = 'Roboto-Mono, sans-serif';
+      element.style.fontFamily = 'Monospace, sans-serif';
       element.style.border = '5px groove rgba(7, 48, 14, 1)';
       element.style.borderRadius = '5px';
       element.style.width = 'fit-content';
@@ -71,8 +72,6 @@ chuckNorrisBtn.addEventListener("click", async () => {
         chuckNorrisJoke.textContent = "No Chuck Norris jokes available!";
     }
 });
-
-console.log("App.js is connected and running!");
 
 const footers = document.querySelectorAll('footer');
 footers.forEach(footer => {
