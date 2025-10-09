@@ -1,3 +1,8 @@
+html {
+    display: flex;
+    background-color: #7e3d3d;
+    box-sizing: border-box;
+}
 .footer {
     display: flex;
     background-color: #388631;

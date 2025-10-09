@@ -42,7 +42,6 @@ const jokebox = document.querySelectorAll("#jokeContainer");
       element.getElementsByTagName('h2')[0].style.color = 'rgb(11, 82, 29)';
       element.getElementsByTagName('button')[0].style.backgroundColor = 'rgba(81, 245, 154, 1)';
       element.getElementsByTagName('button')[0].style.color = 'rgb(11, 82, 29)';
-      element.getElementsByTagName('button')[0].style.fontFamily = 'Roboto-Mono, sans-serif';
       element.getElementsByTagName('button')[0].style.fontWeight = 'bold';
       element.getElementsByTagName('button')[0].style.border = '2px solid black';
       element.getElementsByTagName('button')[0].style.borderRadius = '5px';
@@ -54,7 +53,7 @@ const jokebox = document.querySelectorAll("#jokeContainer");
 const siteTheme = document.querySelector('body');
     siteTheme.style.backgroundColor = 'cornflowerblue';
     siteTheme.style.color = 'white';
-    siteTheme.style.fontFamily = 'Roboto-Mono, sans-serif';
+    siteTheme.style.fontFamily = 'Monospace, sans-serif';
 
 const chuckNorrisBtn = document.querySelector(".chuckNorrisBtn");
 const chuckNorrisJoke = document.querySelector("#chuckNorrisJoke");
