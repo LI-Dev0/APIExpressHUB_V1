@@ -21,8 +21,7 @@ app.get('/', (req, res) => {
 app.get('/picgen', (req, res) => {
     res.render('picgen.ejs', {
         title: "Picture Generator".toUpperCase(),
-        description: "Generate random pictures with our picture generator!",
-        newPic: { src: `https://picsum.photos/200/300.webp?random=${Math.floor(Math.random() * 1000)}`
+        description: "Generate random pictures with our picture generator!"
         }
     });
 });

@@ -7,24 +7,33 @@
     <link rel="stylesheet" href="/styles/styler.css">
 </head>
 <body class="centered-bg">
-    <img src="/images/jokehub.png" alt="JokeHub Logo" class="logo">
-    <h1>JokeHub</h1>
+	<nav>
+		<a href="/">Home</a>
+		<a href="/picgen">Pic Generator</a>
+	</nav>
+	<div class="head">
+		<h1>JokeHub</h1>
+		<div class="imgblock">
+			<img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg" alt="Cartoon Network figures roasting Bugs Bunny"  Logo" class="logo">
+			<img src="../resources/images/JokeHub/ChuckLaughs.jpg" alt="Chuck Norris laughing at his own jokes, not roasts" class="logo">		
+		</div>
+	</div>
     <div class="start">
-        <h2>Welcome to JokeHub, your go-to place for the bestest-est jokes in town! (more like my localnetwork)</h2>
+
         <p><%= description %></p>
     </div>
 
 
     <div id="jokeContainer" style="width: fit-content;">
-        <button id="newJokeBtn">GET Dad Joke</button>
-        <h2 style="align-self: center;">DaD Jokes:</h2>
+        <button class="djbutton">GET Dad Joke</button>
+        <h2 style="align-self: center;">DaD Joke(s):</h2>
 
         <ul id="jokes"></ul>
 
     </div>
 
     <div class="chuck-norris-jokes">
-        <div id="chuckJokeContainer">
+        <div id="jokeContainer">
         <button class="chuckNorrisBtn">GET Chuck Norris Joke</button>
             <h2>Chuck Joke(s):</h2>
             <ul id="chuckNorrisJoke"></ul>

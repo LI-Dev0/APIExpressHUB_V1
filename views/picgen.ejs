@@ -4,21 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" href="/styles/styler.css">
 </head>
-<body>
-    <h1><%= title %></h1>
-    <p><%= description %></p>
+<body id="picBody">
+	<div class="picHead">
+		<nav class="picNav">
+			<a href="/">Home</a>
+			<a href="/jokes">JokeHub</a>		
+		</nav>
+		<h1><%= title %></h1>		
+	</div>
+    <h3 style=" display: flex; background-color: gray; width: 100%;"><%= description %></h3>
     <hr>
 
-    <div id="picContainer" style="width: fit-content;">
+    <div id="picContainer" style="display :width: 100%;">
         <button id="picButton">FETCH Random Picture</button>
         <h2>Your random pics:</h2>
-        <p id="picSrc"></p>
-        <div id="picList" style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <div id="picList" style=" display: flex; flex-wrap: wrap; gap: 10px;">
         </div>
+        <h3 id="picSrc"></h3>		
     </div>
-
-
-    <script src="/scripts/pic.js"></script>
+<script src="/scripts/pic.js"></script>
+<footer class="footer">
+    <div class="footer-main">
+        <p>&copy; 2025 JokeHub. All rights reserved.</p>
+    </div>
+    <div class="footer-info">
+        <p>Additional information on request.</p>
+        <p>Contact us at: info@jokehub.com</p>
+        <p>Follow us on social media!</p>
+    </div>
+</footer>
 </body>
 </html>
