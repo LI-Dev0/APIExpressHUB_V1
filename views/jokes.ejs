@@ -7,15 +7,26 @@
     <link rel="stylesheet" href="/styles/styler.css">
 </head>
 <body class="centered-bg">
-    <h1>JokeHub</h1>
+	<nav>
+		<a href="/">Home</a>
+		<a href="/picgen">Pic Generator</a>
+	</nav>
+	<div class="head">
+		<h1>JokeHub</h1>
+		<div class="imgblock">
+			<img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg" alt="Cartoon Network figures roasting Bugs Bunny"  Logo" class="logo">
+			<img src="../resources/images/JokeHub/ChuckLaughs.jpg" alt="Chuck Norris laughing at his own jokes, not roasts" class="logo">		
+		</div>
+	</div>
     <div class="start">
-        <h2>Welcome to JokeHub, your go-to place for the bestest-est jokes in town! (more like my localnetwork)</h2>
+
+        <p><%= description %></p>
     </div>
 
 
     <div id="jokeContainer" style="width: fit-content;">
-        <button id="newJokeBtn">GET Dad Joke</button>
-        <h2 style="align-self: center;">DaD Jokes:</h2>
+        <button class="djbutton">GET Dad Joke</button>
+        <h2 style="align-self: center;">DaD Joke(s):</h2>
 
         <ul id="jokes"></ul>
 
@@ -27,13 +38,13 @@
             <h2>Chuck Joke(s):</h2>
             <ul id="chuckNorrisJoke"></ul>
         </div>
+    </div>
+    <div class="end">
+        <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/scripts/app.js"></script>
-</body>
 
-<div class="end">
-        <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
-</div>
 <footer class="footer">
     <div class="footer-main">
         <p>&copy; 2025 JokeHub. All rights reserved.</p>
@@ -43,3 +54,6 @@
         <p>Contact us at: info@jokehub.com</p>
         <p>Follow us on social media!</p>
     </div>
+</footer>
+</body>
+</html>

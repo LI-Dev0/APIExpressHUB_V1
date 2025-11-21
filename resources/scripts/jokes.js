@@ -2,7 +2,7 @@ const express = require("express");
 const colors = require('colors');
 const app = express();
 //console.dir(app);
-const port = 2000;
+const port = 5000;
 // Removed static time assignment; will generate timestamp dynamically in middleware
 //const giveMeAJoke = require('give-me-a-joke');
 
@@ -15,9 +15,16 @@ const port = 2000;
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render('jokes.ejs');
+    res.render('jokes.ejs', { title: "Joke GENERATOOOOOR", description: "Get your daily dose of laughter with our random joke generator!" });
     });
 
+app.get('/picgen', (req, res) => {
+    res.render('picgen.ejs', {
+        title: "Picture Generator".toUpperCase(),
+        description: "Generate random pictures with our picture generator!"
+        }
+    });
+});
 // app.get('/api/jokes', (req, res) => {
 //     // Fetch jokes from an external API or database
 //     res.json({ jokes: ["Joke 1", "Joke 2", "Joke 3"] });
@@ -28,7 +35,7 @@ app.get('/', (req, res) => {
 app.use(express.static('resources'));
 
 app.use((req, res, next) => {
-    console.log("We have been pinged! Take a look!" + `Stamp: ${new Date()}`);
+    console.log("We have been pinged at ".bgCyan + `${new Date()}`.rainbow + " Take a look! =)");
 });
 
 
