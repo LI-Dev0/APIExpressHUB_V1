@@ -1,37 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-image: url('https://picsum.photos/id/299/400');">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <link rel="stylesheet" href="/resources/styles/styler.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
-<body>
-    <h1>Hello, World! <span aria-label="smiley" role="img">😃</span> <span aria-label="robot" role="img">🤖</span></h1>
+<body class="container col bg-dark-subtle">
     <div>
-        <h3>This is a simple EJS templating Web application.</h3>
+	<h1 class="text-center text-light"> 
+	<span aria-label="smiley" role="img">😃 </span> < APIExpressHub ><span aria-label="robot" role="img">🤖</span>
+	</h1>
+	</div>
+    <div class="container-fluid text-center p-5 row">
+		<h2> Hello, World! Welcome to APIExpressHub <h4>-- This is a basic <a href="https://ejs.co/">EJS</a> templating Web App.</h4></h2>
     </div>
-    <div>Below are some useful links to navigate to the not so simple sections:
-        <p>Navigate to the <a href="/jokes">Jokes Page</a> to see some funny jokes!</p>
-        <p>Navigate to the <a href="/picgen">Picture Generator Page</a> to generate some pictures!</p>
+	<h5 class="callout">Below are some useful links to navigate to the not so simple sections:</h5>
+    <div class="container-fluid text-info row p-4">
+        <h6 class="container-sm border border-success p-2 bg-primary">Navigate to the <a href="/jokes">Jokes Page</a> to see some funny jokes!</h6>
+        <h6 class="container-sm border border-success p-2 bg-primary">Navigate to the <a href="/picgen">Picture Generator Page</a> to generate some pictures!</h6>
     </div>
 
-</body>
 <footer class="footer">
-    <p>&copy; 2025 APIExpServR. All rights reserved.</p>
+    <p>&copy; 2025 APIExpressHub. All rights reserved.</p>
     <div class="footer-info">
-        <h4>If you have any questions whatsoever, you can reach me at any of the below endpoints =)</h4>
+        <h6>If you have any questions whatsoever, you can reach me at any of the below endpoints =)</h^6	>
         <p>Phone: <a href="">++++</a></p>
 		<p>Email: <a href="">devliops@outlook.com</a></p>
+		
+		<p>Check out my Socials to keep up with the latest developments-
         <ul>
-			<p>Check out my Socials to keep up with the latest developments-
 			<li>LinkedIn: <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin"/></a></li>
 			<li>X: <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png" alt="twitterx"/></a></li>
 			<li></li>
 		</ul>
     </div>
-	<section>A designed by <em>DevLI of LI Dev</em></section>
+	<section>A designed by <em>DevLI</em> of LI Dev</section>
 </footer>
+</body>
 </html>

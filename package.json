@@ -10,13 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^5.3.8",
     "colors": "^1.4.0",
     "ejs": "^3.1.10",
-    "express": "^5.1.0",
-<<<<<<< HEAD
-    "give-me-a-joke": "^0.3.2"
-=======
-    "give-me-a-joke": "^0.4.0"
->>>>>>> Changes
+    "express": "^5.1.0"
   }
 }
