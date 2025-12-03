@@ -17,13 +17,20 @@ app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
 app.use('/images', express.static('resources/images'));
 
-app.get('/resources/styles/styler.css', (req, res) => {
-  // Make sure the path to the file is correct on your server
-  res.sendFile(__dirname + '/resources/styles/styler.css', {
-    headers: {
-      'Content-Type': 'text/css'
-    }
-  });
+// app.get('/resources/styles/styler.css', (req, res) => {
+//   // Make sure the path to the file is correct on your server
+//   res.sendFile(__dirname + '/resources/styles/styler.css', {
+//     headers: {
+//       'Content-Type': 'text/css'
+//     }
+//   });
+// });
+// To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
+// This middleware will execute for every request to '/jokes' and log the timestamp and request details.
+app.use(['/','/jokes','/picgen'], (req, res, next) => {
+    const currentTime = new Date().toLocaleString();
+    console.log(`[${currentTime}] Access Log: ${req.method} ${req.originalUrl} from ${req.ip}`);
+    next(); // Proceed to the next middleware or route handler
 });
 
 //Homepage
@@ -38,24 +45,16 @@ app.get("/", (req, res) => {
 app.get('/jokes', (req, res) => {
     res.render('jokes.ejs', {
 		title: "Joke Generator",
-		description: "Come and get your daily dose of API fetched laughter all in one place =)"
+		description: "👇 Get your daily dose of API fetched laughter all in one place! 👇"
 		}
 	);
-});
-
-// To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
-// This middleware will execute for every request to '/jokes' and log the timestamp and request details.
-
-app.use('/jokes', (req, res, next) => {
-	console.log(
-	"We have been pinged! Take a look! Stamp:", new Date(), "Headers:", req.headers);
 });
 
 //PicGenRenders
 
 app.get('/picgen', (req, res) => {
     res.render('picgen.ejs', {
-        title: "Picture Generator".toUpperCase(),
+        title: "Pic Gen",
         description: "Generate random pictures with our picture generator!"
         }
 	);

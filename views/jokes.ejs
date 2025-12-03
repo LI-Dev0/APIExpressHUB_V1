@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<hea rowd>
-    <meta charsetcontainer-fluid>
+<html lang="en" class="container-fluid">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <link rel="stylesheet" href="/styles/styler.css">
@@ -9,9 +9,9 @@
 
 </head>
 <body class="container text-center bg-dark">
-	<nav class="centered-bg bg-primary-subtle">
-		<a href="/">Home</a>
-		<a href="/picgen">Pic Generator</a>
+	<nav class="centered-bg bg-primary-subtle text-success p-3 mb-4 rounded-3">
+		<a class="navbar-brand" href="/">Home</a>
+		<a class="navbar-brand" href="/picgen">PicGen</a>
 	</nav>
 			<h1  >JokeHub</h1>
 	<div class="container row">
@@ -19,7 +19,7 @@
 			<img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg" alt="Cartoon Network figures roasting Bugs Bunny" class="logo">
 			<img src="../resources/images/JokeHub/ChuckLaughs.jpg" alt="Chuck Norris laughing at his own jokes, not roasts" class="logo">		
 		</div>
-		<div class="container-fluid">
+		<div class="container-fluid col-md-6 offset-md-3">
 		<div id="carouselExample" class="carousel slide">
 		  <div class="carousel-inner">
 			<div class="carousel-item">
@@ -57,13 +57,12 @@
         <button class="chuckNorrisBtn">GET Chuck Norris Joke</button>
         <ul id="chuckNorrisJoke"></ul>
     </div>
-    <div class="end">
+    <div class="centered-bg bg-primary-subtle text-success">
         <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
     </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/scripts/app.js"></script>
-
-<footer class="footer">
+<footer class="container-fluid footer text-success outline p-3 mt-4 mb-4 rounded-3">
     <div class="footer-main">
         <p>&copy; 2025 JokeHub. All rights reserved.</p>
     </div>

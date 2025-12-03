@@ -64,9 +64,9 @@ body {
     font-family: comic sans ms, cursive, sans-serif;
     color: rgb(11, 82, 29);
 }
-.footer {
+footer {
     display: flex;
-    background-color: #388631;
+    background-color: #001219;
     align-items: baseline;
     text-align: center;
     height: fit-content;
@@ -82,20 +82,22 @@ body {
 /*PIC GEN STYLES*/
 
 #picBody {
-	display: flex;
-	flex-direction: column;
-	background-image: url('https://images.unsplash.com/photo-1760898131571-6dc38bef7354?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    display: flex;
+    background-image: url('https://picsum.photos/id/992/400');
 	background-repeat: repeat-y;
-	background-position: top;
-	background-size: stretch;
+	background-position: center;
+	background-size: cover;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    scroll-behavior: smooth;
 	color: azure;
-	align-items: center;
-	height: auto;
 }
-.picHead h1 {
-	display: flex;
-	color: cyan;
-}
+
+
 #picContainer {
 	display: flex;
 	align-items: center;
@@ -103,6 +105,6 @@ body {
 }
 .picList img {
 	display: inline-block;
-	width: 30%;
+	width: 20%;
 	height:auto;
 }

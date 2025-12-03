@@ -22,8 +22,7 @@ app.get('/picgen', (req, res) => {
     res.render('picgen.ejs', {
         title: "Picture Generator".toUpperCase(),
         description: "Generate random pictures with our picture generator!"
-        }
-    });
+    })
 });
 // app.get('/api/jokes', (req, res) => {
 //     // Fetch jokes from an external API or database
