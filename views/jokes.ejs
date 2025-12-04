@@ -9,9 +9,9 @@
 
 </head>
 <body class="container text-center bg-dark">
-	<nav class="centered-bg bg-primary-subtle text-success p-3 mb-4 rounded-3">
-		<a class="navbar-brand" href="/">Home</a>
-		<a class="navbar-brand" href="/picgen">PicGen</a>
+	<nav class="container bg-primary-subtle text-success p-3 mb-4 rounded-3">
+		<a class="navbar-brand container" href="/">Home</a>
+		<a class="navbar-brand container" href="/picgen">PicGen</a>
 	</nav>
 			<h1  >JokeHub</h1>
 	<div class="container row">
@@ -19,7 +19,7 @@
 			<img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg" alt="Cartoon Network figures roasting Bugs Bunny" class="logo">
 			<img src="../resources/images/JokeHub/ChuckLaughs.jpg" alt="Chuck Norris laughing at his own jokes, not roasts" class="logo">		
 		</div>
-		<div class="container-fluid col-md-6 offset-md-3">
+<!--		<div class="container-fluid col-md-6 offset-md-3">
 		<div id="carouselExample" class="carousel slide">
 		  <div class="carousel-inner">
 			<div class="carousel-item">
@@ -42,9 +42,9 @@
 		  </button>
 		</div>
 		</div>
-	</div>
+	</div>-->
     <div class="container-lg text-center p-4 text-primary-emphasis bg-info border border-primary-subtle rounded-3">
-        <h4><%= description %></h4>
+        <h4><%= headline %></h4>
     </div>
 
 
@@ -62,15 +62,28 @@
     </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/scripts/app.js"></script>
-<footer class="container-fluid footer text-success outline p-3 mt-4 mb-4 rounded-3">
-    <div class="footer-main">
-        <p>&copy; 2025 JokeHub. All rights reserved.</p>
-    </div>
-    <div class="footer-info">
-        <p>Additional information on request.</p>
-        <p>Contact us at: info@jokehub.com</p>
-        <p>Follow us on social media!</p>
-    </div>
-</footer>
+    <footer class="container-fluid col text-success p-3 mt-4 mb-4 rounded-3"">
+
+        <div id="footer" class="container-fluid">
+            <h6>Catch me at any of the below endpoints! =)</h6>
+                <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
+                <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+
+                <p>Check out my Socials to keep up with the latest developments-
+                <ul>
+                    <li><a href="https://www.linkedin.com/in/lio-ilu-93/"><img
+                                src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a></li>
+                    <li><a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
+                                alt="twitterx" /></a></li>
+                    <li></li>
+                </ul>
+        </div>
+    <hr class="container-fluid border-primary-subtle">
+        <section id="footer" class="container-lg row">
+            <p>&copy; 2025 APIExpressHub</p>
+            <p><a href="">Privacy Policy</a></p>
+            <h6>A design by <em>DevLI</em> of LI Dev</h6>
+        </section>
+    </footer>
 </body>
 </html>

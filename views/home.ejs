@@ -1,44 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" class="container-fluid" style="background-image: url('https://picsum.photos/id/522/400'); background-position: bottom;">
+<html lang="en" class="container-fluid"
+    style="background-image: url('https://picsum.photos/id/522/400'); background-position: bottom;">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="/resources/styles/styler.css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
 <body class="container col bg-dark-subtle">
     <div>
-	<h1 class="text-center text-light"> 
-	<span aria-label="smiley" role="img">😃 </span> < APIExpressHub ><span aria-label="robot" role="img">🤖</span>
-	</h1>
-	</div>
-    <div class="container-fluid text-center p-5 row">
-		<h2> Hello, World! Welcome to APIExpressHub <h4>-- This is a basic <a href="https://ejs.co/">EJS</a> templating Web App.</h4></h2>
+        <h1 class="text-center text-light">
+            <span aria-label="smiley" role="img">😃 </span>
+            < APIExpressHub><span aria-label="robot" role="img">🤖</span>
+        </h1>
     </div>
-	<h5 class="callout">Below are some useful links to navigate to the not so basic:</h5>
-    <div class="container-fluid text-info row p-4">
-        <h6 class="container-sm border border-success p-2 bg-primary">Navigate to the <a href="/jokes">Jokes Page</a> to see some funny jokes!</h6>
-        <h6 class="container-sm border border-success p-2 bg-primary">Navigate to the <a href="/picgen">Picture Generator Page</a> to generate some pictures!</h6>
+    <div class="container-fluid text-center p-5 row">
+        <h2> Hello, World! Welcome to APIExpressHub <h4>-- This is a basic <a href="https://ejs.co/">EJS</a> templating
+                Web App.</h4>
+        </h2>
+    </div>
+    <h5 class="callout">Below are some useful links to navigate to the not so basic:</h5>
+    <div class="container-fluid text-dark p-3 gap-3 flex-row justify-content-center">
+        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/jokes">JokeHub</a> to
+            see some funny jokes!</h6>
+        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/picgen">PicGen</a> to generate some pictures!</h6>
     </div>
 
-<footer class="class="container-fluid footer text-success outline p-3 mt-4 mb-4 rounded-3"">
-    <p>&copy; 2025 APIExpressHub. All rights reserved.</p>
-    <div class="footer-info">
-        <h6>If you have any questions whatsoever, you can reach me at any of the below endpoints =)</h^6	>
-        <p>Phone: <a href="">++++</a></p>
-		<p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
-		
-		<p>Check out my Socials to keep up with the latest developments-
-        <ul>
-			<li>LinkedIn: <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin"/></a></li>
-			<li>X: <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png" alt="twitterx"/></a></li>
-			<li></li>
-		</ul>
-    </div>
-	<section>A designed by <em>DevLI</em> of LI Dev</section>
-</footer>
+    <footer class="container-fluid col text-success p-3 mt-4 mb-4 rounded-3"">
+
+        <div id="footer" class="container-fluid">
+            <h6>Catch me at any of the below endpoints! =)</h6>
+                <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
+                <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+
+                <p>Check out my Socials to keep up with the latest developments-
+                <ul>
+                    <li><a href="https://www.linkedin.com/in/lio-ilu-93/"><img
+                                src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a></li>
+                    <li><a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
+                                alt="twitterx" /></a></li>
+                    <li></li>
+                </ul>
+        </div>
+    <hr class="container-fluid border-primary-subtle">
+        <section id="footer" class="container-lg row">
+            <p>&copy; 2025 APIExpressHub</p>
+            <p><a href="">Privacy Policy</a></p>
+            <h6>A design by <em>DevLI</em> of LI Dev</h6>
+        </section>
+    </footer>
 </body>
+
 </html>

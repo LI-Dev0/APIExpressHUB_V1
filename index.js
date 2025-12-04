@@ -36,7 +36,7 @@ app.use(['/','/jokes','/picgen'], (req, res, next) => {
 //Homepage
 
 app.get("/", (req, res) => {
-  res.render("home.ejs", { title: "API Express Server" });
+  res.render("home.ejs", { title: "API Express Hub" });
 });
 
 
@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 app.get('/jokes', (req, res) => {
     res.render('jokes.ejs', {
 		title: "Joke Generator",
-		description: "👇 Get your daily dose of API fetched laughter all in one place! 👇"
+		headline: "👇 Get your daily dose of API fetched laughter all in one place! 👇"
 		}
 	);
 });

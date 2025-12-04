@@ -66,6 +66,7 @@ body {
 }
 footer {
     display: flex;
+    flex-direction: column;
     background-color: #001219;
     align-items: baseline;
     text-align: center;
@@ -77,7 +78,8 @@ footer {
     flex: 0.5;
     padding: 10px;
 }
-
+/*#footer h6, footer h5, footer p {
+}*/
 
 /*PIC GEN STYLES*/
 
@@ -101,10 +103,5 @@ footer {
 #picContainer {
 	display: flex;
 	align-items: center;
-	flex-direction:column;
-}
-.picList img {
-	display: inline-block;
-	width: 20%;
-	height:auto;
+	flex-direction: column-reverse;
 }
