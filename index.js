@@ -55,7 +55,8 @@ app.get('/jokes', (req, res) => {
 app.get('/picgen', (req, res) => {
     res.render('picgen.ejs', {
         title: "Pic Gen",
-        description: "Generate random pictures with our picture generator!"
+        description: "Welcome to PicGen! A place to find inspiration, or create something new through imagery. The choice is yours!",
+        welcomeMessage: "Welcome to JokeHub! Your go-to destination for a daily dose of laughter. Whether you're in the mood for classic dad jokes or some legendary Chuck Norris humor, we've got you covered! 🤝 "
         }
 	);
 });

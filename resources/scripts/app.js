@@ -1,4 +1,30 @@
-//JOKEHUB
+const siteTheme = document.querySelector('body');
+    siteTheme.style.color = 'azure';
+    siteTheme.style.fontFamily = 'Monospace, sans-serif';
+
+const header = document.querySelector('#headline');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'center';
+    header.style.alignItems = 'center';
+    header.style.backgroundColor = '#042c3b';
+    header.style.color = 'rgb(81, 245, 154)';
+    header.style.fontFamily = 'Trebuchet MS, cursive, sans-serif';
+    header.style.padding = '20px';
+    header.style.border = '5px groove bisque';
+    header.style.borderRadius = '10px';
+
+
+const carouselContainer = document.querySelector('#carouselContainer');
+    carouselContainer.style.display = 'flex';
+    carouselContainer.style.justifyContent = 'center';
+    carouselContainer.style.alignItems = 'center';
+    carouselContainer.style.marginTop = '20px';
+    carouselContainer.style.marginBottom = '20px';
+    carouselContainer.style.border = '5px groove bisque';
+    carouselContainer.style.borderRadius = '10px';
+    carouselContainer.style.padding = '10px';
+    carouselContainer.style.backgroundColor = '#001219';
+//DADJOKES
 const jokes = document.querySelector("#jokes");
 const butt = document.querySelector(".djbutton");
 
@@ -49,10 +75,7 @@ const jokebox = document.querySelectorAll("#jokeContainer");
       element.getElementsByTagName('button')[0].style.cursor = 'pointer';
 });
 
-const siteTheme = document.querySelector('body');
-    siteTheme.style.color = 'azure';
-    siteTheme.style.fontFamily = 'Monospace, sans-serif';
-
+//CHUCK NORRIS JOKES
 const chuckNorrisBtn = document.querySelector(".chuckNorrisBtn");
 const chuckNorrisJoke = document.querySelector("#chuckNorrisJoke");
 

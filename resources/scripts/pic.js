@@ -18,7 +18,7 @@ picButton.addEventListener("click", (req, res) => {
         // Add error handler to the image element
         newPic.onerror = () => {
             console.error(`Failed to load image from: ${newPic.src}`);
-            return; // Don't append if image fails to load
+            next(); // Don't append if image fails to load
         };
         
         picList.appendChild(newPic);

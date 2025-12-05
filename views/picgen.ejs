@@ -15,10 +15,10 @@
 	<div id="picHead" class="container">
 		<h1><%= title %></h1>		
 	</div>
-    <h3 style=" display: flex; background-color: gray;" class="text-center callout-info"><%= description %></h3>
+    <h3 style=" display: flex; font-family: 'Roboto', monospace;" class=" container-fluid text-center text-success bg-dark justify-content-center"><%= description %></h3>
     <hr>
 
-    <div id="picContainer" class="container" style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
+    <div id="picContainer" class="container-md" style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
         <button id="picButton">FETCH!</button>
         <div id="picList" class="callout-info" style=" display: grid; grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 10px;">
         </div>      
@@ -26,7 +26,7 @@
         <h3 id="picSrc" class="container callout-info"></h3>
     </div>
     <div>
-        <p class="callout-info">Click the button to generate random pictures from Picsum Photos API!</p>
+        <p class="callout-info">Click FETCH to generate random pictures! 👆</p>
     </div>
     <div class="centered-bg bg-primary-subtle text-success outline p-3 mt-4">
         <p>Thanks for visiting PicGen! Hope you enjoyed your experience =)</p>
