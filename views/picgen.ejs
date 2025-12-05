@@ -1,60 +1,86 @@
 <!DOCTYPE html>
-<html lang="en" class="container-fluid style="background-color: lightblue; text-align: center; font-family: 'Trebuchet MS', 'Lucida Grande', sans-serif;">
+<html lang="en" class="container-fluid style=" background-color: lightblue; text-align: center;
+    font-family: 'Trebuchet MS' , 'Lucida Grande' , sans-serif;">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="/styles/styler.css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
-<body id="picBody" class="container-fluid text-center bg-dark-subtle">
-	<nav class="container bg-primary-subtle text-success p-3 mb-4 rounded-3">
-		<a class="navbar-brand container" href="/">Home</a>
-		<a class="navbar-brand container" href="/jokes">JokeHub</a>
-	</nav>
-	<div id="picHead" class="container">
-		<h1><%= title %></h1>		
-	</div>
-    <h3 style=" display: flex; font-family: 'Roboto', monospace;" class=" container-fluid text-center text-success bg-dark justify-content-center"><%= description %></h3>
-    <hr>
 
-    <div id="picContainer" class="container-md" style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
+<body id="picBody" class="container-fluid text-center bg-dark-subtle">
+    <nav class="container bg-primary-subtle text-success p-3 mb-4 rounded-3">
+        <a class="navbar-brand container" href="/">Home</a>
+        <a class="navbar-brand container" href="/jokes">JokeHub</a>
+    </nav>
+    <div id="picHead" class="container-sm p-3 mb-4 rounded-3 bg-dark outline">
+        <h1 class="container-sm text-center justify-content-center p-3 rounded-3 outline   ">
+            <%= title %>
+        </h1>
+        <h3 style=" display: flex; font-family: 'Roboto', monospace; color: rgb(81, 245, 154);"
+            class=" container-sm text-center bg-dark justify-content-center p-3 rounded-3 outline   ">
+            <%= description %>
+        </h3>
+    </div>
+
+    <hr>
+    <div id="picContainer" class="container-md"
+        style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
         <button id="picButton">FETCH!</button>
-        <div id="picList" class="callout-info" style=" display: grid; grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 10px;">
-        </div>      
-        <h2>Your random pics:</h2>
-        <h3 id="picSrc" class="container callout-info"></h3>
+        <div id="picList" class="callout-info"
+            style=" display: grid; grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 10px;">
+        </div>
+        <div>
+            <h2 class="callout-info">Generate Random Pictures using Picsum Photos API!</h2>
+        </div>
     </div>
     <div>
         <p class="callout-info">Click FETCH to generate random pictures! 👆</p>
+        <h3 id="picSrc" class="container callout-success"></h3>
     </div>
-    <div class="centered-bg bg-primary-subtle text-success outline p-3 mt-4">
-        <p>Thanks for visiting PicGen! Hope you enjoyed your experience =)</p>
-    </div>    
-<script src="/scripts/pic.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/scripts/app.js"></script>
-    <footer class="container-fluid col text-success p-3 mt-4 mb-4 rounded-3"">
-
-        <div id="footer" class="container-fluid">
-            <h6>Catch me at any of the below endpoints! =)</h6>
-                <p>Phone: <a href="">++++</a></p>
-                <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
-
-                <p>Check out my Socials to keep up with the latest developments-
-                <ul>
-                    <li><a href="https://www.linkedin.com/in/lio-ilu-93/"><img
-                                src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a></li>
-                    <li><a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
-                                alt="twitterx" /></a></li>
-                    <li></li>
-                </ul>
+    <div id="picContainer" class="container-md mt-4 mb-4"
+        style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
+        <div>
+            <h2 class="callout-info">Generate AI Images using Stable Diffusion API!</h2>
+            
+            <input type="text" id="aiInput" placeholder="Enter image description" />
+            <button id="aipicButton">Generate AI Image</button>
+            <div id="aipicList" class="callout-info"
+                style=" display: grid; justify-content: center; grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 10px;">
+            </div>
         </div>
-    <hr class="container-fluid border-primary-subtle">
-        <section id="footer" class="container-lg row">
-            <p>&copy; 2025 APIExpressHub</p>
-            <p><a href="">Privacy Policy</a></p>
-            <h6>A design by <em>DevLI</em> of LI Dev</h6>
+    </div>
+    <div class="centered-bg bg-primary-subtle outline p-3 mt-4">
+        <p>Thanks for visiting PicGen! Hope you enjoyed your experience =)</p>
+    </div>
+    <script src="/scripts/pic.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/scripts/app.js"></script>
+    <footer class="container-fluid col p-3 mt-4 mb-4 rounded-3"">
+
+        <div id=" footer" class="container-fluid">
+        <h6>Catch me at any of the below endpoints! =)</h6>
+        <p>Phone: <a href="callto:123456789">123456789</a></p>
+        <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+
+        <p>Check out my Socials to keep up with the latest developments 😊</p>
+        <ul>
+            <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png"
+                    alt="linkedin" /></a>
+            <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
+                    alt="twitterx" /></a>
+        </ul>
+        </div>
+        <hr class="container-fluid border-primary-subtle">
+        <section id="footer" class="container-lg">
+            <p style="display: inline-flex;">&copy; 2025 APIExpressHub</p>
+            <p style="display: inline-flex;"><a href="">Privacy Policy</a></p>
+            <h6 style="display: inline-flex;">A design by <em>DevLI</em> of LI Dev</h6>
         </section>
     </footer>
 </body>

@@ -27,10 +27,10 @@ app.use('/images', express.static('resources/images'));
 // });
 // To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
 // This middleware will execute for every request to '/jokes' and log the timestamp and request details.
-app.use(['/','/jokes','/picgen'], (req, res, next) => {
-    const currentTime = new Date().toLocaleString();
-    console.log(`[${currentTime}] Access Log: ${req.method} ${req.originalUrl} from ${req.ip}`);
-    next(); // Proceed to the next middleware or route handler
+app.use(['/', '/jokes', '/picgen'], (req, res, next) => {
+  const currentTime = new Date().toLocaleString();
+  console.log(`[${currentTime}] Access Log: ${req.method} ${req.originalUrl} from ${req.ip}`);
+  next(); // Proceed to the next middleware or route handler
 });
 
 //Homepage
@@ -43,22 +43,22 @@ app.get("/", (req, res) => {
 //JokeHubRenders
 
 app.get('/jokes', (req, res) => {
-    res.render('jokes.ejs', {
-		title: "Joke Generator",
-		headline: "👇 Get your daily dose of API fetched laughter all in one place! 👇"
-		}
-	);
+  res.render('jokes.ejs', {
+    title: "Joke Generator",
+    headline: "👇 Get your daily dose of API fetched laughter all in one place! 👇",
+    welcomeMessage: "Welcome to JokeHub! Your go-to destination for a daily dose of laughter. Whether you're in the mood for classic dad jokes or some legendary Chuck Norris humor, we've got you covered! 🤝 "
+  }
+  );
 });
 
 //PicGenRenders
 
 app.get('/picgen', (req, res) => {
-    res.render('picgen.ejs', {
-        title: "Pic Gen",
-        description: "Welcome to PicGen! A place to find inspiration, or create something new through imagery. The choice is yours!",
-        welcomeMessage: "Welcome to JokeHub! Your go-to destination for a daily dose of laughter. Whether you're in the mood for classic dad jokes or some legendary Chuck Norris humor, we've got you covered! 🤝 "
-        }
-	);
+  res.render('picgen.ejs', {
+    title: "Pic Gen",
+    description: "Welcome to PicGen! A place to find inspiration, or create it through imagery -- (Nas' Voice) The choice is yours!"
+  }
+  );
 });
 
 

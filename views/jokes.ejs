@@ -18,12 +18,12 @@
     <a class="navbar-brand container" href="/">Home</a>
     <a class="navbar-brand container" href="/picgen">PicGen</a>
   </nav>
-  <h1>JokeHub</h1>
-    <div id="welcomeMessage" class="container-fluid bg-dark-subtle text-success p-3 mb-0 rounded-3">
-      <h4>
-        <%= welcomeMessage %>
-      </h4>
-		</div>
+  <h1 id="routename">JokeHub</h1>
+  <div id="welcomeMessage" class="container-fluid bg-dark text-center p-3 rounded-3">
+    <h4 class="container">
+      <%= welcomeMessage %>
+    </h4>
+  </div>
   <div class="container text-center p-3 mb-4 rounded-3 bg-dark border border-primary-subtle">
     <div class="container-fluid">
       <img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg"
@@ -32,74 +32,75 @@
         class="logo">
     </div>
 
-	</div>
-    <div id="headline" class="container-lg text-center p-4 border border-primary-subtle rounded-3">
-      <h4>
-        <%= headline %>
-      </h4>
-    </div>
+  </div>
+  <div id="headline" class="container-lg text-center p-4 border border-primary-subtle rounded-3">
+    <h4>
+      <%= headline %>
+    </h4>
+  </div>
 
 
-    <div id="jokeContainer" style="width: fit-content;">
-      <button class="djbutton">GET Dad Joke</button>
-      <ul id="jokes"></ul>
-    </div>
+  <div id="jokeContainer" style="width: fit-content;">
+    <button class="djbutton">GET Dad Joke</button>
+    <ul id="jokes"></ul>
+  </div>
 
-    <div id="jokeContainer">
-      <button class="chuckNorrisBtn">GET Chuck Norris Joke</button>
-      <ul id="chuckNorrisJoke"></ul>
+  <div id="jokeContainer">
+    <button class="chuckNorrisBtn">GET Chuck Norris Joke</button>
+    <ul id="chuckNorrisJoke"></ul>
+  </div>
+  <hr>
+  <div id="carouselContainer" class="container-fluid col-md-6 offset-md-3">
+    <div id="carouselExample" class="container carousel slide">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg"
+            alt="Cartoon Network figures roasting Bugs Bunny" class="d-block w-50" alt="...">
+        </div>
+        <div class="carousel-item ">
+          <img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg"
+            alt="Cartoon Network figures roasting Bugs Bunny" class="d-block w-50" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="../resources/images/JokeHub/ChuckLaughs.jpg"
+            alt="Chuck Norris laughing at his own jokes, not roasts" class="d-block w-50" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    <hr>
-    <div id="carouselContainer" class="container-fluid col-md-6 offset-md-3">
-		<div id="carouselExample" class="container carousel slide">
-		  <div class="carousel-inner">
-			<div class="carousel-item active">
-			  <img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg" alt="Cartoon Network figures roasting Bugs Bunny" class="d-block w-50" alt="...">
-			</div>
-			<div class="carousel-item ">
-			  <img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg" alt="Cartoon Network figures roasting Bugs Bunny" class="d-block w-50" alt="...">
-			</div>
-			<div class="carousel-item">
-			  <img src="../resources/images/JokeHub/ChuckLaughs.jpg" alt="Chuck Norris laughing at his own jokes, not roasts" class="d-block w-50" alt="...">
-			</div>
-		  </div>
-		  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Previous</span>
-		  </button>
-		  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Next</span>
-		  </button>
-		</div>
-    </div>
-    <div class="centered-bg bg-primary-subtle text-success">
-      <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/scripts/app.js"></script>
-    <footer class="container-fluid col text-white p-3 mt-4 mb-4 rounded-3"">
+  </div>
+  <div class="end centered-bg bg-primary-subtle text-success outline p-3 mt-4">
+    <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/scripts/app.js"></script>
+  <footer class="container-fluid col p-3 mt-4 mb-4 rounded-3"">
 
         <div id=" footer" class="container-fluid">
-      <h6>Catch me at any of the below endpoints! =)</h6>
-      <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
-      <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+    <h6>Catch me at any of the below endpoints! =)</h6>
+    <p>Phone: <a href="">++++</a></p>
+    <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
 
-      <p>Check out my Socials to keep up with the latest developments-
-      <ul>
-        <li><a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png"
-              alt="linkedin" /></a></li>
-        <li><a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
-              alt="twitterx" /></a></li>
-        <li></li>
-      </ul>
-  </div>
-  <hr class="container-fluid border-primary-subtle">
-  <section id="footer" class="container-lg row">
-    <p>&copy; 2025 APIExpressHub</p>
-    <p><a href="">Privacy Policy</a></p>
-    <h6>A design by <em>DevLI</em> of LI Dev</h6>
-  </section>
+    <p>Check out my Socials to keep up with the latest developments-
+    <ul>
+      <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png"
+            alt="linkedin" /></a>
+      <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png" alt="twitterx" /></a>
+    </ul> 
+    </div>
+    <hr class="container-fluid border-primary-subtle">
+    <section id="footer" class="container-lg">
+      <p style="display: inline-flex;">&copy; 2025 APIExpressHub</p>
+      <p style="display: inline-flex;"><a href="">Privacy Policy</a></p>
+      <h6 style="display: inline-flex;">A design by <em>DevLI</em> of LI Dev</h6>
+    </section>
   </footer>
 </body>
 
