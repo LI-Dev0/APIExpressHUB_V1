@@ -18,11 +18,11 @@
         <a class="navbar-brand container" href="/">Home</a>
         <a class="navbar-brand container" href="/jokes">JokeHub</a>
     </nav>
-    <div id="picHead" class="container-sm p-3 mb-4 rounded-3 bg-dark outline">
-        <h1 class="container-sm text-center justify-content-center p-3 rounded-3 outline   ">
+    <div class="container-sm p-3 mb-4 rounded-3 bg-dark outline">
+        <h1 id="routename" class="container-sm text-center justify-content-center p-3 rounded-3 outline   ">
             <%= title %>
         </h1>
-        <h3 style=" display: flex; font-family: 'Roboto', monospace; color: rgb(81, 245, 154);"
+        <h3 id="welcomeMessage" style=" display: flex; font-size: 1.5rem; text-align: center; justify-content: center; "
             class=" container-sm text-center bg-dark justify-content-center p-3 rounded-3 outline   ">
             <%= description %>
         </h3>
@@ -47,7 +47,7 @@
         style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
         <div>
             <h2 class="callout-info">Generate AI Images using Stable Diffusion API!</h2>
-            
+
             <input type="text" id="aiInput" placeholder="Enter image description" />
             <button id="aipicButton">Generate AI Image</button>
             <div id="aipicList" class="callout-info"
@@ -55,26 +55,28 @@
             </div>
         </div>
     </div>
-    <div class="centered-bg bg-primary-subtle outline p-3 mt-4">
+    <div class="centered-bg text-dark bg-primary-subtle outline p-3 mt-4">
         <p>Thanks for visiting PicGen! Hope you enjoyed your experience =)</p>
     </div>
-    <script src="/scripts/pic.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/scripts/app.js"></script>
-    <footer class="container-fluid col p-3 mt-4 mb-4 rounded-3"">
 
-        <div id=" footer" class="container-fluid">
-        <h6>Catch me at any of the below endpoints! =)</h6>
-        <p>Phone: <a href="callto:123456789">123456789</a></p>
-        <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+    <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3">
 
-        <p>Check out my Socials to keep up with the latest developments 😊</p>
-        <ul>
-            <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png"
-                    alt="linkedin" /></a>
-            <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
-                    alt="twitterx" /></a>
-        </ul>
+        <div id=" footer" class="container-fluid flex text-center p-3 justify-content-center d-flex gap-5">
+            <div class="container-sm inline-flex justify-content-center d-flex border-white flex-col border p-3 rounded-2">
+                <h6>Contact me via email or phone for any queries or feedback! 😊</h6>
+                <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
+                <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+            </div>
+            <div class="container-sm inline-flex flex-col justify-content-center d-flex border-primary border p-3 rounded-2">
+                <h6>Follow my activity at any of the below endpoints! =)</h6>
+                <ul>
+                    <a href="https://www.linkedin.com/in/lio-ilu-93/"><img
+                            src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a>
+                    <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
+                            alt="twitterx" /></a>
+                </ul>
+            </div>
+
         </div>
         <hr class="container-fluid border-primary-subtle">
         <section id="footer" class="container-lg">
@@ -83,6 +85,9 @@
             <h6 style="display: inline-flex;">A design by <em>DevLI</em> of LI Dev</h6>
         </section>
     </footer>
+    <script src="/scripts/pic.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/scripts/app.js"></script>
 </body>
 
 </html>

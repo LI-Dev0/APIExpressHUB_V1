@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 //console.dir(app);
-const port = 3000;
+const port = 4747;
 // Removed static time assignment; will generate timestamp dynamically in middleware
 
 const path = require("path");
@@ -46,7 +46,7 @@ app.get('/jokes', (req, res) => {
   res.render('jokes.ejs', {
     title: "Joke Generator",
     headline: "👇 Get your daily dose of API fetched laughter all in one place! 👇",
-    welcomeMessage: "Welcome to JokeHub! Your go-to destination for a daily dose of laughter. Whether you're in the mood for classic dad jokes or some legendary Chuck Norris humor, we've got you covered! 🤝 "
+    welcomeMessage: "Welcome to JokeHub! Your go-to destination for a daily dose of laughter." + "\n" + "Whether you're in the mood for classic dad jokes or some legendary Chuck Norris humor, we've got you covered! 🤝 "
   }
   );
 });

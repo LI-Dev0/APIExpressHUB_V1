@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" class="container-fluid"
-    style="background-image: url('https://picsum.photos/id/579/500'); background-position: bottom;">
+<html lang="en" class="container-fluid m-0"
+    style="background-image: url('https://picsum.photos/id/392/500'); background-position:top; background-color: bisque; background-repeat: repeat-y; background-attachment: repeat; background-size: cover;">
 
 <head>
     <meta charset="UTF-8">
@@ -13,43 +13,61 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
-<body class="container col bg-dark-subtle">
+<body class="container-lg col bg-dark-subtle">
     <div>
-        <h1 class="text-center">
+        <h1 class="text-center text-white p-3 mt-4 mb-4 rounded-3">
             <span aria-label="smiley" role="img">😃 </span>
             APIExpressHub
             <span aria-label="robot" role="img">🤖</span>
         </h1>
     </div>
     <div class="container-fluid text-center p-5 row">
-        <h2> Hello, World! Welcome to APIExpressHub <h4>-- This is a basic <a href="https://ejs.co/" class="text-decoration-none">EJS</a> templating
+        <h2> Hello, World! Welcome to APIExpressHub <h4>-- This is a basic <a href="https://ejs.co/"
+                    class="text-decoration-none">EJS</a> templating
                 Web App.</h4>
         </h2>
     </div>
-    <h5 class="callout">Below are some useful links to navigate to the not so basic:</h5>
-    <div class="container-fluid text-dark p-3 gap-3 flex-row justify-content-center d-flex mb-4 rounded-3 bg-light-subtle">
-        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/jokes" class="text-decoration-none">JokeHub</a> to
-            see some funny jokes!</h6>
-        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/picgen" class="text-decoration-none">PicGen</a> to generate some pictures!</h6>
+    <div>
+        <section id="tips">
+            <h3 class="callout-info">Tips to get you started!</h3>
+            <ul class="callout-info">
+                <li>Use the navigation links below to explore different API functionalities!</li>
+                <li>Feel free to check out the source code on <a href="https://github.com/LI-Dev/APIsExpressHub"
+                        class="text-decoration-none">GitHub</a></li>
+                <li>You only have to click to call a route once, then simply tap the enter
+                    button to your preference 😊</li>
+            </ul>
+        </section>
     </div>
+    <div id="navigationLinks"
+        class="container-fluid text-dark p-3 gap-3 flex-row justify-content-center d-flex mt-4 mb-4 rounded-3">
+        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/jokes"
+                class="text-decoration-none">JokeHub</a> to
+            see some funny jokes!</h6>
+        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/picgen"
+                class="text-decoration-none">PicGen</a> to generate some pictures!</h6>
+    </div>
+    <hr>
+    <h4 class="callout-info text-center p-3">Hope you have a great time exploring the APIs! 😊</h4>
+    <hr>
 
-    <footer class="container-fluid col text-white p-3 mt-4 mb-4 rounded-3"">
+    <footer class="container col text-white p-3 mt-4 mb-4 rounded-3"">
 
-        <div id="footer" class="container-fluid">
-            <h6>Catch me at any of the below endpoints! =)</h6>
-                <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
-                <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+        <div id=" footer" class="container-fluid">
+        <h6>Catch me at any of the below endpoints! =)</h6>
+        <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
+        <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
 
-                <p>Check out my Socials to keep up with the latest developments-
-                <ul>
-                    <li><a href="https://www.linkedin.com/in/lio-ilu-93/"><img
-                                src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a></li>
-                    <li><a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
-                                alt="twitterx" /></a></li>
-                    <li></li>
-                </ul>
+        <p>Check out my Socials to keep up with the latest developments-
+        <ul>
+            <li><a href="https://www.linkedin.com/in/lio-ilu-93/"><img
+                        src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a></li>
+            <li><a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
+                        alt="twitterx" /></a></li>
+            <li></li>
+        </ul>
         </div>
-    <hr class="container-fluid border-primary-subtle">
+        <hr class="container-fluid border-primary-subtle">
         <section id="footer" class="container-lg row">
             <p>&copy; 2025 APIExpressHub</p>
             <p><a href="">Privacy Policy</a></p>

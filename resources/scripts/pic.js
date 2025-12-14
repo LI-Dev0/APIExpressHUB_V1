@@ -123,7 +123,9 @@ aipicButton.addEventListener("click", (req, res) => {
     }
 
 });
+
 //Diffusion API Simulation Section End
+
 /* import fs from "node:fs";
 import axios from "axios";
 import FormData from "form-data";
