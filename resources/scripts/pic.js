@@ -111,8 +111,8 @@ aipicButton.addEventListener("click", (req, res) => {
             newaiPic.src = `https://picsum.photos/id/${rand}/500`;
             newaiPic.alt = `AI Generated Image for prompt: ${prompt}`;
             newaiPic.className = "aipicList";
-            newaiPic.style.margin = '20px 10px';
-            newaiPic.style.objectFit = 'stretch';
+            newaiPic.style.margin = '20px 5px';
+            newaiPic.style.objectFit = 'cover';
             newaiPic.style.border = '5px solid lightblue';
             aipicList.appendChild(newaiPic);
             aiInput.value = ''; // Clear input after generating image

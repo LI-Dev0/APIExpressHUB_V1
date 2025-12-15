@@ -14,16 +14,15 @@
 </head>
 
 <body id="picBody" class="container-fluid text-center bg-dark-subtle">
-    <nav class="container bg-primary-subtle text-success p-3 mb-4 rounded-3">
+    <nav id="navigationLinks" class="container-fluid bg-primary-subtle p-3 mb-4 rounded-3">
         <a class="navbar-brand container" href="/">Home</a>
         <a class="navbar-brand container" href="/jokes">JokeHub</a>
     </nav>
-    <div class="container-sm p-3 mb-4 rounded-3 bg-dark outline">
-        <h1 id="routename" class="container-sm text-center justify-content-center p-3 rounded-3 outline   ">
+    <div class="container-sm p-3 mb-4 rounded-3 bg-primary-subtle outline">
+        <h1 id="routenamepic" class="container-sm text-center justify-content-center p-3 rounded-3 outline   ">
             <%= title %>
         </h1>
-        <h3 id="welcomeMessage" style=" display: flex; font-size: 1.5rem; text-align: center; justify-content: center; "
-            class=" container-sm text-center bg-dark justify-content-center p-3 rounded-3 outline   ">
+        <h3 id="welcomeMessage" class=" container-sm text-center justify-content-center p-3 rounded-3 outline   ">
             <%= description %>
         </h3>
     </div>
@@ -43,6 +42,7 @@
         <p class="callout-info">Click FETCH to generate random pictures! 👆</p>
         <h3 id="picSrc" class="container callout-success"></h3>
     </div>
+        <hr>
     <div id="picContainer" class="container-md mt-4 mb-4"
         style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
         <div>
@@ -55,20 +55,19 @@
             </div>
         </div>
     </div>
-    <div class="centered-bg text-dark bg-primary-subtle outline p-3 mt-4">
+    <div id="endpic" class="centered-bg outline p-3 mt-4" style="background-color: #001219; border-radius: 5px;">
         <p>Thanks for visiting PicGen! Hope you enjoyed your experience =)</p>
     </div>
+    <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3 bg-primary-subtle text-dark">
 
-    <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3">
-
-        <div id=" footer" class="container-fluid flex text-center p-3 justify-content-center d-flex gap-5">
-            <div class="container-sm inline-flex justify-content-center d-flex border-white flex-col border p-3 rounded-2">
-                <h6>Contact me via email or phone for any queries or feedback! 😊</h6>
+        <div class="container-fluid flex text-center p-3 justify-content-center d-flex gap-5">
+            <div id="footercontact" class="container-sm d-flex border p-3 rounded-2 boxshadow-dark boxshadow-hover">
+                <p style="font-size: larger; font-weight: 900;">Contact me for any queries or feedback! 😊</p>
                 <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
                 <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
             </div>
-            <div class="container-sm inline-flex flex-col justify-content-center d-flex border-primary border p-3 rounded-2">
-                <h6>Follow my activity at any of the below endpoints! =)</h6>
+            <div id="footerlinks" class="container-sm d-flex border-primary border p-3 rounded-2">
+                <p style="font-size: larger; font-weight: 900;">Keep up with me at these endpoints! =)</p>
                 <ul>
                     <a href="https://www.linkedin.com/in/lio-ilu-93/"><img
                             src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a>
@@ -79,9 +78,9 @@
 
         </div>
         <hr class="container-fluid border-primary-subtle">
-        <section id="footer" class="container-lg">
+        <section id="footerfootpic" class="container-fluid">
             <p style="display: inline-flex;">&copy; 2025 APIExpressHub</p>
-            <p style="display: inline-flex;"><a href="">Privacy Policy</a></p>
+            <p style="display: inline-flex;"><a href="/policy">Privacy Policy</a></p>
             <h6 style="display: inline-flex;">A design by <em>DevLI</em> of LI Dev</h6>
         </section>
     </footer>

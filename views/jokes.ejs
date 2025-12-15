@@ -13,18 +13,18 @@
 
 </head>
 
-<body class="container text-center bg-dark">
-  <nav class="container bg-primary-subtle text-success p-3 mb-4 rounded-3">
+<body class="container text-center" style="background-color: black;">
+  <nav id="navigationLinks" class="container bg-primary-subtle p-3 mb-4 rounded-3">
     <a class="navbar-brand container" href="/">Home</a>
     <a class="navbar-brand container" href="/picgen">PicGen</a>
   </nav>
-  <h1 id="routename">Joke Hub</h1>
-  <div id="welcomeMessage" class="container-fluid bg-dark text-center p-3 rounded-3">
-    <h4 class="container">
+  <div class="container-sm p-3 mb-4 rounded-3 bg-primary-subtle outline">
+    <h1 id="routename" class="container-sm text-center justify-content-center p-3 rounded-3 outline">Joke Hub</h1>
+    <h3 id="welc" class="container-sm text-center text-bold justify-content-center p-3 rounded-3 outline">
       <%= welcomeMessage %>
-    </h4>
+    </h3>
   </div>
-  <div class="container text-center p-3 mb-4 rounded-3 bg-dark border border-primary-subtle">
+  <div class="container-sm text-center p-3 mb-4 rounded-3 bg-primary-subtle border border-primary-subtle">
     <div class="container-fluid">
       <img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg"
         alt="Cartoon Network figures roasting Bugs Bunny" class="logo">
@@ -44,12 +44,12 @@
     <button class="djbutton">GET Dad Joke</button>
     <ul id="jokes"></ul>
   </div>
-
+  <hr>
   <div id="jokeContainer">
     <button class="chuckNorrisBtn">GET Chuck Norris Joke</button>
     <ul id="chuckNorrisJoke"></ul>
   </div>
-  <hr>
+
   <div id="carouselContainer" class="container-fluid col-md-6 offset-md-3">
     <div id="carouselExample" class="container carousel slide">
       <div class="carousel-inner">
@@ -76,27 +76,32 @@
       </button>
     </div>
   </div>
-  <div class="end centered-bg bg-primary-subtle text-dark outline p-3 mt-4">
+  <div id="end" class="centered-bg outline p-3 mt-4">
     <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
   </div>
-  <footer class="container-fluid col p-3 mt-4 mb-0 rounded-3"">
+  <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3 bg-primary-subtle text-dark">
 
-        <div id=" footer" class="container-fluid">
-    <h6>Catch me at any of the below endpoints! =)</h6>
-    <p>Phone: <a href="">++++</a></p>
-    <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+    <div class="container-fluid flex text-center p-3 justify-content-center d-flex gap-5">
+      <div id="footercontact" class="container-sm d-flex border p-3 rounded-2 boxshadow-dark boxshadow-hover">
+        <p style="font-size: larger; font-weight: 900;">Contact me for any queries or feedback! 😊</p>
+        <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
+        <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+      </div>
+      <div id="footerlinks"
+        class="container-sm d-flex p-3 rounded-2">
+        <p style="font-size: larger; font-weight: 900;">Keep up with me at these endpoints! =)</p>
+        <ul>
+          <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png"
+              alt="linkedin" /></a>
+          <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png" alt="twitterx" /></a>
+        </ul>
+      </div>
 
-    <p>Contact me via email or phone for any queries or feedback! 😊</p>
-    <ul>
-      <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png"
-          alt="linkedin" /></a>
-      <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png" alt="twitterx" /></a>
-    </ul>
     </div>
     <hr class="container-fluid border-primary-subtle">
-    <section id="footer" class="container-lg">
+    <section id="footerfootjoke" class="container-fluid">
       <p style="display: inline-flex;">&copy; 2025 APIExpressHub</p>
-      <p style="display: inline-flex;"><a href="">Privacy Policy</a></p>
+      <p style="display: inline-flex;"><a href="/policy">Privacy Policy</a></p>
       <h6 style="display: inline-flex;">A design by <em>DevLI</em> of LI Dev</h6>
     </section>
   </footer>

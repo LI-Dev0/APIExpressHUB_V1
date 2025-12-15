@@ -56,7 +56,7 @@ app.get('/jokes', (req, res) => {
 app.get('/picgen', (req, res) => {
   res.render('picgen.ejs', {
     title: "Pic Gen",
-    description: "Welcome to PicGen! A place to find inspiration, or create it through imagery -- (Nas' Voice) The choice is yours!"
+    description: "Welcome to PicGen! A place to find or inspire enlightenment through imagery -- (Nas' Voice) the choice is yours!"
   }
   );
 });
