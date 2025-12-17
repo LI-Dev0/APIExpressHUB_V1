@@ -109,7 +109,7 @@ app.post('/pichub', async (req, res) => {
     form.append('aspect_ratio', '1:1'); // SD3 often uses aspect_ratio instead of width/height
 
     // Optional parameters (if supported by the specific model version)
-    form.append('cfg_scale', 7);
+    form.append('cfg_scale', 5);
     form.append('style_preset', 'photographic');
 
     const response = await axios.post(
