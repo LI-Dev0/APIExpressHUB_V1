@@ -1,3 +1,4 @@
+
 const picContainer = document.getElementById("picContainer");
 const picList = document.querySelector("#picList");
 const picButton = document.querySelector("#picButton");
@@ -10,15 +11,15 @@ const next = () => {
 picContainer.style.display = 'flex';
 //animate box shadow on hover
 picContButt.addEventListener('pointerover', (e) => {
-    e.target.style.boxShadow = '0 0 4px 4px #231b537e';
-    e.target.innerText = 'Fetch!';
+    e.target.querySelectorAll('button').style.boxShadow = '0 0 4px 4px #231b537e';
+    e.target.querySelector('button')[0].innerText = 'Fetch!';
     width = e.target.offsetWidth;
     height = e.target.offsetHeight;
 });
 //remove box shadow on mouseout
 picContainer.addEventListener('pointerout', (e) => {
-    e.target.querySelector('button').style.boxShadow = 'none';
-    e.target.querySelector('button').innerText = '';
+    e.target.querySelectorAll('button').style.boxShadow = '';
+    e.target.querySelector('button')[0].innerText = '';
 });
 
 //target picContainer button 
@@ -106,24 +107,26 @@ aipicButton.addEventListener("click", async (event) => {
     //halt default page-reload on form submission
     event.preventDefault();
     //initialise the input prompt specifications from aiInput variable as promptData
-    const userprompt = aipicInput.value.trim();
-    if (!userprompt) {
-        console.log("Please enter a prompt to generate an AI image.");
+    const userPrompt = aipicInput.value.trim();
+    if (!userPrompt) {
+        console.log("Please enter a prompt string to generate an AI image.");
         alert('Please enter a prompt to generate an AI image.');
         return;
     }
+    // ⏳ START LOADING STATE
+    aipicButton.disabled = true;
+    aipicButton.innerText = "Generating... 🚀";
+    aipicSrc.textContent = "Connecting to AI... Please wait.";
     try {
         // 2. Send the value to the server using 'fetch'
-        const response = await fetch('/pichub', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', // IMPORTANT: Specify JSON content
-            },
-            body: JSON.stringify({
-                // Send the prompt value as a JSON object property
-                prompt: userprompt
-            }),
-        });
+        const response = await axios.post(
+            '/pichub',
+            { prompt: userPrompt }, // Data object (Axios stringifies this automatically)
+            {
+                responseType: 'arraybuffer', // REQUIRED for binary image data
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
 
         // Call server-side proxy instead of calling Stability AI directly from the browser.
         // This keeps the API key server-side and avoids exposing it in client code.
@@ -133,33 +136,63 @@ aipicButton.addEventListener("click", async (event) => {
         //    { responseType: 'arraybuffer' }
         //);
 
-        // If API returned binary image data, create a Blob and an object URL to display it
-        if (response && response.status === 200) {
-            const contentType = (response.headers && (response.headers['content-type'] || response.headers['Content-Type'])) || 'image/jpeg';
+        // If API returned binary image data, create a Blob and an object URL to display it         if (response && response.status === 200) {
+        if (response) {
+            const contentType = (response.headers && (response.headers['Content-Type'] || response.headers['Content-Type'])) || 'image/jpeg';
             const blob = new Blob([response.data], { type: contentType });
             const imageUrl = URL.createObjectURL(blob);
 
+            // 1. Create a container for the image and the download button
+            const card = document.createElement('div');
+            card.className = 'ai-card';
+            card.style.cssText = "display: flex; flex-direction: column; align-items: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px;";
+
             const newAiImg = document.createElement('img');
             newAiImg.src = imageUrl;
-            newAiImg.alt = `AI Generated Image for prompt: ${prompt}`;
-            newAiImg.className = 'aipicList';
-            newAiImg.style.margin = '20px 5px';
+            newAiImg.alt = `AI Generated Image for prompt: ${userPrompt}`;
+            newAiImg.style.cssText = "width: 100%; border-radius: 5px; border: 2px solid #231b53;";
             newAiImg.style.objectFit = 'cover';
             newAiImg.style.border = '5px solid lightblue';
 
-            // Revoke object URL after image loads to free memory x
-            newAiImg.onload = () => { URL.revokeObjectURL(imageUrl); };
+            // 3. Create the Download Button
+            const downloadBtn = document.createElement('a'); // Use an 'a' tag to act as a button
+            downloadBtn.href = imageUrl;
+            downloadBtn.download = `ai-gen-${Date.now()}.jpg`; // Filename for the user
+            downloadBtn.innerText = "💾 Download Image";
+            downloadBtn.style.cssText = "padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold;";
 
-            aipicList.appendChild(newAiImg);
-            aipicSrc.textContent = 'Find the latest pic at ' + newAiImg.src
-            aiInput.value = ''; // clear input after success
+            // Revoke object URL after image loads to free memory x
+            //            newAiImg.onload = () => URL.revokeObjectURL(imageUrl);
+            
+            // 5. Assemble and Add to Page
+            card.appendChild(newAiImg);
+            card.appendChild(downloadBtn);
+            aipicList.prepend(card);
+            aipicSrc.textContent = 'Find the latest pic at ' + newAiImg.src + ' Generation successful!';
+            aipicInput.value = '';    
         } else {
             console.error('AI image API responded with non-200 status', response && response.status);
         }
 
     } catch (error) {
+        if (error.response && error.response.data) {
+            // 💡 Convert ArrayBuffer error back into a readable string
+            const decoder = new TextDecoder("utf-8");
+            const errorText = decoder.decode(error.response.data);
+
+            try {
+                const errorJson = JSON.parse(errorText);
+                console.error("Server API Error:", errorJson.error);
+            } catch (e) {
+                console.error("Server Error Text:", errorText);
+            }
+        }
         console.error(`Error generating AI image. Details: `, error);
         return; // Exit early, don't add broken image
+    } finally {
+        // 💡 ALWAYS RE-ENABLE BUTTON
+        aipicButton.disabled = false;
+        aipicButton.innerText = "Generate AI Image";
     }
 });
 
