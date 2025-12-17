@@ -21,7 +21,7 @@ app.use('/resources', express.static(path.join(__dirname, 'resources')))
 app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
 app.use('/images', express.static('resources/images'));
-
+app.use('/scripts', express.static('resources/scripts/pic.js'));
 // parse JSON bodies for our API routes
 app.use(express.json());
 
@@ -55,6 +55,7 @@ app.get("/", (req, res) => {
 //JokeHubRenders
 
 app.get('/jokes', (req, res) => {
+  console.log(req.body);
   res.render('jokes.ejs', {
     title: "Joke Generator",
     headline: "👇 Get your daily dose of API fetched laughter all in one place! 👇",
@@ -75,14 +76,15 @@ app.get('/pichub', (req, res) => {
 
 // Proxy route to call Stability AI (server-side) and forward image binary to client
 app.post('/pichub', async (req, res) => {
-  console.log(`POST request received on /pichub from IP: ${req.ip} with prompt: ${JSON.stringify(req.body)}  || TimeStamp: ${new Date().toLocaleString()} `);
+  console.log(`POST request received on ${req.originalUrl} from IP: ${req.ip} with prompt: ${JSON.stringify(req.body)}  || TimeStamp: ${new Date().toString()} `);
   try {
-    const { prompt } = req.body || {};
-    if (!prompt) {
-      console.log(`${res.status(400)}`);
-      return res.status(400).json({ error: 'prompt is required' });
+    // 💡 CORRECT WAY: Destructure the 'prompt' property from the parsed request body (req.body)
+    const { prompt } = req.body;
+    // Validate and trim the prompt
+    if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
+      console.log(`[400] Prompt is required or invalid prompt details dected.`);
+      return res.status(400).json({ error: 'Prompt is required! Please enter your detail specification =)' });
     }
-
     const payload = {
       width: 512,
       height: 512,

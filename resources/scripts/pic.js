@@ -102,29 +102,37 @@ const aipicSrc = document.querySelector("#aipicSrc");
 //if (response.status === 200) {
 //    fs.writeFileSync("./lighthouse.jpeg", Buffer.from(response.data));
 //} else {
- //   throw new Error(`${response.status}: ${response.data.toString()}`);
+//   throw new Error(`${response.status}: ${response.data.toString()}`);
 //}
 
 //adapt the above to listen for button click and display image in browser
 aipicButton.addEventListener("click", async () => {
+    const promptData = aiInput.value.trim();
+    if (!promptData) {
+        console.log("Please enter a prompt to generate an AI image.");
+        alert('Please enter a prompt to generate an AI image.');
+        return;
+    }
     try {
-        const prompt = aiInput.value.trim();
-        if (!prompt) {
-            console.log("Please enter a prompt to generate an AI image.");
-            return;
-        }
-
-        // update payload with current prompt
-        payload.text_prompts = [{ text: prompt, weight: 1.0 }];
-
+        // 2. Send the value to the server using 'fetch'
+        const response = await fetch('/api/generate-image', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // IMPORTANT: Specify JSON content
+            },
+            body: JSON.stringify({
+                // Send the prompt value as a JSON object property
+                prompt: promptData
+            }),
+        });
 
         // Call server-side proxy instead of calling Stability AI directly from the browser.
         // This keeps the API key server-side and avoids exposing it in client code.
-        const response = await axios.post(
-            '/api/generate-image',
-            { prompt },
-            { responseType: 'arraybuffer' }
-        );
+        //const response = await axios.post(
+        //    '/api/generate-image',
+        //    { prompt },
+        //    { responseType: 'arraybuffer' }
+        //);
 
         // If API returned binary image data, create a Blob and an object URL to display it
         if (response && response.status === 200) {
@@ -153,7 +161,7 @@ aipicButton.addEventListener("click", async () => {
     } catch (error) {
         console.error(`Error generating AI image with a status of ${response.status}. Details: `, error);
         return; // Exit early, don't add broken image
-   }
+    }
 });
 
 /*
