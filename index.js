@@ -45,7 +45,7 @@ app.use(['/', '/jokes', '/picgen'], (req, res, next) => {
   next(); // Proceed to the next middleware or route handler
 });
 
-//Homepage
+//Homepage renders
 
 app.get("/", (req, res) => {
   res.render("home.ejs", { title: "API Express Hub" });
@@ -63,7 +63,7 @@ app.get('/jokes', (req, res) => {
   );
 });
 
-//PicHubRender
+//PicHubRenders
 
 app.get('/pichub', (req, res) => {
   console.log(`Rendering picgen.ejs. Device_IPAdd: ${req.ip} || TimeStamp: ${new Date().toLocaleString()} `);
@@ -73,29 +73,25 @@ app.get('/pichub', (req, res) => {
   });
 })
 
-app.post('/pichub', (req, res) => {
-  console.log(`POST request received on /pichub from IP: ${req.ip} with prompt: ${JSON.stringify(req.body)}  || TimeStamp: ${new Date().toLocaleString()} `);
-  res.render('picgen.ejs' , {
-    title: "Pic Hub",
-    description: "Welcome to PicHub! A place to find or inspire enlightenment through imagery -- (Nas' Voice) the choice is yours! 📸"
-  });
-});
-
 // Proxy route to call Stability AI (server-side) and forward image binary to client
-app.post('/api/generate-image', async (req, res) => {
+app.post('/pichub', async (req, res) => {
+  console.log(`POST request received on /pichub from IP: ${req.ip} with prompt: ${JSON.stringify(req.body)}  || TimeStamp: ${new Date().toLocaleString()} `);
   try {
     const { prompt } = req.body || {};
-    if (!prompt) return res.status(400).json({ error: 'prompt is required' });
+    if (!prompt) {
+      console.log(`${res.status(400)}`);
+      return res.status(400).json({ error: 'prompt is required' });
+    }
 
     const payload = {
       width: 512,
       height: 512,
       samples: 1,
-      steps: 30,
       cfg_scale: 7.0,
       style_preset: 'photographic',
       text_prompts: [{ text: prompt, weight: 1.0 }],
       output_format: 'jpeg',
+      model: 'sd-3.5-flash'
     };
 
     const form = new FormData();
@@ -110,7 +106,8 @@ app.post('/api/generate-image', async (req, res) => {
       responseType: 'arraybuffer',
     });
 
-    if (response.status === 200) {
+    if (response && response.status === 200) {
+
       res.set('Content-Type', response.headers['content-type'] || 'image/jpeg');
       return res.send(Buffer.from(response.data));
     }
@@ -121,6 +118,8 @@ app.post('/api/generate-image', async (req, res) => {
     return res.status(502).json({ error: 'failed to generate image' });
   }
 });
+
+
 //PortLog
 
 app.listen(port, () => {

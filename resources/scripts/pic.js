@@ -86,6 +86,7 @@ picList.addEventListener('mouseout', (event) => {
 const aipicList = document.querySelector("#aipicList");
 const aipicButton = document.querySelector("#aipicButton");
 const aiInput = document.querySelector("#aiInput");
+const aipicSrc = document.querySelector("#aipicSrc");
 
 // Event listener for AI Image Generation button click
 
@@ -93,25 +94,10 @@ const aiInput = document.querySelector("#aiInput");
 
 // Example of using Stability AI's Diffusion API to generate an image (from Node.js environment)
 
-import axios from "axios";
-import FormData from "form-data";
+//import axios from "axios";
+//import { text } from "express";
+//import FormData from "form-data";
 
-const payload = {
-    width: 512,
-    height: 512,
-    samples: 1,
-    steps: 30,
-    cfg_scale: 7.0,
-    style_preset: "photographic",
-
-    text_prompts: [
-        {
-            text: aiInput.value.trim(),
-            weight: 1.0, //range from 0.0 to 1.0
-        },
-    ],
-    output_format: "jpeg",
-};
 
 //if (response.status === 200) {
 //    fs.writeFileSync("./lighthouse.jpeg", Buffer.from(response.data));
@@ -130,6 +116,7 @@ aipicButton.addEventListener("click", async () => {
 
         // update payload with current prompt
         payload.text_prompts = [{ text: prompt, weight: 1.0 }];
+
 
         // Call server-side proxy instead of calling Stability AI directly from the browser.
         // This keeps the API key server-side and avoids exposing it in client code.
@@ -157,6 +144,7 @@ aipicButton.addEventListener("click", async () => {
             newAiImg.onload = () => { URL.revokeObjectURL(imageUrl); };
 
             aipicList.appendChild(newAiImg);
+            aipicSrc.textContent = 'Find the latest pic at ' + newAiImg.src
             aiInput.value = ''; // clear input after success
         } else {
             console.error('AI image API responded with non-200 status', response && response.status);
