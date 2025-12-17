@@ -6,10 +6,17 @@ const port = 4747;
 const path = require("path");
 //const { title } = require("process");
 // Load environment variables from .env (do not commit .env to source control)
-require('dotenv').config();
 const axios = require('axios');
 const FormData = require('form-data');
 
+//Environment Vars Request
+require('dotenv').config();
+// Verification Check
+if (process.env.STABILITY_API_KEY) {
+  console.log(`✅ Stability API Key loaded`); //`(Starts with: ${process.env.STABILITY_API_KEY.substring(0, 4)}...)`);
+} else {
+  console.error("❌ ERROR: STABILITY_API_KEY is not defined in your .env file!");
+}
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -75,10 +82,10 @@ app.get('/pichub', (req, res) => {
 app.post('/pichub', async (req, res) => {
   console.log(`POST request received on ${req.originalUrl} from IP: ${req.ip} with prompt: ${JSON.stringify(req.body)}  || TimeStamp: ${new Date().toString()} `);
   try {
-    // 💡 CORRECT WAY: Destructure the 'prompt' property from the parsed request body (req.body)
-    const { prompt } = req.body;
+    //Destructure the 'prompt' property from the parsed request body (req.body)
+    const { userprompt } = req.body;
     // Validate and trim the prompt
-    if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
+    if (!userprompt || typeof userprompt !== 'string' || userprompt.trim().length === 0) {
       console.log(`[400] Prompt is required or invalid prompt details dected.`);
       return res.status(400).json({ error: 'Prompt is required! Please enter your detail specification =)' });
     }
@@ -89,31 +96,48 @@ app.post('/pichub', async (req, res) => {
       cfg_scale: 7.0,
       style_preset: 'photographic',
       output_format: 'jpeg',
-      model: 'sd-3.5-flash',
-      text_prompts: [{ text: prompt, weight: 1.0 }],
+      //      model: 'sd3.5-flash',
+      prompt: userprompt,
     };
+
+    // 1. Create a new form object from the installed library
+    const form = new FormData();
+
+    // 2. Append the payload JSON string with the proper Content-Type
+    //    form.append('payload', JSON.stringify(payload), {
+    //      contentType: 'application/json', }); // Specify content type for this part
+    form.append('prompt', userprompt);
+    form.append('model', 'sd3.5-flash'); // Use 'sd3.5-large' or 'sd3-medium' (check your tier/credits)
+    form.append('output_format', 'jpeg');
+    form.append('aspect_ratio', '1:1'); // SD3 often uses aspect_ratio instead of width/height
+
+    // Optional parameters (if supported by the specific model version)
+    form.append('cfg_scale', 7);
+    form.append('style_preset', 'photographic');
 
     const response = await axios.post(
       'https://api.stability.ai/v2beta/stable-image/generate/sd3',
-      payload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.STABILITY_API_KEY}`,
-          'Accept': 'image/*',
-        },
-        responseType: 'arraybuffer',
-      });
-    console.log(process.env.STABILITY_API_KEY);
+      form, {
+      headers: {
+        // 3. Get the required 'Content-Type: multipart/form-data; boundary=...' header from the form object
+        ...form.getHeaders(),
+        'Authorization': `Bearer ${process.env.STABILITY_API_KEY}`,
+        'Accept': 'image/*',
+      },
+      responseType: 'arraybuffer',
+    }
+  );
 
     if (response && response.status === 200) {
-
-      res.set('Content-Type', response.headers['content-type'] || 'image/jpeg');
+      res.set('Content-Type', 'image/jpeg');
       return res.send(Buffer.from(response.data));
     }
-
-    return res.status(response.status).send(response.data);
   } catch (err) {
+    //DetailedErrorLogging: This will tell you EXACTLY why the 400 happened
+    if (err.response && err.response.data) {
+      const errorDetail = Buffer.from(err.response.data).toString();
+      console.error('Stability AI Error Detail:', errorDetail);
+    }
     console.error('Error proxying to Stability AI:', err && err.message);
     return res.status(502).json({ error: 'failed to generate image' });
   }

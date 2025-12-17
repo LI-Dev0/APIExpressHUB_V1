@@ -106,8 +106,8 @@ aipicButton.addEventListener("click", async (event) => {
     //halt default page-reload on form submission
     event.preventDefault();
     //initialise the input prompt specifications from aiInput variable as promptData
-    const promptData = aipicInput.value.trim();
-    if (!promptData) {
+    const userprompt = aipicInput.value.trim();
+    if (!userprompt) {
         console.log("Please enter a prompt to generate an AI image.");
         alert('Please enter a prompt to generate an AI image.');
         return;
@@ -121,7 +121,7 @@ aipicButton.addEventListener("click", async (event) => {
             },
             body: JSON.stringify({
                 // Send the prompt value as a JSON object property
-                prompt: promptData
+                prompt: userprompt
             }),
         });
 
@@ -158,7 +158,7 @@ aipicButton.addEventListener("click", async (event) => {
         }
 
     } catch (error) {
-        console.error(`Error generating AI image with a status of ${response.status}. Details: `, error);
+        console.error(`Error generating AI image. Details: `, error);
         return; // Exit early, don't add broken image
     }
 });
