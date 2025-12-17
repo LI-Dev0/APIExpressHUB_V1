@@ -13,18 +13,20 @@
 
 </head>
 
-<body class="container text-center" style="background-color: black;">
-  <nav id="navigationLinks" class="container bg-primary-subtle p-3 mb-4 rounded-3">
+<body class="container-md text-center">
+  <nav id="navigationLinks" class="container-sm bg-primary-subtle justify-content-center p-3 mb-4 rounded-3">
     <a class="navbar-brand container" href="/">Home</a>
-    <a class="navbar-brand container" href="/picgen">PicGen</a>
+    <a class="navbar-brand container" href="/pichub">PicHub</a>
   </nav>
-  <div class="container-sm p-3 mb-4 rounded-3 bg-primary-subtle outline">
+  <div class="container-sm p-3 mb-4 rounded-3 bg-primary-subtle outline"
+    style="border: 5px groove rgba(81, 245, 154, 0.7);">
     <h1 id="routename" class="container-sm text-center justify-content-center p-3 rounded-3 outline">Joke Hub</h1>
     <h3 id="welc" class="container-sm text-center text-bold justify-content-center p-3 rounded-3 outline">
       <%= welcomeMessage %>
     </h3>
   </div>
-  <div class="container-sm text-center p-3 mb-4 rounded-3 bg-primary-subtle border border-primary-subtle">
+  <div class="container-sm text-center p-3 mb-4 rounded-3 bg-primary-subtle"
+    style="border: 5px groove rgba(81, 245, 154, 0.7);">
     <div class="container-fluid">
       <img src="../resources/images/JokeHub/CNetwork_Figures_Laughint_At_Buggsy.jpg"
         alt="Cartoon Network figures roasting Bugs Bunny" class="logo">
@@ -39,17 +41,20 @@
     </h4>
   </div>
 
-
+  <hr class="container-fluid bg-primary-subtle" />
+  <h4 id="jokeSec" class="container-sm justify-content-flex-start text-decoration-underline p-3 rounded-3 outline">Dad
+    Jokes</h4>
   <div id="jokeContainer" style="width: fit-content;">
     <button class="djbutton">GET Dad Joke</button>
     <ul id="jokes"></ul>
   </div>
-  <hr>
+  </h4>
+  <hr class="container-fluid bg-primary-subtle" />
   <div id="jokeContainer">
     <button class="chuckNorrisBtn">GET Chuck Norris Joke</button>
     <ul id="chuckNorrisJoke"></ul>
   </div>
-
+  <hr class="container-fluid bg-primary-subtle" />
   <div id="carouselContainer" class="container-fluid col-md-6 offset-md-3">
     <div id="carouselExample" class="container carousel slide">
       <div class="carousel-inner">
@@ -76,7 +81,7 @@
       </button>
     </div>
   </div>
-  <div id="end" class="centered-bg outline p-3 mt-4">
+  <div id="end" class="container-sm centered-bg outline p-3 mt-4">
     <p>Thanks for visiting JokeHub! Hope you had a laugh or two. Come back soon for more jokes and fun!</p>
   </div>
   <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3 bg-primary-subtle text-dark">
@@ -87,13 +92,14 @@
         <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
         <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
       </div>
-      <div id="footerlinks"
-        class="container-sm d-flex p-3 rounded-2">
+      <div id="footerlinks" class="container-sm d-flex p-3 rounded-2">
         <p style="font-size: larger; font-weight: 900;">Keep up with me at these endpoints! =)</p>
         <ul>
           <a href="https://www.linkedin.com/in/lio-ilu-93/"><img src="https://img.icons8.com/nolan/40/linkedin.png"
               alt="linkedin" /></a>
-          <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png" alt="twitterx" /></a>
+          <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png" alt="x" /></a>
+          <a href="https://github.com/LIGunna93"><img src="https://orioniconlibrary.com/icon/github-6003.jpg"
+              alt="github" /></a>
         </ul>
       </div>
 

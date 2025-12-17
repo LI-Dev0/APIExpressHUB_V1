@@ -2,10 +2,39 @@ const picContainer = document.getElementById("picContainer");
 const picList = document.querySelector("#picList");
 const picButton = document.querySelector("#picButton");
 const picSrc = document.querySelector("#picSrc");
-
+const picContButt = document.querySelector("#picContainer button");
 const next = () => {
     return;
 };
+
+picContainer.style.display = 'flex';
+//animate box shadow on hover
+picContButt.addEventListener('pointerover', (e) => {
+    e.target.style.boxShadow = '0 0 4px 4px #231b537e';
+    e.target.innerText = 'Fetch!';
+    width = e.target.offsetWidth;
+    height = e.target.offsetHeight;
+});
+//remove box shadow on mouseout
+picContainer.addEventListener('pointerout', (e) => {
+    e.target.querySelectorAll('button')[0].style.boxShadow = 'none';
+    e.target.querySelectorAll('button')[0].innerText = '';
+});
+
+//target picContainer button 
+picButton.style.margin = '10px';
+picButton.style.padding = '10px 20px';
+picButton.style.fontSize = '16px';
+picButton.style.cursor = 'pointer';
+
+//try to make the pics appear in a grid fashion
+picList.style.display = 'grid';
+picList.style.gridAutoRows = 'auto';
+picList.style.listStyleType = 'none';
+picList.style.gridTemplateColumns = 'repeat(2, minmax(200px, 1fr))';
+picList.style.gap = '10px';
+
+picSrc.style.marginTop = '55px';
 
 // Event listener for button click to fetch and display a random picture
 picButton.addEventListener("click", (req, res) => {
@@ -14,6 +43,8 @@ picButton.addEventListener("click", (req, res) => {
         console.log(`Generated random number: ${rand}`);
         const newPic = document.createElement("img");
         newPic.src = `https://picsum.photos/id/${rand}/500`;
+        //image size is 500px, how to adjust resolution to 720p?
+        //        https://picsum.photos/id/237/200/300/resolution=1280x720
         newPic.alt = "Random Picture ";
         newPic.className = "picList";
         newPic.style.margin = '20px 10px';
@@ -35,21 +66,6 @@ picButton.addEventListener("click", (req, res) => {
     }
 });
 
-picContainer.style.display = 'flex';
-
-//target picContainer button 
-picButton.style.margin = '10px';
-picButton.style.padding = '10px 20px';
-picButton.style.fontSize = '16px';
-picButton.style.cursor = 'pointer';
-
-//try to make the pics appear in a grid fashion
-picList.style.display = 'grid';
-picList.style.gridAutoRows = 'auto';
-picList.style.listStyleType = 'none';
-picList.style.gridTemplateColumns = 'repeat(2, minmax(200px, 1fr))';
-picList.style.gap = '10px';
-
 //Add hover effect to images
 picList.addEventListener('mouseover', (event) => {
     if (event.target.tagName === 'IMG') {
@@ -64,8 +80,6 @@ picList.addEventListener('mouseout', (event) => {
         event.target.style.transition = 'transform 0.3s ease';
     }
 });
-//End of pic.js
-
 
 //AI Image Generation Section from Prompt Input using Diffusion API Simulation
 
@@ -73,91 +87,116 @@ const aipicList = document.querySelector("#aipicList");
 const aipicButton = document.querySelector("#aipicButton");
 const aiInput = document.querySelector("#aiInput");
 
-const nextAI = () => {
-    return;
-};
-
 // Event listener for AI Image Generation button click
-const newDiffusionAPIAImage = async (req, res) => {
-    try {
-        const rand = Math.floor(Math.random() * 1000) + 1000; // Different range for AI images
-        console.log(`Generated random number for AI image: ${rand}`);
-        const newaiPic = document.createElement("img");
-        newaiPic.src = `https://picsum.photos/id/${rand}/500`;
-        newaiPic.alt = "AI Generated Image";
-        newaiPic.className = "aipicList";
-        newaiPic.style.margin = '20px 10px';
-        newaiPic.style.objectFit = 'stretch';
-        newaiPic.style.border = '5px solid lightblue';
-        aipicList.appendChild(newaiPic);
-    } catch (error) {
-        console.error('Error generating AI image:', error);
-        return; // Exit early, don't add broken image  
-    }
-};
 
-aipicButton.addEventListener("click", (req, res) => {
-    const prompt = aiInput.value.trim();
-    if (prompt === "") {
-        console.log("Please enter a prompt to generate an AI image.");
-        return;
-    }
-    else {
-        try {
-            // Placeholder for actual AI image generation API call
-            const rand = Math.floor(Math.random() * 1000); // Different range for AI images
-            console.log(`Generated random number for AI image: ${rand}`);
-            const newaiPic = document.createElement("img");
-            newaiPic.src = `https://picsum.photos/id/${rand}/500`;
-            newaiPic.alt = `AI Generated Image for prompt: ${prompt}`;
-            newaiPic.className = "aipicList";
-            newaiPic.style.margin = '20px 5px';
-            newaiPic.style.objectFit = 'cover';
-            newaiPic.style.border = '5px solid lightblue';
-            aipicList.appendChild(newaiPic);
-            aiInput.value = ''; // Clear input after generating image
-        } catch (error) {
-            console.error('Error generating AI image:', error);
-            return; // Exit early, don't add broken image  
-        }
-    }
+//Diffusion API Simulation Section
 
-});
+// Example of using Stability AI's Diffusion API to generate an image (from Node.js environment)
 
-//Diffusion API Simulation Section End
-
-/* import fs from "node:fs";
 import axios from "axios";
 import FormData from "form-data";
 
 const payload = {
-  prompt: "Lighthouse on a cliff overlooking the ocean",
-  output_format: "jpeg"
+    width: 512,
+    height: 512,
+    samples: 1,
+    steps: 30,
+    cfg_scale: 7.0,
+    style_preset: "photographic",
+
+    text_prompts: [
+        {
+            text: aiInput.value.trim(),
+            weight: 1.0, //range from 0.0 to 1.0
+        },
+    ],
+    output_format: "jpeg",
 };
 
-const response = await axios.postForm(
-  `https://api.stability.ai/v2beta/stable-image/generate/sd3`,
-  axios.toFormData(payload, new FormData()),
-  {
-    validateStatus: undefined,
-    responseType: "arraybuffer",
-    headers: { 
-      Authorization: `Bearer sk-MYAPIKEY`, 
-      Accept: "image/*" 
-    },
-  },
-);
+//if (response.status === 200) {
+//    fs.writeFileSync("./lighthouse.jpeg", Buffer.from(response.data));
+//} else {
+ //   throw new Error(`${response.status}: ${response.data.toString()}`);
+//}
 
-if(response.status === 200) {
-  fs.writeFileSync("./lighthouse.jpeg", Buffer.from(response.data));
-} else {
-  throw new Error(`${response.status}: ${response.data.toString()}`);
-} */
+//adapt the above to listen for button click and display image in browser
+aipicButton.addEventListener("click", async () => {
+    try {
+        const prompt = aiInput.value.trim();
+        if (!prompt) {
+            console.log("Please enter a prompt to generate an AI image.");
+            return;
+        }
 
+        // update payload with current prompt
+        payload.text_prompts = [{ text: prompt, weight: 1.0 }];
 
-  
-// const aiImageButton = document.getElementById("aiImageButton");
-// aiImageButton.addEventListener("click", async () => {
-//     // Placeholder for AI image generation logic
-//     console.log("AI Image Generation feature coming soon!");
-// });
+        // Call server-side proxy instead of calling Stability AI directly from the browser.
+        // This keeps the API key server-side and avoids exposing it in client code.
+        const response = await axios.post(
+            '/api/generate-image',
+            { prompt },
+            { responseType: 'arraybuffer' }
+        );
+
+        // If API returned binary image data, create a Blob and an object URL to display it
+        if (response && response.status === 200) {
+            const contentType = (response.headers && (response.headers['content-type'] || response.headers['Content-Type'])) || 'image/jpeg';
+            const blob = new Blob([response.data], { type: contentType });
+            const imageUrl = URL.createObjectURL(blob);
+
+            const newAiImg = document.createElement('img');
+            newAiImg.src = imageUrl;
+            newAiImg.alt = `AI Generated Image for prompt: ${prompt}`;
+            newAiImg.className = 'aipicList';
+            newAiImg.style.margin = '20px 5px';
+            newAiImg.style.objectFit = 'cover';
+            newAiImg.style.border = '5px solid lightblue';
+
+            // Revoke object URL after image loads to free memory x
+            newAiImg.onload = () => { URL.revokeObjectURL(imageUrl); };
+
+            aipicList.appendChild(newAiImg);
+            aiInput.value = ''; // clear input after success
+        } else {
+            console.error('AI image API responded with non-200 status', response && response.status);
+        }
+
+    } catch (error) {
+        console.error(`Error generating AI image with a status of ${response.status}. Details: `, error);
+        return; // Exit early, don't add broken image
+   }
+});
+
+/*
+// Event listener for AI Image Generation button click
+//const newDeepAIimg = async (req, res) => {
+//    try {
+//        const prompt = aiInput.value.trim();
+//        if (prompt === "") {
+//            console.log("Please enter a prompt to generate an AI image.");
+//            return;
+//        } else {
+//            const response = await axios.post("https://api.deepai.org/api/text2img", {
+//                text: prompt,
+//            }, {
+//                headers: { 'Api-Key': 'quickstart-QUdJIGlzIGNvbWluZy4uLg==' }
+//            });
+//            const imageUrl = response.data.output_url;
+//            console.log(`AI image generated from prompt "${prompt}": ${imageUrl}`);
+//            const newDeepAIpic = document.createElement("img");
+//            newDeepAIpic.src = imageUrl;
+//            newDeepAIpic.alt = `AI Generated Image for prompt: ${prompt}`;
+//            newDeepAIpic.className = "aipicList";
+//            newDeepAIpic.style.margin = '20px 5px';
+//            newDeepAIpic.style.objectFit = 'cover';
+//            newDeepAIpic.style.border = '5px solid lightgreen';
+//            aipicList.appendChild(newDeepAIpic);
+//            aiInput.value = ''; // Clear input after generating image
+//        }
+//    } catch (error) {
+//        console.error('Error generating AI image:', error);
+//        return; // Exit early, don't add broken image
+//    }
+//}
+*/

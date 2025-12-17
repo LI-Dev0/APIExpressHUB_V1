@@ -47,12 +47,14 @@ const addNewJoke = async () => {
   newLI.style.padding = '10px';
   newLI.style.margin = '10px';
   newLI.style.listStyleType = 'none';
+  newLI.style.transition = 'transform 0.5s ease-in-out';
   newLI.append(jokeText);
   jokes.append(newLI);
   console.log("New joke added!");
 };
 butt.addEventListener("click", addNewJoke);
 
+//Styling the joke container and its elements
 const jokebox = document.querySelectorAll("#jokeContainer");
 jokebox.forEach(element => {
   element.style.display = 'flex';
@@ -72,7 +74,15 @@ jokebox.forEach(element => {
   element.getElementsByTagName('button')[0].style.backgroundColor = 'rgba(81, 245, 154, 1)';
   element.getElementsByTagName('button')[0].style.color = 'rgb(11, 82, 29)';
   element.getElementsByTagName('button')[0].style.fontWeight = 'bold';
-  element.getElementsByTagName('button')[0].style.border = '2.5px dashed black';
+  //animate box shadow on hover
+  element.getElementsByTagName('button')[0].addEventListener('mouseover', () => {
+    element.getElementsByTagName('button')[0].style.boxShadow = '0 0 10px 2px rgba(81, 245, 154, 0.7)';
+  });
+  //remove box shadow on mouseout
+  element.getElementsByTagName('button')[0].addEventListener('mouseout', () => {
+    element.getElementsByTagName('button')[0].style.boxShadow = 'none';
+  });
+  element.getElementsByTagName('button')[0].style.border = '2.5px solid rgb(11, 82, 29)';
   element.getElementsByTagName('button')[0].style.borderRadius = '5px';
   element.getElementsByTagName('button')[0].style.padding = '10px';
   element.getElementsByTagName('button')[0].style.margin = '10px';
@@ -90,7 +100,7 @@ chuckNorrisBtn.addEventListener("click", async () => {
     chuckNorrisJokeText.style.margin = '10px';
     chuckNorrisJokeText.style.padding = '10px';
     chuckNorrisJokeText.style.listStyleType = 'none';
-    chuckNorrisJoke.style.transition = 'transition 1s ease-in';
+    chuckNorrisJokeText.style.transition = 'transform 0.5s ease-in-out';
     chuckNorrisJokeText.textContent = res.data.value;
     chuckNorrisJoke.append(chuckNorrisJokeText);
   } catch (e) {
@@ -98,21 +108,31 @@ chuckNorrisBtn.addEventListener("click", async () => {
   }
 });
 
-// Use event delegation for hover effects on joke <li> elements.
-// Attaching one listener to the parent `#jokes` handles existing
-// and future `<li>` children added dynamically (e.g., via addNewJoke()).
-jokes.addEventListener('mouseover', (e) => {
+// Use event delegation for pointer hover effects on joke <li> elements.
+// We use `pointerover`/`pointerout` (they bubble) so a single parent
+// listener handles existing and future `<li>` children added dynamically.
+jokes && jokes.addEventListener('pointerover', (e) => {
   const li = e.target.closest('li');
   if (!li || !jokes.contains(li)) return;
   li.style.transition = 'transform 0.5s ease-in-out';
   li.style.transform = 'scale(1.2)';
-  //transitioneffectopitons /transformscale /transitionduration /easeinout
 });
 
-// Revert transform on mouseout. Using mouseout pairs well with
-// mouseover and will fire when the pointer leaves the <li>.
-jokes.addEventListener('mouseout', (e) => {
+jokes && jokes.addEventListener('pointerout', (e) => {
   const li = e.target.closest('li');
   if (!li || !jokes.contains(li)) return;
+  li.style.transform = '';
+});
+
+chuckNorrisJoke && chuckNorrisJoke.addEventListener('pointerover', (e) => {
+  const li = e.target.closest('li');
+  if (!li || !chuckNorrisJoke.contains(li)) return;
+  li.style.transition = 'transform 0.5s ease-in-out';
+  li.style.transform = 'scale(1.2)';
+});
+
+chuckNorrisJoke && chuckNorrisJoke.addEventListener('pointerout', (e) => {
+  const li = e.target.closest('li');
+  if (!li || !chuckNorrisJoke.contains(li)) return;
   li.style.transform = '';
 });

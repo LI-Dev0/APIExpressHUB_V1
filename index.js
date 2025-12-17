@@ -5,7 +5,12 @@ const port = 4747;
 // Removed static time assignment; will generate timestamp dynamically in middleware
 
 const path = require("path");
-const { title } = require("process");
+//const { title } = require("process");
+
+// Load environment variables from .env (do not commit .env to source control)
+require('dotenv').config();
+const axios = require('axios');
+const FormData = require('form-data');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -16,6 +21,9 @@ app.use('/resources', express.static(path.join(__dirname, 'resources')))
 app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
 app.use('/images', express.static('resources/images'));
+
+// parse JSON bodies for our API routes
+app.use(express.json());
 
 // app.get('/resources/styles/styler.css', (req, res) => {
 //   // Make sure the path to the file is correct on your server
@@ -28,8 +36,12 @@ app.use('/images', express.static('resources/images'));
 // To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
 // This middleware will execute for every request to '/jokes' and log the timestamp and request details.
 app.use(['/', '/jokes', '/picgen'], (req, res, next) => {
-  const currentTime = new Date().toLocaleString();
-  console.log(`[${currentTime}] Access Log: ${req.method} ${req.originalUrl} from ${req.ip}`);
+  try {
+    const currentTime = new Date().toLocaleString();
+    console.log(`Access Log: ${req.method} ${req.originalUrl} from ${req.ip} at ${currentTime}`);
+  } catch (error) {
+    console.error("Error logging route access:", error);
+  }
   next(); // Proceed to the next middleware or route handler
 });
 
@@ -51,19 +63,67 @@ app.get('/jokes', (req, res) => {
   );
 });
 
-//PicGenRenders
+//PicHubRender
 
-app.get('/picgen', (req, res) => {
+app.get('/pichub', (req, res) => {
+  console.log(`Rendering picgen.ejs. Device_IPAdd: ${req.ip} || TimeStamp: ${new Date().toLocaleString()} `);
   res.render('picgen.ejs', {
-    title: "Pic Gen",
-    description: "Welcome to PicGen! A place to find or inspire enlightenment through imagery -- (Nas' Voice) the choice is yours!"
-  }
-  );
+    title: "Pic Hub",
+    description: "Welcome to PicHub! A place to find or inspire enlightenment through imagery -- (Nas' Voice) the choice is yours! 📸"
+  });
+})
+
+app.post('/pichub', (req, res) => {
+  console.log(`POST request received on /pichub from IP: ${req.ip} with prompt: ${JSON.stringify(req.body)}  || TimeStamp: ${new Date().toLocaleString()} `);
+  res.render('picgen.ejs' , {
+    title: "Pic Hub",
+    description: "Welcome to PicHub! A place to find or inspire enlightenment through imagery -- (Nas' Voice) the choice is yours! 📸"
+  });
 });
 
+// Proxy route to call Stability AI (server-side) and forward image binary to client
+app.post('/api/generate-image', async (req, res) => {
+  try {
+    const { prompt } = req.body || {};
+    if (!prompt) return res.status(400).json({ error: 'prompt is required' });
 
+    const payload = {
+      width: 512,
+      height: 512,
+      samples: 1,
+      steps: 30,
+      cfg_scale: 7.0,
+      style_preset: 'photographic',
+      text_prompts: [{ text: prompt, weight: 1.0 }],
+      output_format: 'jpeg',
+    };
+
+    const form = new FormData();
+    form.append('payload', JSON.stringify(payload));
+
+    const response = await axios.post('https://api.stability.ai/v2beta/stable-image/generate/sd3', form, {
+      headers: {
+        ...form.getHeaders(),
+        Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
+        Accept: 'image/*',
+      },
+      responseType: 'arraybuffer',
+    });
+
+    if (response.status === 200) {
+      res.set('Content-Type', response.headers['content-type'] || 'image/jpeg');
+      return res.send(Buffer.from(response.data));
+    }
+
+    return res.status(response.status).send(response.data);
+  } catch (err) {
+    console.error('Error proxying to Stability AI:', err && err.message);
+    return res.status(502).json({ error: 'failed to generate image' });
+  }
+});
 //PortLog
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port} || ${new Date()}`);
 });
+//End of File
