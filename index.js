@@ -2,11 +2,9 @@ const express = require("express");
 const app = express();
 //console.dir(app);
 const port = 4747;
-// Removed static time assignment; will generate timestamp dynamically in middleware
 
 const path = require("path");
 //const { title } = require("process");
-
 // Load environment variables from .env (do not commit .env to source control)
 require('dotenv').config();
 const axios = require('axios');
@@ -21,9 +19,7 @@ app.use('/resources', express.static(path.join(__dirname, 'resources')))
 app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
 app.use('/images', express.static('resources/images'));
-app.use('/scripts', express.static('resources/scripts/pic.js'));
 // parse JSON bodies for our API routes
-app.use(express.json());
 
 // app.get('/resources/styles/styler.css', (req, res) => {
 //   // Make sure the path to the file is correct on your server
@@ -44,7 +40,8 @@ app.use(['/', '/jokes', '/picgen'], (req, res, next) => {
   }
   next(); // Proceed to the next middleware or route handler
 });
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //Homepage renders
 
 app.get("/", (req, res) => {
@@ -91,22 +88,23 @@ app.post('/pichub', async (req, res) => {
       samples: 1,
       cfg_scale: 7.0,
       style_preset: 'photographic',
-      text_prompts: [{ text: prompt, weight: 1.0 }],
       output_format: 'jpeg',
-      model: 'sd-3.5-flash'
+      model: 'sd-3.5-flash',
+      text_prompts: [{ text: prompt, weight: 1.0 }],
     };
 
-    const form = new FormData();
-    form.append('payload', JSON.stringify(payload));
-
-    const response = await axios.post('https://api.stability.ai/v2beta/stable-image/generate/sd3', form, {
-      headers: {
-        ...form.getHeaders(),
-        Authorization: `Bearer ${process.env.STABILITY_API_KEY}`,
-        Accept: 'image/*',
-      },
-      responseType: 'arraybuffer',
-    });
+    const response = await axios.post(
+      'https://api.stability.ai/v2beta/stable-image/generate/sd3',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.STABILITY_API_KEY}`,
+          'Accept': 'image/*',
+        },
+        responseType: 'arraybuffer',
+      });
+    console.log(process.env.STABILITY_API_KEY);
 
     if (response && response.status === 200) {
 

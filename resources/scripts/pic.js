@@ -17,8 +17,8 @@ picContButt.addEventListener('pointerover', (e) => {
 });
 //remove box shadow on mouseout
 picContainer.addEventListener('pointerout', (e) => {
-    e.target.querySelectorAll('button')[0].style.boxShadow = 'none';
-    e.target.querySelectorAll('button')[0].innerText = '';
+    e.target.querySelector('button').style.boxShadow = 'none';
+    e.target.querySelector('button').innerText = '';
 });
 
 //target picContainer button 
@@ -85,7 +85,7 @@ picList.addEventListener('mouseout', (event) => {
 
 const aipicList = document.querySelector("#aipicList");
 const aipicButton = document.querySelector("#aipicButton");
-const aiInput = document.querySelector("#aiInput");
+const aipicInput = document.querySelector("#aipicInput");
 const aipicSrc = document.querySelector("#aipicSrc");
 
 // Event listener for AI Image Generation button click
@@ -93,10 +93,6 @@ const aipicSrc = document.querySelector("#aipicSrc");
 //Diffusion API Simulation Section
 
 // Example of using Stability AI's Diffusion API to generate an image (from Node.js environment)
-
-//import axios from "axios";
-//import { text } from "express";
-//import FormData from "form-data";
 
 
 //if (response.status === 200) {
@@ -106,8 +102,11 @@ const aipicSrc = document.querySelector("#aipicSrc");
 //}
 
 //adapt the above to listen for button click and display image in browser
-aipicButton.addEventListener("click", async () => {
-    const promptData = aiInput.value.trim();
+aipicButton.addEventListener("click", async (event) => {
+    //halt default page-reload on form submission
+    event.preventDefault();
+    //initialise the input prompt specifications from aiInput variable as promptData
+    const promptData = aipicInput.value.trim();
     if (!promptData) {
         console.log("Please enter a prompt to generate an AI image.");
         alert('Please enter a prompt to generate an AI image.');
@@ -115,7 +114,7 @@ aipicButton.addEventListener("click", async () => {
     }
     try {
         // 2. Send the value to the server using 'fetch'
-        const response = await fetch('/api/generate-image', {
+        const response = await fetch('/pichub', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json', // IMPORTANT: Specify JSON content
