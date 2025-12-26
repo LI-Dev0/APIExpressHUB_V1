@@ -82,7 +82,7 @@ picList.addEventListener('mouseout', (event) => {
     }
 });
 
-//AI Image Generation Section from Prompt Input using Diffusion API Simulation
+//AI Image Generation Section from Prompt Input using Stability API Simulation
 
 const aipicList = document.querySelector("#aipicList");
 const aipicButton = document.querySelector("#aipicButton");
@@ -95,12 +95,6 @@ const aipicSrc = document.querySelector("#aipicSrc");
 
 // Example of using Stability AI's Diffusion API to generate an image (from Node.js environment)
 
-
-//if (response.status === 200) {
-//    fs.writeFileSync("./lighthouse.jpeg", Buffer.from(response.data));
-//} else {
-//   throw new Error(`${response.status}: ${response.data.toString()}`);
-//}
 
 //adapt the above to listen for button click and display image in browser
 aipicButton.addEventListener("click", async (event) => {
@@ -128,8 +122,6 @@ aipicButton.addEventListener("click", async (event) => {
             }
         );
 
-        // Call server-side proxy instead of calling Stability AI directly from the browser.
-        // This keeps the API key server-side and avoids exposing it in client code.
         //const response = await axios.post(
         //    '/api/generate-image',
         //    { prompt },
@@ -227,4 +219,13 @@ aipicButton.addEventListener("click", async (event) => {
 //        return; // Exit early, don't add broken image
 //    }
 //}
+
+
+//if (response.status === 200) {
+//    fs.writeFileSync("./lighthouse.jpeg", Buffer.from(response.data));
+//} else {
+//   throw new Error(`${response.status}: ${response.data.toString()}`);
+//}
+
+    
 */
