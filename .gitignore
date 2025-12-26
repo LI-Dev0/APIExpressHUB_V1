@@ -9,10 +9,8 @@ npm-debug.log*
 
 .idea/
 *.log
-*.swp
 .cache/
 *.tmp
-*.bak
 agentic_plans.md
 .secrets.dev.yaml
 values.dev.yaml

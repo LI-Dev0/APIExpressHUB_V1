@@ -1,5 +1,6 @@
-const express = require("express");
+const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const axios = require('axios');
 const FormData = require('form-data');
@@ -14,11 +15,12 @@ console.log("✅ API credentials configured");  // Don't log actual key status
 
 const app = express();
 const port = process.env.PORT || 4747;
-const env = process.env.NODE_ENV || 'development';
+//const env = process.env.NODE_ENV || 'development';
 //console.dir(app);
 //const { title } = require("process");
 
 const path = require("path");
+const { json } = require('stream/consumers');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -45,24 +47,45 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Sets security headers
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:", "https://picsum.photos"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+      scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      connectSrc: ["'self'", "https://api.stability.ai", "https://icanhazdadjoke.com", "https://api.deepai.org", "https://api.chucknorris.io/jokes/random"],
+//      fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"]
+    }
+  }
+}));
+app.use(cors({
+  origin: '*', // Adjust this in production to restrict origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-//Rate Limiting Middleware
+// Global Error Handling Middleware (AFTER body parsing)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+// Rate Limiting Middleware
 const limiter = rateLimit({
-
-  windowMs: 24 * 60 * 60 * 1000, // 24 hours
-  //exclude my IP from rate limiting
+  windowMs: 24 * 60 * 60 * 1000,
   skip: (req) => {
-    const myIP = '::1'; // Replace with your actual IP address
-    return req.ip === myIP;
+    const myIP = process.env.MY_IP || '::1';
+    const isLocalhost = req.ip === '::1' || req.ip === '127.0.0.1';
+    return isLocalhost;
   },
-  max: 2, // 2 requests per visiting IP
+  max: 2,
   message: 'Too many requests, please try again later and make sure to maximize your prompt quality! 🚀' + '\nIncreased requests coming soon as well as User & Generated Data Storage options for more continued magic moments =)',
 });
 
 // To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
 // This middleware will execute for every request to '/jokes' and log the timestamp and request details.
-app.use(['/', '/jokes', ('/pichub', limiter)], (req, res, next) => {
+app.use(['/', '/jokes', '/pichub'], (req, res, next) => {
   try {
     const currentTime = new Date().toLocaleString();
     console.log(`Access Log: ${req.method} ${req.originalUrl} from ${req.ip} at ${currentTime}`);
@@ -72,14 +95,12 @@ app.use(['/', '/jokes', ('/pichub', limiter)], (req, res, next) => {
   next(); // Proceed to the next middleware or route handler
 });
 
-//Homepage renders
+//HomepageRenders
 app.get("/", (req, res) => {
   res.render("home.ejs", { title: "API Express Hub" });
 });
 
-
 //JokeHubRenders
-
 app.get('/jokes', (req, res) => {
   console.log(req.body);
   res.render('jokes.ejs', {
@@ -91,7 +112,6 @@ app.get('/jokes', (req, res) => {
 });
 
 //PicHubRenders
-
 app.get('/pichub', (req, res) => {
   console.log(`Rendering picgen.ejs. Device_IPAdd: ${req.ip} || TimeStamp: ${new Date().toLocaleString()} `);
   res.render('picgen.ejs', {
@@ -102,7 +122,7 @@ app.get('/pichub', (req, res) => {
 
 // Proxy route to call Stability AI (server-side) and forward image binary to client
 // This keeps the API key server-side and avoids exposing it in client code.
-app.post('/pichub', async (req, res) => {
+app.post('/pichub', limiter, async (req, res) => {
   console.log(`POST request received on ${req.originalUrl} from IP: ${req.ip} with prompt: ${JSON.stringify(req.body.prompt.substring(0, 20))} ...  || TimeStamp: ${new Date().toString()} `);
   try {
     //Destructure the 'prompt' property from the parsed request body (req.body). Then validate and trim
@@ -122,16 +142,6 @@ app.post('/pichub', async (req, res) => {
       //    redirect
     }
 
-    //   const payload = {
-    //     samples: 1,
-    //    cfg_scale: 7.0,
-    //    style_preset: 'photographic',
-    //   output_format: 'jpeg',
-    //     aspect_ratio: '16:9',
-    //  model: 'sd3.5-flash',
-    //    prompt: prompt,
-    //    };
-
     // 1. Create a new form object from the installed library
     const form = new FormData();
 
@@ -144,7 +154,7 @@ app.post('/pichub', async (req, res) => {
     form.append('aspect_ratio', '1:1'); // SD3 often uses aspect_ratio instead of width/height
 
     // Optional parameters (if supported by the specific model version)
-    form.append('cfg_scale', 6.5);
+    form.append('cfg_scale', 7.5);
     form.append('style_preset', 'photographic');
 
     // 3. Make the POST request to Stability AI's Diffusion endpoint
@@ -198,3 +208,13 @@ app.listen(port, () => {
 //   });
 // });
 
+
+    //   const payload = {
+    //     samples: 1,
+    //    cfg_scale: 7.0,
+    //    style_preset: 'photographic',
+    //   output_format: 'jpeg',
+    //     aspect_ratio: '16:9',
+    //  model: 'sd3.5-flash',
+    //    prompt: prompt,
+    //    };
