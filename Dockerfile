@@ -11,7 +11,7 @@ ARG NODE_VERSION=24.11.1
 FROM node:${NODE_VERSION}-alpine
 
 # Use production node environment by default.
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 
 WORKDIR /usr/src/app
@@ -19,11 +19,18 @@ WORKDIR /usr/src/app
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
-# into this layer.
-RUN --mount=type=bind,source=package.json,target=package.json \
+# this layer. This keeps the image size smaller and build context cleaner.
+# For more information, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+# #leverage-build-cache/
+# and https://docs.docker.com/engine/reference/commandline/buildx_build/#options.
+# The --omit=dev flag ensures that only production dependencies are installed.
+# buildkit syntax is required for the RUN --mount=type=bind feature to work.
+RUN --mount=type=bind,source=package.json,target=package.json \ 
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
+    npm ci 
+    #--omit=dev
+
 
 # Run the application as a non-root user.
 USER node
