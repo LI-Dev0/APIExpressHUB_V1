@@ -38,7 +38,7 @@ picList.style.gap = '10px';
 picSrc.style.marginTop = '55px';
 
 // Event listener for button click to fetch and display a random picture
-picButton.addEventListener("click", (req, res) => {
+picButton.addEventListener("click", async (req, res) => {
     try {
         const rand = Math.floor(Math.random() * 1000);
         console.log(`Generated random number: ${rand}`);

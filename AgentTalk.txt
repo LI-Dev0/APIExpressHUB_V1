@@ -164,3 +164,129 @@ User: 1. Wire up express-rate-limit and add a basic rate limiter on /api/generat
 3. Add simple server-side validation for prompt, then compare and comment out the repilcated aiImg generation code still left in pic.js
 
 GitHub Copilot: Read [](file:///c%3A/DevOps_LI/LI-Corp/WebApps/Testing/APIs/APIExpressHUB/resources/scripts/pic.js)
+
+External Call Blocks
+
+I found multiple critical issues blocking your external calls:
+
+🔴 Critical Issues:
+1. Helmet Security Headers Blocking Requests
+Line 45 is commented out but should be active:
+
+// Sets security headers
+app.use(helmet());
+
+2. CORS Not Configured
+const cors = require('cors');
+app.use(cors());
+
+3. Missing Content-Type Header
+Your error handling middleware (line 39) is before body parsing (lines 48-49). Reorder like this:
+// JSON body parsing FIRST
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Then error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+HELMET Configuration (Line 49)
+What it's doing:
+Helmet sets 11 security headers by default:
+
+Header	Purpose	Blocks/Allows
+
+X-Frame-Options: DENY	Clickjacking protection	Blocks embedding in <iframe>
+X-Content-Type-Options: nosniff	MIME type sniffing	Forces declared MIME type
+X-XSS-Protection: 0	Outdated XSS protection	(Disabled in modern browsers)
+Strict-Transport-Security	HTTPS enforcement	Only applies in HTTPS
+Content-Security-Policy	Script/resource loading	⚠️ Blocks inline scripts
+Referrer-Policy: no-referrer	Privacy	Hides referrer info
+Permissions-Policy	Browser features	Restricts geolocation, camera, etc.
+
+What You CAN Still Control:
+// Current (all defaults enabled)
+app.use(helmet());
+
+// Option 1: Disable specific headers
+app.use(helmet({
+  contentSecurityPolicy: false,  // Allow inline scripts if needed
+  frameguard: false,             // Allow iframe embedding
+  hsts: false,                   // Disable HTTPS enforcement
+}));
+
+// Option 2: Custom CSP for external resources
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.example.com"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https://api.stability.ai"],
+      connectSrc: ["'self'", "https://api.stability.ai"]
+    }
+  }
+}));
+
+// Option 3: Disable all headers (not recommended for production)
+app.use(helmet({ frameguard: false, contentSecurityPolicy: false }));
+
+CORS Configuration (Lines 50-54)
+Current Setup:
+app.use(cors({
+  origin: '*',                    // Accept requests from ANY domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+What it allows/blocks:
+Setting	Current	Effect
+origin: '*'	All domains allowed	✅ Browser requests from any origin work
+methods	GET, POST, PUT, DELETE, OPTIONS	✅ All standard HTTP verbs allowed
+allowedHeaders	Content-Type, Authorization	✅ Clients can send these headers
+credentials	❌ Not set (defaults to false)	Cookies/auth won't send cross-origin
+✅ Is it correct for LOCAL development?
+YES, perfectly fine for localhost testing. CORS origin: '*' means:
+✅ Frontend at http://localhost:3000 → API at http://localhost:4747 = WORKS
+✅ Any external domain → Your API = WORKS (good for testing)
+
+Available CORS Options You Can Control:
+// Current (permissive)
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Option 1: Restrict to specific domains (for production)
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://yourdomain.com'],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true  // Allow cookies/auth
+}));
+
+// Option 2: Custom origin function (dynamic)
+app.use(cors({
+  origin: function(origin, callback) {
+    const whitelist = ['http://localhost:3000', 'http://localhost:4747'];
+    if (!origin || whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  maxAge: 86400  // Preflight cache for 24 hours
+}));
+
+// Option 3: Expose additional response headers
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['X-Total-Count', 'X-Page-Number'],
+  maxAge: 3600  // Preflight cache for 1 hour
+}));

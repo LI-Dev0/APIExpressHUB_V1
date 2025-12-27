@@ -4,14 +4,8 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const axios = require('axios');
 const FormData = require('form-data');
+const winston = require('winston');
 require('dotenv').config();
-
-//Environment Vars Request from .env + Verification Check
-if (!process.env.STABILITY_API_KEY) {
-  console.error("❌ API credentials missing. Exiting...");
-  process.exit(1);
-}
-console.log("✅ API credentials configured");  // Don't log actual key status
 
 const app = express();
 const port = process.env.PORT || 4747;
@@ -24,20 +18,34 @@ const { json } = require('stream/consumers');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+//Logger Setup
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.printf(({ timestamp, level, message }) => {
+      return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+    })
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: 'app.log' })
+  ],
+});
 //Global Promise Rejection Handler
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
 
 //Global Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  logger.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
 });
 
 //StaticFileServing
-app.use('/resources', express.static(path.join(__dirname, 'resources')))
+app.use(express.static(path.join(__dirname, 'resources')));
 app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
 app.use('/images', express.static('resources/images'));
@@ -54,7 +62,7 @@ app.use(helmet({
       imgSrc: ["'self'", "data:", "https:", "https://picsum.photos"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
       scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
-      connectSrc: ["'self'", "https://api.stability.ai", "https://icanhazdadjoke.com", "https://api.deepai.org", "https://api.chucknorris.io/jokes/random"],
+      connectSrc: ["'self'", "https://api.stability.ai", "https://icanhazdadjoke.com", "https://api.deepai.org", "https://api.chucknorris.io/jokes/random", "https://github.com"],
 //      fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"]
     }
   }
@@ -67,7 +75,7 @@ app.use(cors({
 
 // Global Error Handling Middleware (AFTER body parsing)
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  logger.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
 });
 
@@ -88,9 +96,9 @@ const limiter = rateLimit({
 app.use(['/', '/jokes', '/pichub'], (req, res, next) => {
   try {
     const currentTime = new Date().toLocaleString();
-    console.log(`Access Log: ${req.method} ${req.originalUrl} from ${req.ip} at ${currentTime}`);
+    logger.info(`Access Log: ${req.method} ${req.originalUrl} from ${req.ip} at ${currentTime}`);
   } catch (error) {
-    console.error("Error logging route access:", error);
+    logger.error("Error logging route access:", error);
   }
   next(); // Proceed to the next middleware or route handler
 });
@@ -102,7 +110,7 @@ app.get("/", (req, res) => {
 
 //JokeHubRenders
 app.get('/jokes', (req, res) => {
-  console.log(req.body);
+//  console.log(req);
   res.render('jokes.ejs', {
     title: "Joke Generator",
     headline: "👇 Get your daily dose of API fetched laughter all in one place! 👇",
@@ -113,7 +121,7 @@ app.get('/jokes', (req, res) => {
 
 //PicHubRenders
 app.get('/pichub', (req, res) => {
-  console.log(`Rendering picgen.ejs. Device_IPAdd: ${req.ip} || TimeStamp: ${new Date().toLocaleString()} `);
+  logger.info(`Rendering picgen.ejs. Device_IPAdd: ${req.ip} || TimeStamp: ${new Date().toLocaleString()} `);
   res.render('picgen.ejs', {
     title: "Pic Hub",
     description: "Welcome to PicHub! A place to find or inspire enlightenment through imagery -- (Nas' Voice) the choice is yours! 📸"
@@ -123,7 +131,7 @@ app.get('/pichub', (req, res) => {
 // Proxy route to call Stability AI (server-side) and forward image binary to client
 // This keeps the API key server-side and avoids exposing it in client code.
 app.post('/pichub', limiter, async (req, res) => {
-  console.log(`POST request received on ${req.originalUrl} from IP: ${req.ip} with prompt: ${JSON.stringify(req.body.prompt.substring(0, 20))} ...  || TimeStamp: ${new Date().toString()} `);
+  logger.warn(`POST request received on ${req.originalUrl} from IP: ${req.ip} with prompt: ${JSON.stringify(req.body.prompt.substring(0, 20))} ...  || TimeStamp: ${new Date().toString()} `);
   try {
     //Destructure the 'prompt' property from the parsed request body (req.body). Then validate and trim
     const { prompt } = req.body;
@@ -179,16 +187,28 @@ app.post('/pichub', limiter, async (req, res) => {
     //DetailedErrorLogging: This will tell you EXACTLY why the 400 happened
     if (err.response && err.response.data) {
       const errorDetail = Buffer.from(err.response.data).toString();
-      console.error('Stability AI Error Details:', errorDetail);
+      logger.error('Stability AI Error Details:', errorDetail);
     }
-    console.error('Error proxying to Stability AI:', err && err.message);
+    logger.error('Error proxying to Stability AI:', err && err.message);
     return res.status(502).json({ error: 'failed to generate image' });
   }
 });
 
 //hEALthCheckEndpoint
 app.get('/health', (req, res) => {
+  logger.info("✅ API credentials configured");  // Don't log actual key status
   res.status(200).json({ status: 'ok', timestamp: new Date() });
+});
+
+app.get('/ready', (req, res) => {
+  //Environment Vars Request from .env + Verification Check
+if (!process.env.STABILITY_API_KEY) {
+  logger.error("❌ API credentials missing. Exiting...");
+  res.status(500).json({ status: 'error', message: 'API credentials missing' });
+  process.exit(1);
+}
+logger.info("✅ API credentials configured");  // Don't log actual key status
+  res.status(200).json({ status: 'API Key ready to be used', timestamp: new Date() });
 });
 
 //PortLog
