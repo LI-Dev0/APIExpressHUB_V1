@@ -15,3 +15,12 @@ agentic_plans.md
 .secrets.dev.yaml
 values.dev.yaml
 AgentTalk.txt
+values.prod.yaml
+.secrets.prod.yaml
+
+COMMIT_CHECKLIST.md
+DEPLOYMENT.md
+README_PHASE1-STATUS.md
+PHASE1-COMMIT-READY.md
+PHASE1-IMPLEMENTATION-REPORT.md
+VISUAL-SUMMARY.md

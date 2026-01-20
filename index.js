@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 4747;
-//const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'development';
 //console.dir(app);
 //const { title } = require("process");
 
@@ -32,6 +32,7 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: 'app.log' })
   ],
 });
+
 //Global Promise Rejection Handler
 process.on('unhandledRejection', (reason, promise) => {
   logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
@@ -50,9 +51,9 @@ app.use('/scripts', express.static('resources/scripts'));
 app.use('/styles', express.static('resources/styles'));
 app.use('/images', express.static('resources/images'));
 
-//JSON body parsing for API routes
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+//JSON body parsing for API routes - PHASE 1 FIX: Added size limits
+app.use(express.json({ limit: '1mb' })); // Prevent DDoS via large payloads
+app.use(express.urlencoded({ limit: '1mb', extended: true }));
 
 //Sets security headers
 app.use(helmet({
@@ -79,16 +80,29 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// Rate Limiting Middleware
+// Rate Limiting Middleware - PHASE 1 FIX
+// Increased from 2 to 100 requests per hour for development,, forced back to 2
+// Set to 30/hour in production via RATE_LIMIT_MAX env var
 const limiter = rateLimit({
-  windowMs: 24 * 60 * 60 * 1000,
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || 3600000), // 1 hour default
   skip: (req) => {
-    const myIP = process.env.MY_IP || '::1';
-    const isLocalhost = req.ip === '::1' || req.ip === '127.0.0.1';
-    return isLocalhost;
+    // Skip rate limiting for localhost or specific IPs (development only)
+    const myIP = process.env.MY_IP || '127.0.0.1';
+    const clientIP = req.ip || req.connection.remoteAddress;
+    // Support X-Forwarded-For for Docker/load balancer environments
+    const forwardedIP = req.headers['x-forwarded-for']?.split(',')[0]?.trim();
+    const effectiveIP = forwardedIP || clientIP;
+    const isLocalhost = effectiveIP === '::1' || effectiveIP === '127.0.0.1' || effectiveIP === myIP;
+    return isLocalhost && process.env.NODE_ENV === 'development';
   },
-  max: 2,
-  message: 'Too many requests, please try again later and make sure to maximize your prompt quality! 🚀' + '\nIncreased requests coming soon as well as User & Generated Data Storage options for more continued magic moments =)',
+  max: parseInt(process.env.RATE_LIMIT_MAX || 50), // 100/hour dev(2!), 30/hour prod
+  standardHeaders: true, // Return RateLimit-* headers
+  legacyHeaders: false,  // Disable X-RateLimit-* headers
+  message: 'Too many requests, please try again later and maximize your prompt quality! 🚀\nFor increased limits, contact support.',
+  handler: (req, res) => {
+    logger.warn(`Rate limit exceeded for IP: ${req.ip}`);
+    res.status(429).json({ error: 'Too many requests' });
+  },
 });
 
 // To log each time someone hits the joke API, we use middleware placed before the '/jokes' route handler.
@@ -159,24 +173,26 @@ app.post('/pichub', limiter, async (req, res) => {
     form.append('prompt', cleanPrompt);
     form.append('model', 'sd3.5-flash'); // Use 'sd3.5-large' or 'sd3-medium' (check your tier/credits)
     form.append('output_format', 'jpeg');
-    form.append('aspect_ratio', '1:1'); // SD3 often uses aspect_ratio instead of width/height
+    form.append('aspect_ratio', '16:9'); // SD3 often uses aspect_ratio instead of width/height
 
     // Optional parameters (if supported by the specific model version)
-    form.append('cfg_scale', 7.5);
-    form.append('style_preset', 'photographic');
+    form.append('cfg_scale', 7); // controls the level of config adaptation to promt specification.. 0->don't align to prompt spec | 10> align to prompt fully
+    form.append('style_preset', 'cinematic');
 
     // 3. Make the POST request to Stability AI's Diffusion endpoint
+    // PHASE 1 FIX: Added timeout to prevent requests hanging indefinitely
     const response = await axios.post(
       'https://api.stability.ai/v2beta/stable-image/generate/sd3',
       form,
       {
         headers: {
-          // 3. Get the required 'Content-Type: multipart/form-data; boundary=...' header from the form object
+          // Get the required 'Content-Type: multipart/form-data; boundary=...' header from the form object
           ...form.getHeaders(),
           'Authorization': `Bearer ${process.env.STABILITY_API_KEY}`,
           'Accept': 'image/*',
         },
         responseType: 'arraybuffer',
+        timeout: parseInt(process.env.REQUEST_TIMEOUT_MS || 30000), // 30 second timeout
       }
     );
 
@@ -212,9 +228,32 @@ logger.info("✅ API credentials configured");  // Don't log actual key status
 });
 
 //PortLog
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port} || ${new Date()}`);
+const server = app.listen(port, () => {
+  logger.info(`✅ Server is running on http://localhost:${port} || ${new Date()}`);
 });
+
+// PHASE 1 FIX: Graceful Shutdown Handlers
+// Allows 30 seconds for in-flight requests to complete before force-killing
+// Critical for Docker/Kubernetes container orchestration
+process.on('SIGTERM', gracefulShutdown('SIGTERM'));
+process.on('SIGINT', gracefulShutdown('SIGINT'));
+
+function gracefulShutdown(signal) {
+  return () => {
+    logger.info(`${signal} signal received: closing HTTP server gracefully`);
+    
+    server.close(() => {
+      logger.info('HTTP server closed');
+      process.exit(0);
+    });
+    
+    // Force shutdown after 30 seconds if requests don't complete
+    setTimeout(() => {
+      logger.error('Forcing shutdown after 30s timeout');
+      process.exit(1);
+    }, 30000);
+  };
+}
 
 //End of File
 

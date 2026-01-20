@@ -4,22 +4,30 @@ const picList = document.querySelector("#picList");
 const picButton = document.querySelector("#picButton");
 const picSrc = document.querySelector("#picSrc");
 const picContButt = document.querySelector("#picContainer button");
-const next = () => {
-    return;
-};
 
 picContainer.style.display = 'flex';
-//animate box shadow on hover
-picContButt.addEventListener('pointerover', (e) => {
-    e.target.querySelectorAll('button').style.boxShadow = '0 0 4px 4px #231b537e';
-    e.target.querySelector('button')[0].innerText = 'Fetch!';
-    width = e.target.offsetWidth;
-    height = e.target.offsetHeight;
+
+// PHASE 1 FIX: Fixed querySelectorAll usage and event handling
+// querySelectorAll returns NodeList, not a single element
+// querySelector returns a single Element or null
+picContButt?.addEventListener('pointerover', (e) => {
+    const targetButton = e.target.closest('button'); // Use closest() to find parent button
+    if (targetButton) {
+        targetButton.style.boxShadow = '0 0 4px 4px #231b537e';
+        targetButton.innerText = 'Fetch!';
+    }
+    const rect = e.target.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
 });
-//remove box shadow on mouseout
+
+// Remove box shadow on mouseout
 picContainer.addEventListener('pointerout', (e) => {
-    e.target.querySelectorAll('button').style.boxShadow = '';
-    e.target.querySelector('button')[0].innerText = '';
+    const targetButton = e.target.closest('button');
+    if (targetButton) {
+        targetButton.style.boxShadow = '';
+        targetButton.innerText = '';
+    }
 });
 
 //target picContainer button 
@@ -35,7 +43,7 @@ picList.style.listStyleType = 'none';
 picList.style.gridTemplateColumns = 'repeat(2, minmax(200px, 1fr))';
 picList.style.gap = '10px';
 
-picSrc.style.marginTop = '55px';
+//picSrc.style.marginTop = '55px';
 
 // Event listener for button click to fetch and display a random picture
 picButton.addEventListener("click", async (req, res) => {
@@ -122,12 +130,6 @@ aipicButton.addEventListener("click", async (event) => {
             }
         );
 
-        //const response = await axios.post(
-        //    '/api/generate-image',
-        //    { prompt },
-        //    { responseType: 'arraybuffer' }
-        //);
-
         // If API returned binary image data, create a Blob and an object URL to display it         if (response && response.status === 200) {
         if (response) {
             const contentType = (response.headers && (response.headers['Content-Type'] || response.headers['Content-Type'])) || 'image/jpeg';
@@ -152,23 +154,40 @@ aipicButton.addEventListener("click", async (event) => {
             downloadBtn.download = `ai-gen-${Date.now()}.jpg`; // Filename for the user
             downloadBtn.innerText = "💾 Download Image";
             downloadBtn.style.cssText = "padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold;";
-
-            // Revoke object URL after image loads to free memory x
-            //            newAiImg.onload = () => URL.revokeObjectURL(imageUrl);
             
             // 5. Assemble and Add to Page
             card.appendChild(newAiImg);
             card.appendChild(downloadBtn);
             aipicList.prepend(card);
             aipicSrc.textContent = 'Find the latest pic at ' + newAiImg.src + ' Generation successful!';
-            aipicInput.value = '';    
+            aipicInput.value = '';
+            
+            // PHASE 1 FIX: Memory leak fix - Revoke object URL when image is loaded
+            // Prevents memory accumulation from multiple image generations
+            newAiImg.onload = () => {
+              URL.revokeObjectURL(imageUrl);
+              console.log('Image URL revoked to free memory');
+            };
+            
+            // Fallback: Also revoke after 5 minutes if onload doesn't fire
+            const timeoutId = setTimeout(() => {
+              URL.revokeObjectURL(imageUrl);
+              console.log('Image URL revoked after timeout');
+            }, 300000); // 5 minutes
+            
+            // Clear timeout if image unloads
+            card.addEventListener('remove', () => {
+              clearTimeout(timeoutId);
+            });
+            
+            console.log(`AI image generated successfully for prompt: "${userPrompt}"`);
         } else {
             console.error('AI image API responded with non-200 status', response && response.status);
         }
 
     } catch (error) {
         if (error.response && error.response.data) {
-            // 💡 Convert ArrayBuffer error back into a readable string
+            // Convert ArrayBuffer error back into a readable string
             const decoder = new TextDecoder("utf-8");
             const errorText = decoder.decode(error.response.data);
 
