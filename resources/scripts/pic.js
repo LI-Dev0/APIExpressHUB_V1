@@ -1,4 +1,3 @@
-
 const picContainer = document.getElementById("picContainer");
 const picList = document.querySelector("#picList");
 const picButton = document.querySelector("#picButton");
@@ -139,7 +138,7 @@ aipicButton.addEventListener("click", async (event) => {
             // 1. Create a container for the image and the download button
             const card = document.createElement('div');
             card.className = 'ai-card';
-            card.style.cssText = "display: flex; flex-direction: column; align-items: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px;";
+            card.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: auto;";
 
             const newAiImg = document.createElement('img');
             newAiImg.src = imageUrl;
@@ -160,20 +159,21 @@ aipicButton.addEventListener("click", async (event) => {
             card.appendChild(downloadBtn);
             aipicList.prepend(card);
             aipicSrc.textContent = 'Find the latest pic at ' + newAiImg.src + ' Generation successful!';
-            aipicInput.value = '';
+            aipicInput.value = null; // Clear input after generating image
             
-            // PHASE 1 FIX: Memory leak fix - Revoke object URL when image is loaded
-            // Prevents memory accumulation from multiple image generations
-            newAiImg.onload = () => {
+            // PHASE 1 FIX: Memory leak fix - Revoke object URL when card is removed
+            // Don't revoke immediately after load - image needs the URL to display!
+            card.addEventListener('remove', () => {
               URL.revokeObjectURL(imageUrl);
-              console.log('Image URL revoked to free memory');
-            };
+              clearTimeout(timeoutId);
+              console.log('Image URL revoked when card removed');
+            });
             
-            // Fallback: Also revoke after 5 minutes if onload doesn't fire
+            // Fallback: Revoke after 1 hour if card stays on page
             const timeoutId = setTimeout(() => {
               URL.revokeObjectURL(imageUrl);
               console.log('Image URL revoked after timeout');
-            }, 300000); // 5 minutes
+            }, 3600000); // 1 hour
             
             // Clear timeout if image unloads
             card.addEventListener('remove', () => {
@@ -245,6 +245,4 @@ aipicButton.addEventListener("click", async (event) => {
 //} else {
 //   throw new Error(`${response.status}: ${response.data.toString()}`);
 //}
-
-    
 */

@@ -63,7 +63,7 @@ app.use(helmet({
       imgSrc: ["'self'", "data:", "https:", "https://picsum.photos"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
       scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
-      connectSrc: ["'self'", "https://api.stability.ai", "https://icanhazdadjoke.com", "https://api.deepai.org", "https://api.chucknorris.io/jokes/random", "https://github.com"],
+      connectSrc: ["'self'", "https://api.stability.ai", "https://icanhazdadjoke.com", "https://api.deepai.org", "https://api.chucknorris.io/jokes/random", "https://github.com", "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js.map"],
 //      fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"]
     }
   }
@@ -176,8 +176,8 @@ app.post('/pichub', limiter, async (req, res) => {
     form.append('aspect_ratio', '16:9'); // SD3 often uses aspect_ratio instead of width/height
 
     // Optional parameters (if supported by the specific model version)
-    form.append('cfg_scale', 7); // controls the level of config adaptation to promt specification.. 0->don't align to prompt spec | 10> align to prompt fully
-    form.append('style_preset', 'cinematic');
+    form.append('cfg_scale', 8); // controls the level of config adaptation to promt specification.. 0->don't align to prompt spec | 10> align to prompt fully
+    form.append('style_preset', 'digital-art'); // 'photographic', 'digital-art', 'analog-film', low-poly, comic-book, fantasy-art etc.
 
     // 3. Make the POST request to Stability AI's Diffusion endpoint
     // PHASE 1 FIX: Added timeout to prevent requests hanging indefinitely
