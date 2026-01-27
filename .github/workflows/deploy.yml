@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy Application
     environment:
-      name: ${{ github.event.inputs.environment || 'staging' }}  # Default to staging, change to production as needed when k8s is set up
+      name: ${{ github.event.inputs.environment || 'development' }}  # Default to staging, change to production as needed when k8s is set up
     steps:
       - uses: actions/checkout@v4
       
