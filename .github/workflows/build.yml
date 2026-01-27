@@ -2,9 +2,9 @@ name: Build & Test
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ root, develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ root, develop ]
 
 env:
   REGISTRY: ghcr.io
