@@ -1,5 +1,5 @@
 {
-  "name": "apiexpresshub",
+  "name": "APIExpressHUB",
   "version": "1.0.0",
   "description": "Express-based API hub with AI image generation and joke fetching",
   "main": "index.js",
@@ -39,7 +39,7 @@
     "supertest": "^6.3.3"
   },
   "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=10.0.0"
+    "node": ">=20.0.0 <21.0.0",
+    "npm": ">=10.0.0 <11.0.0"
   }
 }
