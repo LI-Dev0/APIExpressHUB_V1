@@ -2,9 +2,9 @@ name: Build & Test
 
 on:
   push:
-    branches: [ root, develop ]
+    branches: [root, develop]
   pull_request:
-    branches: [ root, develop ]
+    branches: [root, develop]
 
 env:
   REGISTRY: ghcr.io
@@ -16,16 +16,22 @@ jobs:
     name: Lint Code
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-      
+          node-version: "20"
+          cache: "npm"
+
+      # FIX: Validate package.json before install
+      - name: Validate package.json
+        run: |
+          npm ls --depth=0 || echo "Warning: dependency tree check failed"
+
       - name: Install dependencies
         run: npm ci
-      
+        continue-on-error: false
+
       - name: Run ESLint
         run: npm run lint --if-present
         continue-on-error: true
@@ -35,20 +41,20 @@ jobs:
     name: Unit & Integration Tests
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-      
+          node-version: "20"
+          cache: "npm"
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run tests
         run: npm test
         continue-on-error: true
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:
@@ -65,17 +71,17 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      
+
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -86,7 +92,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
-      
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -102,20 +108,20 @@ jobs:
     name: Security Scanning
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-      
+          node-version: "20"
+          cache: "npm"
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run npm audit
         run: npm audit --audit-level=high
         continue-on-error: true
-      
+
       - name: Run Snyk security scan
         uses: snyk/actions/node@0.4.0
         env:

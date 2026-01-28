@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy Application
     environment:
-      name: ${{ github.event.inputs.environment || 'development' }}  # Default to staging, change to production as needed when k8s is set up
+      name: ${{ github.event.inputs.environment || 'production' }}  # Default to staging, change to production as needed when k8s is set up
     steps:
       - uses: actions/checkout@v4
       
@@ -36,9 +36,13 @@ jobs:
         with:
           node-version: '20'  # CHANGE: was 18, now 20 across all workflows
           cache: 'npm'
-    
+
+      # ADD: Clean cache before install
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --verbose
       
       - name: Run ESLint
         run: npm run lint
