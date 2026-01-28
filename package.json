@@ -1,5 +1,5 @@
 {
-  "name": "APIExpressHUB",
+  "name": "apiexpresshub",
   "version": "1.0.0",
   "description": "Express-based API hub with AI image generation and joke fetching",
   "main": "index.js",
