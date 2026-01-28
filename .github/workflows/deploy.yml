@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy to Staging
 
 on:
   push:
@@ -19,31 +19,32 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  NODE_ENV: staging  # CHANGE: assign 'production' after k8s integration
-  LOG_LEVEL: info
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    name: Deploy Application
-    environment:
-      name: ${{ github.event.inputs.environment || 'production' }}  # Default to staging, change to production as needed when k8s is set up
+    name: Build & Push Docker Image
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
       
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # CHANGE: was 18, now 20 across all workflows
+          node-version: '20'
           cache: 'npm'
 
-      # ADD: Clean cache before install
       - name: Clear npm cache
         run: npm cache clean --force
 
       - name: Install dependencies
-        run: npm ci --verbose
-      
+        run: npm ci
+
       - name: Run ESLint
         run: npm run lint
       
@@ -60,45 +61,96 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
+      # ADD: Extract metadata (like build.yml)
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+      
       - name: Build and push Docker image
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      
-      - name: Deploy to Docker Compose (Staging)
-        if: github.event.inputs.environment == 'staging'
+
+  determine-environment:
+    runs-on: ubuntu-latest
+    name: Determine Deployment Environment
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+    steps:
+      - name: Set deployment environment
+        id: set-env
         run: |
-          echo "Deploying to staging environment..."
-          docker-compose -f docker-compose.staging.yml pull
-          docker-compose -f docker-compose.staging.yml down
+          # If manual trigger, use selected environment
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          # If tag push (v*), deploy to production
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          # If push to main, deploy to staging
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    needs: [build-and-push, determine-environment]
+    runs-on: ubuntu-latest
+    name: Deploy to ${{ needs.determine-environment.outputs.environment }}
+    environment:
+      name: ${{ needs.determine-environment.outputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Staging
+        if: needs.determine-environment.outputs.environment == 'staging'
+        run: |
+          echo "🚀 Deploying to STAGING environment..."
+          echo "Image: ${{ needs.build-and-push.outputs.image-tag }}"
+          
+          # Pull latest image
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+          
+          # Stop and remove old containers
+          docker-compose -f docker-compose.staging.yml down || true
+          
+          # Start new containers
           docker-compose -f docker-compose.staging.yml up -d
+          
+          # Run migrations
           docker-compose -f docker-compose.staging.yml exec -T server npm run migrate --if-present
+          
           echo "✅ Staging deployment complete"
 
-      # Example: SSH to staging server and pull latest image
-      
-      #- name: Deploy to Kubernetes (Production)
-       # if: github.event.inputs.environment == 'production' || github.ref == 'refs/heads/main'
-        #uses: appleboy/ssh-action@master
-        #with:
-         # host: ${{ secrets.PROD_HOST }}
-          #username: ${{ secrets.PROD_USERNAME }}
-          #key: ${{ secrets.PROD_SSH_KEY }}
-          #script: |
-          #  cd /opt/apiexpresshub
-          #  docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          #  docker-compose down
-          #  docker-compose up -d
-          #  docker-compose exec -T server npm run migrate --if-present
+      - name: Deploy to Production (Kubernetes)
+        if: needs.determine-environment.outputs.environment == 'production'
+        run: |
+          echo "🚀 Deploying to PRODUCTION environment..."
+          echo "Image: ${{ needs.build-and-push.outputs.image-tag }}"
+          
+          # Placeholder for K8s deployment
+          # Uncomment when K8s is ready
+          # kubectl set image deployment/apiexpresshub-api \
+          #   api=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          #   -n production
+          
+          echo "⚠️ Production deployment not yet configured (K8s setup required)"
 
   notify:
-    needs: deploy
+    needs: [deploy, determine-environment]
     runs-on: ubuntu-latest
     if: always()
     steps:
@@ -106,13 +158,19 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const status = '${{ needs.deploy.result }}';
-            const environment = '${{ github.event.inputs.environment || "staging" }}';
-            const emoji = status === 'success' ? '✅' : '❌';
-            const message = `${emoji} Deployment to ${environment}: ${status.toUpperCase()}`;
+            const deployStatus = '${{ needs.deploy.result }}';
+            const environment = '${{ needs.determine-environment.outputs.environment }}';
+            const emoji = deployStatus === 'success' ? '✅' : '❌';
+            
+            const message = `${emoji} **Deployment to ${environment}**: ${deployStatus.toUpperCase()}
+            
+            - Event: ${{ github.event_name }}
+            - Ref: ${{ github.ref }}
+            - Commit: ${{ github.sha }}`;
+            
             console.log(message);
             
-            // OPTIONAL: Add comment to related PR/commit
+            // Comment on PR if applicable
             if (context.issue.number) {
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
@@ -120,3 +178,4 @@ jobs:
                 repo: context.repo.repo,
                 body: message
               });
+            }
