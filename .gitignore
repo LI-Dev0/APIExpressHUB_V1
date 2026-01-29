@@ -14,7 +14,6 @@ npm-debug.log*
 agentic_plans.md
 .secrets.dev.yaml
 values.dev.yaml
-AgentTalk.txt
 values.prod.yaml
 .secrets.prod.yaml
 
@@ -24,3 +23,4 @@ README-PHASE1-STATUS.md
 PHASE1-COMMIT-READY.md
 PHASE1-IMPLEMENTATION-REPORT.md
 VISUAL-SUMMARY.md
+AgentTalk.txt
