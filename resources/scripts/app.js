@@ -29,7 +29,7 @@ header.style.borderRadius = '10px';
 const jokes = document.querySelector("#jokes");
 const butt = document.querySelector(".djbutton");
 
-const getDadJoke = async (req, res) => {
+const getDadJoke = async () => {
   try {
     const config = { headers: { Accept: "application/json" } };
     const res = await axios.get("https://icanhazdadjoke.com/", config);
@@ -37,7 +37,7 @@ const getDadJoke = async (req, res) => {
     return res.data.joke;
   } catch (e) {
     console.warn("No jokes available at the moment. Please try again later.");
-    return "NO MORE JOKES AVAILABLE SORRY! :( || TRY AGAIN LATER :)".bgBlue;
+    return "NO MORE JOKES AVAILABLE SORRY! :( || TRY AGAIN LATER :)";
   }
 };
 
@@ -63,30 +63,33 @@ jokebox.forEach(element => {
   element.style.backgroundColor = '#001219';
   element.style.flexDirection = 'column-reverse';
   element.style.alignItems = 'center';
-  element.querySelector("ul").style.backgroundColor = '#a6d2e438';
-  element.querySelector("ul").style.color = 'rgba(81, 245, 154, 1)';
+  const ulElement = element.querySelector("ul");
+  if (ulElement) {
+    ulElement.style.backgroundColor = '#a6d2e438';
+    ulElement.style.color = 'rgba(81, 245, 154, 1)';
+  }
   element.style.fontFamily = 'Trebuchet MS, cursive, sans-serif';
   element.style.border = '5px groove rgba(7, 48, 14, 1)';
   element.style.borderRadius = '25px';
-  element.style.width = 'fit-content';
-  //      element.getElementsByTagName('h4')[0].style.textAlign = 'center';
-  //      element.getElementsByTagName('h4')[0].style.color = 'rgb(11, 82, 29)';
-  element.getElementsByTagName('button')[0].style.backgroundColor = 'rgba(81, 245, 154, 1)';
-  element.getElementsByTagName('button')[0].style.color = 'rgb(11, 82, 29)';
-  element.getElementsByTagName('button')[0].style.fontWeight = 'bold';
+  const button = element.getElementsByTagName('button')[0];
+  button.style.backgroundColor = 'rgba(81, 245, 154, 1)';
+  button.style.color = 'rgb(11, 82, 29)';
+  button.style.fontWeight = 'bold';
   //animate box shadow on hover
-  element.getElementsByTagName('button')[0].addEventListener('mouseover', () => {
-    element.getElementsByTagName('button')[0].style.boxShadow = '0 0 10px 2px rgba(81, 245, 154, 0.7)';
+  button.addEventListener('mouseover', () => {
+    button.style.boxShadow = '0 0 10px 2px rgba(81, 245, 154, 0.7)';
   });
   //remove box shadow on mouseout
-  element.getElementsByTagName('button')[0].addEventListener('mouseout', () => {
-    element.getElementsByTagName('button')[0].style.boxShadow = 'none';
+  button.addEventListener('mouseout', () => {
+    button.style.boxShadow = 'none';
   });
-  element.getElementsByTagName('button')[0].style.border = '2.5px solid rgb(11, 82, 29)';
-  element.getElementsByTagName('button')[0].style.borderRadius = '5px';
-  element.getElementsByTagName('button')[0].style.padding = '10px';
-  element.getElementsByTagName('button')[0].style.margin = '10px';
-  element.getElementsByTagName('button')[0].style.cursor = 'pointer';
+  button.style.border = '2.5px solid rgb(11, 82, 29)';
+  button.style.borderRadius = '5px';
+  button.style.padding = '10px';
+  button.style.margin = '10px';
+  button.style.cursor = 'pointer';
+  button.style.margin = '10px';
+  button.style.cursor = 'pointer';
 });
 
 //CHUCK NORRIS JOKES
@@ -101,7 +104,14 @@ chuckNorrisBtn.addEventListener("click", async () => {
     chuckNorrisJokeText.style.padding = '10px';
     chuckNorrisJokeText.style.listStyleType = 'none';
     chuckNorrisJokeText.style.transition = 'transform 0.5s ease-in-out';
-    chuckNorrisJokeText.textContent = res.data.value;
+    const errorItem = document.createElement("li");
+    errorItem.style.margin = '10px';
+    errorItem.style.padding = '10px';
+    errorItem.style.listStyleType = 'none';
+    errorItem.style.transition = 'transform 0.5s ease-in-out';
+    errorItem.style.color = 'red';
+    errorItem.textContent = "No Chuck Norris jokes available!";
+    chuckNorrisJoke.append(errorItem);
     chuckNorrisJoke.append(chuckNorrisJokeText);
   } catch (e) {
     chuckNorrisJoke.textContent = "No Chuck Norris jokes available!";
