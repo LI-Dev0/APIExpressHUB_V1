@@ -64,10 +64,6 @@ logger.info('✅ All required environment variables configured');
 // STATIC FILE SERVING
 // ============================================================================
 app.use(express.static(path.join(__dirname, 'resources')));
-app.use('/scripts', express.static('resources/scripts'));
-app.use('/styles', express.static('resources/styles'));
-app.use('/images', express.static('resources/images'));
-
 // ============================================================================
 // BODY PARSING MIDDLEWARE - WITH SIZE LIMITS
 // ============================================================================
@@ -81,12 +77,14 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ['\'self\''],
-      imgSrc: ['\'self\'', 'data:', 'https:', 'https://picsum.photos'],
+      imgSrc: ['\'self\'', 'data:', 'https:', 'https://picsum.photos', 'https://api.stability.ai'],
       styleSrc: ['\'self\'', '\'unsafe-inline\'', 'https://cdn.jsdelivr.net'],
       scriptSrc: ['\'self\'', 'https://cdn.jsdelivr.net'],
       connectSrc: [
         '\'self\'',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css.map',
         'https://api.stability.ai',
+        'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js.map',
         'https://icanhazdadjoke.com',
         'https://api.deepai.org',
         'https://api.chucknorris.io',
@@ -154,7 +152,7 @@ app.use(['/', '/jokes', '/pichub'], (req, res, next) => {
 
 // HomepageRenders
 app.get('/', (req, res) => {
-  res.render('home.ejs', { title: 'API Express Hub' });
+  res.render('home.ejs', { title: 'API Express Hub', env });
 });
 
 // JokeHubRenders
@@ -180,7 +178,10 @@ app.get('/pichub', (req, res) => {
 // This keeps the API key server-side and avoids exposing it in client code.
 // eslint-disable-next-line consistent-return
 app.post('/pichub', limiter, async (req, res) => {
-  logger.warn(`POST request received on ${req.originalUrl} from IP: ${req.ip} with prompt: ${JSON.stringify(req.body.prompt.substring(0, 20))} ... || TimeStamp: ${new Date().toString()} `);
+  const promptPreview = (req.body && typeof req.body.prompt === 'string')
+    ? req.body.prompt.substring(0, 20)
+    : 'Invalid or missing prompt';
+  logger.warn(`POST request received on ${req.originalUrl} from IP: ${req.ip} with prompt: ${JSON.stringify(promptPreview)} ... || TimeStamp: ${new Date().toString()} `);
   try {
     // Destructure the 'prompt' prop from parsed request body (req.body). Then validate and trim
     const { prompt } = req.body;
@@ -205,12 +206,12 @@ app.post('/pichub', limiter, async (req, res) => {
     // form.append('payload', JSON.stringify(payload), {
     //   contentType: 'application/json', }); // Specify content type for this part
     form.append('prompt', cleanPrompt);
-    form.append('model', 'sd3.5-flash'); // Use 'sd3.5-large' or 'sd3-medium' (check your tier/credits)
+    form.append('model', 'sd3.5-medium'); // Use 'sd3.5-large' or 'sd3-medium' (check your tier/credits)
     form.append('output_format', 'jpeg');
-    form.append('aspect_ratio', '16:9'); // SD3 often uses aspect_ratio instead of width/height
+    form.append('cfg_scale', 7.0); // controls the level of configuration adaptation to prompt specification. 0 -> don't align to prompt spec | 10 -> align to prompt fully
 
     // Optional parameters (if supported by the specific model version)
-    form.append('cfg_scale', 8); // controls the level of config adaptation to prompt specification.. 0->don't align to prompt spec | 10> align to prompt fully
+    // 3. Make the POST request to Stability AI's Diffusion endpoint
     form.append('style_preset', 'digital-art'); // 'photographic', 'digital-art', 'analog-film', low-poly, comic-book, fantasy-art etc.
 
     // 3. Make the POST request to Stability AI\'s Diffusion endpoint
@@ -233,13 +234,41 @@ app.post('/pichub', limiter, async (req, res) => {
     res.set('Content-Type', 'image/jpeg');
     res.send(Buffer.from(response.data));
   } catch (err) {
-    // DetailedErrorLogging: This will tell you EXACTLY why the 400 happened
-    if (err.response && err.response.data) {
-      const errorDetail = Buffer.from(err.response.data).toString();
-      logger.error('Stability AI Error Details:', errorDetail);
+    // Detailed Error Logging: Decode ArrayBuffer responses from Stability AI
+    if (err.response) {
+      // err.response.data is an ArrayBuffer when responseType is 'arraybuffer'
+      // We need to decode it to read the actual API error message
+      let errorMessage = 'Unknown error';
+      let statusCode = err.response.status || 502;
+
+      try {
+        // Node.js Buffer is returned when responseType: 'arraybuffer' is set
+        if (Buffer.isBuffer(err.response.data) || err.response.data instanceof ArrayBuffer || err.response.data instanceof Uint8Array) {
+          const decoder = new TextDecoder('utf-8');
+          const decodedText = decoder.decode(err.response.data);
+          const errorJson = JSON.parse(decodedText);
+          errorMessage = errorJson.message || errorJson.errors?.[0] || errorJson.error || decodedText;
+        } else if (typeof err.response.data === 'string') {
+          errorMessage = err.response.data;
+        } else if (err.response.data && typeof err.response.data === 'object') {
+          errorMessage = err.response.data.message || err.response.data.error || JSON.stringify(err.response.data);
+        } else {
+          errorMessage = String(err.response.data);
+        }
+      } catch (parseErr) {
+        errorMessage = `API Error (Status ${statusCode}): ${err.message}`;
+      }
+
+      logger.error(`❌ Stability AI API Error (${statusCode}): ${errorMessage}`);
+      return res.status(statusCode === 401 || statusCode === 403 ? 401 : 502).json({
+        error: 'Failed to generate image. Please try again or contact support if the issue persists.'
+      });
     }
-    logger.error('Error proxying to Stability AI:', err && err.message);
-    return res.status(502).json({ error: 'failed to generate image' });
+
+    // Handle network errors, timeouts, and other non-response errors
+    logger.error(`❌ Error proxying to Stability AI: ${err.message || err}`);
+    const statusCode = err.code === 'ECONNABORTED' ? 504 : 500;
+    res.status(statusCode).json({ error: 'Internal server error' });
   }
 });
 

@@ -2,7 +2,7 @@ const picContainer = document.getElementById("picContainer");
 const picList = document.querySelector("#picList");
 const picButton = document.querySelector("#picButton");
 const picSrc = document.querySelector("#picSrc");
-const picContButt = document.querySelector("#picContainer button");
+const picContButt = document.querySelector("#picContainerbutton");
 
 picContainer.style.display = 'flex';
 
@@ -163,22 +163,29 @@ aipicButton.addEventListener("click", async (event) => {
             
             // PHASE 1 FIX: Memory leak fix - Revoke object URL when card is removed
             // Don't revoke immediately after load - image needs the URL to display!
-            card.addEventListener('remove', () => {
+            let timeoutId = null;
+            let isCardRemoved = false;
+            
+            const handleCardRemove = () => {
+              if (isCardRemoved) return; // Prevent duplicate cleanup
+              isCardRemoved = true;
+              
+              if (timeoutId) {
+                clearTimeout(timeoutId);
+              }
               URL.revokeObjectURL(imageUrl);
-              clearTimeout(timeoutId);
               console.log('Image URL revoked when card removed');
-            });
+            };
+            
+            card.addEventListener('remove', handleCardRemove);
             
             // Fallback: Revoke after 1 hour if card stays on page
-            const timeoutId = setTimeout(() => {
-              URL.revokeObjectURL(imageUrl);
-              console.log('Image URL revoked after timeout');
+            timeoutId = setTimeout(() => {
+              if (!isCardRemoved) {
+                URL.revokeObjectURL(imageUrl);
+                console.log('Image URL revoked after 1 hour timeout');
+              }
             }, 3600000); // 1 hour
-            
-            // Clear timeout if image unloads
-            card.addEventListener('remove', () => {
-              clearTimeout(timeoutId);
-            });
             
             console.log(`AI image generated successfully for prompt: "${userPrompt}"`);
         } else {
