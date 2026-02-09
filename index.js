@@ -212,7 +212,7 @@ app.post('/pichub', limiter, async (req, res) => {
 
     // Optional parameters (if supported by the specific model version)
     // 3. Make the POST request to Stability AI's Diffusion endpoint
-    form.append('style_preset', 'digital-art'); // 'photographic', 'digital-art', 'analog-film', low-poly, comic-book, fantasy-art etc.
+    form.append('style_preset', 'photographic'); // 'photographic', 'digital-art', 'analog-film', low-poly, comic-book, fantasy-art etc.
 
     // 3. Make the POST request to Stability AI\'s Diffusion endpoint
     // PHASE 1 FIX: Added timeout to prevent requests hanging indefinitely
@@ -266,9 +266,27 @@ app.post('/pichub', limiter, async (req, res) => {
     }
 
     // Handle network errors, timeouts, and other non-response errors
-    logger.error(`❌ Error proxying to Stability AI: ${err.message || err}`);
-    const statusCode = err.code === 'ECONNABORTED' ? 504 : 500;
-    res.status(statusCode).json({ error: 'Internal server error' });
+    let errorDetails = err.message || String(err);
+    
+    // Handle AggregateError (multiple errors)
+    if (err.errors && Array.isArray(err.errors)) {
+      errorDetails = `AggregateError: ${err.errors.map(e => e.message || String(e)).join('; ')}`;
+    }
+    // Handle specific network error codes
+    else if (err.code) {
+      errorDetails = `${err.code}: ${err.message || err.syscall || 'Network error'}`;
+    }
+    
+    logger.error(`❌ Error proxying to Stability AI: ${errorDetails}`);
+    
+    // Map specific error codes to appropriate HTTP status codes
+    let statusCode = 500;
+    if (err.code === 'ECONNABORTED') statusCode = 504; // Gateway Timeout
+    else if (err.code === 'ENOTFOUND') statusCode = 503; // Service Unavailable (DNS issue)
+    else if (err.code === 'ECONNREFUSED') statusCode = 503; // Service Unavailable (connection refused)
+    else if (err.code === 'ETIMEDOUT') statusCode = 504; // Gateway Timeout
+    
+    res.status(statusCode).json({ error: 'Failed to connect to image generation service. Please try again later.' });
   }
 });
 

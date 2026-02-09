@@ -153,40 +153,40 @@ aipicButton.addEventListener("click", async (event) => {
             downloadBtn.download = `ai-gen-${Date.now()}.jpg`; // Filename for the user
             downloadBtn.innerText = "💾 Download Image";
             downloadBtn.style.cssText = "padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold;";
-            
+
             // 5. Assemble and Add to Page
             card.appendChild(newAiImg);
             card.appendChild(downloadBtn);
             aipicList.prepend(card);
             aipicSrc.textContent = 'Find the latest pic at ' + newAiImg.src + ' Generation successful!';
             aipicInput.value = null; // Clear input after generating image
-            
+
             // PHASE 1 FIX: Memory leak fix - Revoke object URL when card is removed
             // Don't revoke immediately after load - image needs the URL to display!
             let timeoutId = null;
             let isCardRemoved = false;
-            
+
             const handleCardRemove = () => {
-              if (isCardRemoved) return; // Prevent duplicate cleanup
-              isCardRemoved = true;
-              
-              if (timeoutId) {
-                clearTimeout(timeoutId);
-              }
-              URL.revokeObjectURL(imageUrl);
-              console.log('Image URL revoked when card removed');
+                if (isCardRemoved) return; // Prevent duplicate cleanup
+                isCardRemoved = true;
+
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                }
+                URL.revokeObjectURL(imageUrl);
+                console.log('Image URL revoked when card removed');
             };
-            
+
             card.addEventListener('remove', handleCardRemove);
-            
+
             // Fallback: Revoke after 1 hour if card stays on page
             timeoutId = setTimeout(() => {
-              if (!isCardRemoved) {
-                URL.revokeObjectURL(imageUrl);
-                console.log('Image URL revoked after 1 hour timeout');
-              }
+                if (!isCardRemoved) {
+                    URL.revokeObjectURL(imageUrl);
+                    console.log('Image URL revoked after 1 hour timeout');
+                }
             }, 3600000); // 1 hour
-            
+
             console.log(`AI image generated successfully for prompt: "${userPrompt}"`);
         } else {
             console.error('AI image API responded with non-200 status', response && response.status);
