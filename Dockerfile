@@ -8,17 +8,17 @@ ENV NODE_ENV production
 
 WORKDIR /usr/src/app
 
-# Download dependencies as a separate step to take advantage of Docker's caching.
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,id=npm,target=/root/.npm \
-    npm ci --omit=dev
+# Copy dependency files to use Docker layer caching.
+COPY package.json package-lock.json ./
+
+# Install dependencies.
+RUN npm ci --omit=dev
 
 # Run the application as a non-root user.
 USER node
 
-# Copy the rest of the source files into the image.
-COPY . .
+# Copy the rest of the source files and ensure they are owned by the node user.
+COPY --chown=node:node . .
 
 # Expose the port that the application listens on.
 EXPOSE 4747
