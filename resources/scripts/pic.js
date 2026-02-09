@@ -96,6 +96,13 @@ const aipicButton = document.querySelector("#aipicButton");
 const aipicInput = document.querySelector("#aipicInput");
 const aipicSrc = document.querySelector("#aipicSrc");
 
+// Style the AI picture list container
+aipicList.style.display = 'grid';
+aipicList.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+aipicList.style.gap = '20px';
+aipicList.style.padding = '20px 0';
+aipicList.style.width = '100%';
+
 // Event listener for AI Image Generation button click
 
 //Diffusion API Simulation Section
@@ -129,9 +136,10 @@ aipicButton.addEventListener("click", async (event) => {
             }
         );
 
-        // If API returned binary image data, create a Blob and an object URL to display it         if (response && response.status === 200) {
-        if (response) {
-            const contentType = (response.headers && (response.headers['Content-Type'] || response.headers['Content-Type'])) || 'image/jpeg';
+        // If API returned binary image data, create a Blob and an object URL to display it
+        if (response && response.status === 200) {
+            // Fix: Axios normalizes headers to lowercase
+            const contentType = response.headers['content-type'] || 'image/jpeg';
             const blob = new Blob([response.data], { type: contentType });
             const imageUrl = URL.createObjectURL(blob);
 
@@ -139,13 +147,18 @@ aipicButton.addEventListener("click", async (event) => {
             const card = document.createElement('div');
             card.className = 'ai-card';
             card.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: auto;";
-
+            
+            // 2. Create the image element
             const newAiImg = document.createElement('img');
             newAiImg.src = imageUrl;
             newAiImg.alt = `AI Generated Image for prompt: ${userPrompt}`;
-            newAiImg.style.cssText = "width: 100%; border-radius: 5px; border: 2px solid #231b53;";
-            newAiImg.style.objectFit = 'cover';
-            newAiImg.style.border = '5px solid lightblue';
+            newAiImg.style.cssText = "display: block; width: 100%; max-width: 500px; border-radius: 5px; border: 5px solid lightblue;";
+        
+            // Add error handler to the image element
+            newAiImg.onerror = () => {
+                console.error(`Failed to load AI generated image from: ${newAiImg.src}`);
+                card.remove(); // Remove the card if image fails to load
+            };
 
             // 3. Create the Download Button
             const downloadBtn = document.createElement('a'); // Use an 'a' tag to act as a button
@@ -154,7 +167,7 @@ aipicButton.addEventListener("click", async (event) => {
             downloadBtn.innerText = "💾 Download Image";
             downloadBtn.style.cssText = "padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold;";
 
-            // 5. Assemble and Add to Page
+            // 4. Assemble and Add to Page
             card.appendChild(newAiImg);
             card.appendChild(downloadBtn);
             aipicList.prepend(card);

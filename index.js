@@ -206,9 +206,11 @@ app.post('/pichub', limiter, async (req, res) => {
     // form.append('payload', JSON.stringify(payload), {
     //   contentType: 'application/json', }); // Specify content type for this part
     form.append('prompt', cleanPrompt);
-    form.append('model', 'sd3.5-medium'); // Use 'sd3.5-large' or 'sd3-medium' (check your tier/credits)
-    form.append('output_format', 'jpeg');
-    form.append('cfg_scale', 7.0); // controls the level of configuration adaptation to prompt specification. 0 -> don't align to prompt spec | 10 -> align to prompt fully
+    // aspect_ratio is optional but can help control the dimensions of the generated image. Common values: '1:1', '16:9', '4:3'
+    form.append('aspect_ratio', '1:1');
+    form.append('model', 'sd3.5-flash'); // Use 'sd3.5-large' or 'sd3-medium' (check your tier/credits)
+    form.append('output_format', 'jpeg'); // 'jpeg' or 'png' or 'webp' (check your tier/credits)
+    form.append('cfg_scale', 6.0); // controls the level of configuration adaptation to prompt specification. 0 -> don't align to prompt spec | 10 -> align to prompt fully
 
     // Optional parameters (if supported by the specific model version)
     // 3. Make the POST request to Stability AI's Diffusion endpoint
