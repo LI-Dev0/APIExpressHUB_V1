@@ -206,6 +206,10 @@ aipicButton.addEventListener("click", async (event) => {
         }
 
     } catch (error) {
+        if (error.response?.status === 429) {
+            aipicSrc.textContent = "Rate limit exceeded. Please wait before trying again.";
+            return;
+        }
         if (error.response && error.response.data) {
             // Convert ArrayBuffer error back into a readable string
             const decoder = new TextDecoder("utf-8");

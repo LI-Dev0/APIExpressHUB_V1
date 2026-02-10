@@ -229,36 +229,44 @@ app.post('/pichub', limiter, async (req, res) => {
           Accept: 'image/*',
         },
         responseType: 'arraybuffer',
-        timeout: parseInt(process.env.REQUEST_TIMEOUT_MS || 30000, 10), // 30 second timeout
+        timeout: parseInt(process.env.REQUEST_TIMEOUT_MS || 60000, 10), // 1 minute timeout
       },
     );
 
-    res.set('Content-Type', 'image/jpeg');
-    res.send(Buffer.from(response.data));
-  } catch (err) {
+    // Check if response is actually an image
+    if (response.headers['content-type']?.startsWith('image/')) {
+      // Process as image
+      res.set('Content-Type', 'image/jpeg');
+      res.send(Buffer.from(response.data));
+    } else {
+      // Handle as error response
+      logger.error('Stability AI returned non-image response');
+      return res.status(502).json({ error: 'Invalid response from image service' });
+    }
+  } catch (error) {
     // Detailed Error Logging: Decode ArrayBuffer responses from Stability AI
-    if (err.response) {
+    if (error.response) {
       // err.response.data is an ArrayBuffer when responseType is 'arraybuffer'
       // We need to decode it to read the actual API error message
       let errorMessage = 'Unknown error';
-      let statusCode = err.response.status || 502;
+      let statusCode = error.response.status || 502;
 
       try {
         // Node.js Buffer is returned when responseType: 'arraybuffer' is set
-        if (Buffer.isBuffer(err.response.data) || err.response.data instanceof ArrayBuffer || err.response.data instanceof Uint8Array) {
+        if (Buffer.isBuffer(error.response.data) || error.response.data instanceof ArrayBuffer || error.response.data instanceof Uint8Array) {
           const decoder = new TextDecoder('utf-8');
-          const decodedText = decoder.decode(err.response.data);
+          const decodedText = decoder.decode(error.response.data);
           const errorJson = JSON.parse(decodedText);
           errorMessage = errorJson.message || errorJson.errors?.[0] || errorJson.error || decodedText;
-        } else if (typeof err.response.data === 'string') {
-          errorMessage = err.response.data;
-        } else if (err.response.data && typeof err.response.data === 'object') {
-          errorMessage = err.response.data.message || err.response.data.error || JSON.stringify(err.response.data);
+        } else if (typeof error.response.data === 'string') {
+          errorMessage = error.response.data;
+        } else if (error.response.data && typeof error.response.data === 'object') {
+          errorMessage = error.response.data.message || error.response.data.error || JSON.stringify(error.response.data);
         } else {
-          errorMessage = String(err.response.data);
+          errorMessage = String(error.response.data);
         }
       } catch (parseErr) {
-        errorMessage = `API Error (Status ${statusCode}): ${err.message}`;
+        errorMessage = `API Error (Status ${statusCode}): ${error.message}`;
       }
 
       logger.error(`❌ Stability AI API Error (${statusCode}): ${errorMessage}`);
@@ -268,25 +276,25 @@ app.post('/pichub', limiter, async (req, res) => {
     }
 
     // Handle network errors, timeouts, and other non-response errors
-    let errorDetails = err.message || String(err);
+    let errorDetails = error.message || String(error);
     
     // Handle AggregateError (multiple errors)
-    if (err.errors && Array.isArray(err.errors)) {
-      errorDetails = `AggregateError: ${err.errors.map(e => e.message || String(e)).join('; ')}`;
+    if (error.errors && Array.isArray(error.errors)) {
+      errorDetails = `AggregateError: ${error.errors.map(e => e.message || String(e)).join('; ')}`;
     }
     // Handle specific network error codes
-    else if (err.code) {
-      errorDetails = `${err.code}: ${err.message || err.syscall || 'Network error'}`;
+    else if (error.code) {
+      errorDetails = `${error.code}: ${error.message || error.syscall || 'Network error'}`;
     }
     
     logger.error(`❌ Error proxying to Stability AI: ${errorDetails}`);
     
     // Map specific error codes to appropriate HTTP status codes
     let statusCode = 500;
-    if (err.code === 'ECONNABORTED') statusCode = 504; // Gateway Timeout
-    else if (err.code === 'ENOTFOUND') statusCode = 503; // Service Unavailable (DNS issue)
-    else if (err.code === 'ECONNREFUSED') statusCode = 503; // Service Unavailable (connection refused)
-    else if (err.code === 'ETIMEDOUT') statusCode = 504; // Gateway Timeout
+    if (error.code === 'ECONNABORTED') statusCode = 504; // Gateway Timeout
+    else if (error.code === 'ENOTFOUND') statusCode = 503; // Service Unavailable (DNS issue)
+    else if (error.code === 'ECONNREFUSED') statusCode = 503; // Service Unavailable (connection refused)
+    else if (error.code === 'ETIMEDOUT') statusCode = 504; // Gateway Timeout
     
     res.status(statusCode).json({ error: 'Failed to connect to image generation service. Please try again later.' });
   }
@@ -310,7 +318,7 @@ app.get('/ready', (req, res) => {
 });
 
 // Chuck Norris Jokes Proxy  
-app.get('/api/jokes/chuck', limiter, async (req, res) => {
+app.get('/api/jokes/chuck', async (req, res) => {
   try {
     const response = await axios.get('https://api.chucknorris.io/jokes/random');
     res.json(response.data);
@@ -321,7 +329,7 @@ app.get('/api/jokes/chuck', limiter, async (req, res) => {
 });
 
 // Dad Jokes Proxy
-app.get('/api/jokes/dad', limiter, async (req, res) => {
+app.get('/api/jokes/dad', async (req, res) => {
   try {
     const config = { headers: { Accept: "application/json" } };
     const response = await axios.get('https://icanhazdadjoke.com/', config);
