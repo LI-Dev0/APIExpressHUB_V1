@@ -309,6 +309,29 @@ app.get('/ready', (req, res) => {
   res.status(200).json({ status: 'API Key ready to be used', timestamp: new Date() });
 });
 
+// Chuck Norris Jokes Proxy  
+app.get('/api/jokes/chuck', limiter, async (req, res) => {
+  try {
+    const response = await axios.get('https://api.chucknorris.io/jokes/random');
+    res.json(response.data);
+  } catch (err) {
+    logger.error('Chuck Norris API error:', err.message);
+    res.status(502).json({ error: 'Failed to fetch joke' });
+  }
+});
+
+// Dad Jokes Proxy
+app.get('/api/jokes/dad', limiter, async (req, res) => {
+  try {
+    const config = { headers: { Accept: "application/json" } };
+    const response = await axios.get('https://icanhazdadjoke.com/', config);
+    res.json(response.data);
+  } catch (err) {
+    logger.error('Dad Jokes API error:', err.message);
+    res.status(502).json({ error: 'Failed to fetch joke' });
+  }
+});
+
 // ============================================================================
 // ERROR HANDLING MIDDLEWARE (MUST BE LAST)
 // ============================================================================

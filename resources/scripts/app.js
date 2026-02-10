@@ -32,7 +32,7 @@ const butt = document.querySelector(".djbutton");
 const getDadJoke = async () => {
   try {
     const config = { headers: { Accept: "application/json" } };
-    const res = await axios.get("https://icanhazdadjoke.com/", config);
+    const res = await axios.get("/api/jokes/dad", config);
     console.table("Joke fetched:", res.data.joke);
     return res.data.joke;
   } catch (e) {
@@ -98,23 +98,19 @@ const chuckNorrisJoke = document.querySelector("#chuckNorrisJoke");
 
 chuckNorrisBtn.addEventListener("click", async () => {
   try {
-    const res = await axios.get("https://api.chucknorris.io/jokes/random");
+    const res = await axios.get("/api/jokes/chuck");
     const chuckNorrisJokeText = document.createElement("li");
     chuckNorrisJokeText.style.margin = '10px';
     chuckNorrisJokeText.style.padding = '10px';
     chuckNorrisJokeText.style.listStyleType = 'none';
     chuckNorrisJokeText.style.transition = 'transform 0.5s ease-in-out';
+    chuckNorrisJokeText.textContent = res.data.value; // Chuck Norris API uses 'value'
+    chuckNorrisJoke.append(chuckNorrisJokeText);
+  } catch (e) {
     const errorItem = document.createElement("li");
-    errorItem.style.margin = '10px';
-    errorItem.style.padding = '10px';
-    errorItem.style.listStyleType = 'none';
-    errorItem.style.transition = 'transform 0.5s ease-in-out';
     errorItem.style.color = 'red';
     errorItem.textContent = "No Chuck Norris jokes available!";
     chuckNorrisJoke.append(errorItem);
-    chuckNorrisJoke.append(chuckNorrisJokeText);
-  } catch (e) {
-    chuckNorrisJoke.textContent = "No Chuck Norris jokes available!";
   }
 });
 
