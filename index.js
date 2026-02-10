@@ -96,7 +96,7 @@ app.use(helmet({
 // ============================================================================
 // CORS CONFIGURATION
 // ============================================================================
-const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:4747').split(',');
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:4747,https://apiexpresshubv1-production.up.railway.app').split(',');
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
