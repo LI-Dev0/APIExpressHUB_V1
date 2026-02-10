@@ -3,3 +3,14 @@ html {
     text-align: center;
     font-family: 'Trebuchet MS', 'Lucida Grande', sans-serif;
 }
+
+#aipicContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column-reverse;
+    border: 5px groove bisque;
+    border-radius: 10px;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: #00121980;
+}

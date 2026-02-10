@@ -274,9 +274,8 @@ footer {
 }
 
 #aipicList {
-    display: grid;
+    display: flex;
     justify-content: center;
-    grid-template-columns: repeat(autofill, minmax(250px, 1fr));
     gap: 15px;
     padding: 10px 0;
 }
