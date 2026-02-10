@@ -8,6 +8,8 @@ const winston = require('winston');
 require('dotenv').config();
 
 const app = express();
+app.set('trust proxy', 1); // ✅ Enable proxy trust
+
 const port = process.env.PORT || 4747;
 const env = process.env.NODE_ENV || 'development';
 // console.dir(app);
