@@ -1,9 +1,10 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable indent */
-const picContainer = document.getElementById("picContainer");
-const picList = document.querySelector("#picList");
-const picButton = document.querySelector("#picButton");
-const picSrc = document.querySelector("#picSrc");
-const picContButt = document.querySelector("#picContainerbutton");
+const picContainer = document.getElementById('picContainer');
+const picList = document.querySelector('#picList');
+const picButton = document.querySelector('#picButton');
+const picSrc = document.querySelector('#picSrc');
+const picContButt = document.querySelector('#picContainerbutton');
 
 picContainer.style.display = 'flex';
 
@@ -46,16 +47,16 @@ picList.style.gap = '10px';
 //picSrc.style.marginTop = '55px';
 
 // Event listener for button click to fetch and display a random picture
-picButton.addEventListener("click", async (req, res) => {
+picButton.addEventListener('click', async (req, res) => {
     try {
         const rand = Math.floor(Math.random() * 1000);
         console.log(`Generated random number: ${rand}`);
-        const newPic = document.createElement("img");
+        const newPic = document.createElement('img');
         newPic.src = `https://picsum.photos/id/${rand}/500`;
         //image size is 500px, how to adjust resolution to 720p?
         //        https://picsum.photos/id/237/200/300/resolution=1280x720
-        newPic.alt = "Random Picture ";
-        newPic.className = "picList";
+        newPic.alt = 'Random Picture ';
+        newPic.className = 'picList';
         newPic.style.margin = '20px 10px';
         newPic.style.objectFit = 'cover';
         newPic.style.width = '90%';
@@ -98,10 +99,10 @@ picList.addEventListener('mouseout', (event) => {
 
 //AI Image Generation Section from Prompt Input using Stability API Simulation
 
-const aipicList = document.querySelector("#aipicList");
-const aipicButton = document.querySelector("#aipicButton");
-const aipicInput = document.querySelector("#aipicInput");
-const aipicSrc = document.querySelector("#aipicSrc");
+const aipicList = document.querySelector('#aipicList');
+const aipicButton = document.querySelector('#aipicButton');
+const aipicInput = document.querySelector('#aipicInput');
+const aipicSrc = document.querySelector('#aipicSrc');
 
 // Style the AI picture list container
 aipicList.style.display = 'flex';
@@ -120,20 +121,20 @@ aipicList.style.width = '100%';
 
 
 //adapt the above to listen for button click and display image in browser
-aipicButton.addEventListener("click", async (event) => {
+aipicButton.addEventListener('click', async (event) => {
     //halt default page-reload on form submission
     event.preventDefault();
     //initialise the input prompt specifications from aiInput variable as promptData
     const userPrompt = aipicInput.value.trim();
     if (!userPrompt) {
-        console.log("Please enter a prompt string to generate an AI image.");
+        console.log('Please enter a prompt string to generate an AI image.');
         alert('Please enter a prompt to generate an AI image.');
         return;
     }
     // ⏳ START LOADING STATE
     aipicButton.disabled = true;
-    aipicButton.innerText = "Generating... 🚀";
-    aipicSrc.textContent = "Connecting to AI... Please wait.";
+    aipicButton.innerText = 'Generating... 🚀';
+    aipicSrc.textContent = 'Connecting to AI... Please wait.';
     try {
         // 2. Send the value to the server using 'fetch'
         const response = await axios.post(
@@ -155,13 +156,13 @@ aipicButton.addEventListener("click", async (event) => {
             // 1. Create a container for the image and the download button
             const card = document.createElement('div');
             card.className = 'ai-card';
-            card.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: auto;";
+            card.style.cssText = 'display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: auto;';
 
             // 2. Create the image element
             const newAiImg = document.createElement('img');
             newAiImg.src = imageUrl;
             newAiImg.alt = `AI Generated Image for prompt: ${userPrompt}`;
-            newAiImg.style.cssText = "display: block; width: 100%; max-width: 500px; border-radius: 5px; border: 5px solid lightblue;";
+            newAiImg.style.cssText = 'display: block; width: 100%; max-width: 500px; border-radius: 5px; border: 5px solid lightblue;';
 
             // Add error handler to the image element
             newAiImg.onerror = () => {
@@ -173,8 +174,8 @@ aipicButton.addEventListener("click", async (event) => {
             const downloadBtn = document.createElement('a'); // Use an 'a' tag to act as a button
             downloadBtn.href = imageUrl;
             downloadBtn.download = `ai-gen-${Date.now()}.jpg`; // Filename for the user
-            downloadBtn.innerText = "💾 Download Image";
-            downloadBtn.style.cssText = "padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold;";
+            downloadBtn.innerText = '💾 Download Image';
+            downloadBtn.style.cssText = 'padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold;';
 
             // 4. Assemble and Add to Page
             card.appendChild(newAiImg);
@@ -216,40 +217,45 @@ aipicButton.addEventListener("click", async (event) => {
 
     } catch (error) {
         if (error.response?.status === 429) {
-            aipicSrc.textContent = "Rate limit exceeded. Please wait before trying again.";
+            aipicSrc.textContent = 'Rate limit exceeded. Please wait before trying again.';
             return;
         }
         if (error.response && error.response.data) {
             // Convert ArrayBuffer error back into a readable string
-            const decoder = new TextDecoder("utf-8");
+            const decoder = new TextDecoder('utf-8');
             const errorText = decoder.decode(error.response.data);
 
             try {
                 const errorJson = JSON.parse(errorText);
-                console.error("Server API Error:", errorJson.error);
+                console.error('Server API Error:', errorJson.error);
             } catch (e) {
-                console.error("Server Error Text:", errorText);
+                console.error('Server Error Text:', errorText);
             }
         }
-        console.error(`Error generating AI image. Details: `, error);
+        console.error('Error generating AI image. Details: ', error);
         return; // Exit early, don't add broken image
     } finally {
         // 💡 ALWAYS RE-ENABLE BUTTON
         aipicButton.disabled = false;
-        aipicButton.innerText = "Generate AI Image";
+        aipicButton.innerText = 'Generate AI Image';
     }
 });
 
-const promptInfoBtn = document.querySelector("#promptinfbtn");
-const promptGuide = document.querySelector("#promptguide");
+const promptInfoBtn = document.querySelector('#promptinfbtn');
+const promptGuide = document.querySelector('#promptguide');
 
-promptInfoBtn.addEventListener("mouseover", () => {
-    if (promptGuide.style.display === "flex") {
-        promptGuide.style.display = "none";
-    } else {
-        promptGuide.style.display = "flex";
-        promptGuide.innerHTML = `
-            <p style="max-width: 400px; padding: 10px; background: #e0e0e0; border-radius: 5px; font-size: 14px;">
+
+
+promptInfoBtn.addEventListener('mouseover', (event) => {
+    promptGuide.style.display = 'inline-flex';
+    promptGuide.style.flexDirection = 'column';
+    promptGuide.style.position = 'absolute';
+    promptGuide.style.top = '100px';
+    promptGuide.style.right = '50px';
+    promptGuide.style.justifyContent = 'center';
+    promptGuide.style.alignItems = 'center';
+    promptGuide.innerHTML = `
+            <p style="max-width: 400px; padding: 10px; border-radius: 5px; font-size: 14px;">
                 <strong>Prompt Guide:</strong><br>
                 For best results, provide a detailed description of the image you want to generate. Include elements like:
                 <ul>
@@ -261,11 +267,11 @@ promptInfoBtn.addEventListener("mouseover", () => {
                 The more specific you are, the better the AI can generate an image that matches your vision!
             </p>
         `;
-    }
 });
 
-promptInfoBtn.addEventListener("mouseout", () => {
-    promptGuide.style.display = "none";
+promptInfoBtn.addEventListener('mouseout', () => {
+    promptGuide.style.display = 'none';
+    promptGuide.innerHTML = '';
 });
 
 /*

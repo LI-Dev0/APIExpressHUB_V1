@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>
-    <%= title %>
-</title>
-<link rel="stylesheet" href="/styles/styler.css">
-<link rel="stylesheet" href="/styles/picstyles.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/styles/styler.css">
+    <link rel="stylesheet" href="/styles/picstyles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
 <body id="picBody" class="container-fluid text-center bg-dark-subtle">
@@ -53,13 +53,16 @@
         <br>
         <div>
             <h2 class="callout-info">Generate AI Images using Stability API!</h2>
-            <article id="promptguide"><button id="promptinfbtn">🛈</button></article>
+            <button id="promptinfbtn">🛈</button>
+            <article id="promptguide"></article>
             <form method="post" id="aipicForm"
                 style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
                 <div
                     style="display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: space-around;">
                     <label for="aipicInput">Prompt :</label>
-                    <textarea type="text" id="aipicInput" placeholder="Enter as detailed a description for a fulfilling result" style="display: inline-flex; align-items: center; justify-content: center;  padding: 5px; border-radius: 4px; border: 1px solid #ccc; width: 500px; height: fit-content; font-family: 'Trebuchet MS', 'Lucida Grande', sans-serif; font-size: 14px; resize: vertical;">
+                    <textarea type="text" id="aipicInput"
+                        placeholder="Enter as detailed a description for a fulfilling result"
+                        style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center;  padding: 5px; border-radius: 4px; border: 1px solid #ccc; width: 500px; height: fit-content; font-family: 'Trebuchet MS', 'Lucida Grande', sans-serif; font-size: 14px; resize: vertical;">
                     </textarea>
                 </div>
                 <button id="aipicButton"
@@ -71,7 +74,7 @@
     <div id="endpic" class="centered-bg outline p-3 mt-4 mb-4 rounded-3">
         <p>Thanks for visiting PicHub! Hope you enjoyed your experience =)</p>
     </div>
-    <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3 bg-primary-subtle text-dark">
+    <footer class="container flex p-3 mt-4 mb-0 rounded-3 bg-primary-subtle text-dark">
 
         <div class="container-fluid flex text-center p-3 justify-content-center d-flex gap-5">
             <div id="footercontact" class="container-sm d-flex border p-3 rounded-2 boxshadow-dark boxshadow-hover">
