@@ -6,11 +6,94 @@ html {
 
 #aipicContainer {
     display: flex;
-    width: 100%;
     flex-direction: column-reverse;
     border: 5px groove bisque;
     border-radius: 10px;
     justify-content: space-around;
     padding: 10px;
     background-color: #00121980;
+}
+#aipicContainer img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+#aipicContainer p {
+    font-size: 1.2rem;
+    color: #81f59a;
+    margin-top: 10px;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    /* Image containers stack vertically */
+    #picContainer {
+        flex-direction: column !important;
+        padding: 5px;
+    }
+    
+    #aipicContainer {
+        flex-direction: column !important;
+        padding: 5px;
+        width: 100%;
+    }
+    
+    /* Image grid becomes single column on mobile */
+    #picList {
+        grid-template-columns: 1fr !important;
+        gap: 5px;
+        width: 100%;
+    }
+    
+    #aipicList {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+    
+    /* Form and textarea responsive */
+    #aipicForm {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    #aipicForm > div {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    
+    #aipicInput {
+        width: 100% !important;
+        min-height: 80px;
+    }
+    
+    /* Images scale properly */
+    #aipicContainer img,
+    #picContainer img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .logo {
+        width: 80% !important;
+        margin: 10px auto;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small devices */
+    #aipicInput {
+        font-size: 12px;
+        width: 100% !important;
+    }
+    
+    #aipicButton {
+        padding: 10px !important;
+        font-size: 14px;
+    }
+    
+    .logo {
+        width: 90% !important;
+    }
 }
