@@ -244,21 +244,17 @@ aipicButton.addEventListener('click', async (event) => {
 const promptInfoBtn = document.querySelector('#promptinfbtn');
 const promptGuide = document.querySelector('#promptguide');
 
-
-
-promptInfoBtn.addEventListener('mouseover', (event) => {
-    promptGuide.style.display = 'inline-flex';
+promptInfoBtn.addEventListener('mouseover', () => {
+    promptGuide.style.display = 'flex';
     promptGuide.style.flexDirection = 'column';
-    promptGuide.style.position = 'absolute';
-    promptGuide.style.top = '100px';
-    promptGuide.style.right = '50px';
-    promptGuide.style.justifyContent = 'center';
+    promptGuide.style.justifyContent = 'flex-start';
     promptGuide.style.alignItems = 'center';
     promptGuide.innerHTML = `
-            <p style="max-width: 400px; padding: 10px; border-radius: 5px; font-size: 14px;">
-                <strong>Prompt Guide:</strong><br>
-                For best results, provide a detailed description of the image you want to generate. Include elements like:
-                <ul>
+            <h3 style="margin-bottom: 10px;">🛈 AI Image Generation Prompt Guide</h3>
+            <p style="display: inline-flex; width: 80%; padding: 10px; border-radius: 5px; font-size: 14px;">
+            For best results, provide a detailed description of the image you want to generate. Include elements like:    
+            <br>
+                <ul style="text-align: left; margin-left: 20px; list-style: none;">
                     <li><em>Subject:</em> What is the main focus? (e.g., "a serene landscape")</li>
                     <li><em>Environment:</em> Where is it set? (e.g., "with a river flowing through a forest")</li>
                     <li><em>Background:</em> What is in the background? (e.g., "mountains in the background")</li>
