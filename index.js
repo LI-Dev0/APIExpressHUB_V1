@@ -216,7 +216,7 @@ app.post('/pichub', limiter, async (req, res) => {
 
     // Optional parameters (if supported by the specific model version)
     // 3. Make the POST request to Stability AI's Diffusion endpoint
-    form.append('style_preset', 'photographic'); // 'photographic', 'digital-art', 'analog-film', low-poly, comic-book, fantasy-art etc.
+    form.append('style_preset', 'analog-film'); // 'photographic', 'digital-art', 'analog-film', low-poly, comic-book, fantasy-art etc.
 
     // 3. Make the POST request to Stability AI\'s Diffusion endpoint
     // PHASE 1 FIX: Added timeout to prevent requests hanging indefinitely

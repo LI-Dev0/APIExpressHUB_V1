@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const picContainer = document.getElementById("picContainer");
 const picList = document.querySelector("#picList");
 const picButton = document.querySelector("#picButton");
@@ -56,8 +57,10 @@ picButton.addEventListener("click", async (req, res) => {
         newPic.alt = "Random Picture ";
         newPic.className = "picList";
         newPic.style.margin = '20px 10px';
-        newPic.style.objectFit = 'stretch';
-        newPic.style.border = '5px solid bisque';
+        newPic.style.objectFit = 'cover';
+        newPic.style.width = '90%';
+        newPic.style.height = '80%';
+        newPic.style.border = '3px solid bisque';
 
         // Add error handler to the image element
         newPic.onerror = () => {
@@ -77,8 +80,10 @@ picButton.addEventListener("click", async (req, res) => {
 //Add hover effect to images
 picList.addEventListener('mouseover', (event) => {
     if (event.target.tagName === 'IMG') {
-        event.target.style.transform = 'scale(1.05)';
+        event.target.style.transform = 'scale(1.2)';
         event.target.style.transition = 'transform 0.3s ease';
+        // Add a subtle box shadow on hover
+        event.target.style.boxShadow = '0 4px 8px rgba(139, 99, 161, 0.58)';
     }
 });
 
@@ -86,6 +91,8 @@ picList.addEventListener('mouseout', (event) => {
     if (event.target.tagName === 'IMG') {
         event.target.style.transform = 'scale(1)';
         event.target.style.transition = 'transform 0.3s ease';
+        // Remove the box shadow on mouse out
+        event.target.style.boxShadow = '';
     }
 });
 
@@ -97,8 +104,10 @@ const aipicInput = document.querySelector("#aipicInput");
 const aipicSrc = document.querySelector("#aipicSrc");
 
 // Style the AI picture list container
-aipicList.style.display = 'grid';
-aipicList.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+aipicList.style.display = 'flex';
+aipicList.style.flexDirection = 'column';
+aipicList.style.alignItems = 'center';
+aipicList.style.justifyContent = 'center';
 aipicList.style.gap = '20px';
 aipicList.style.padding = '20px 0';
 aipicList.style.width = '100%';
@@ -147,13 +156,13 @@ aipicButton.addEventListener("click", async (event) => {
             const card = document.createElement('div');
             card.className = 'ai-card';
             card.style.cssText = "display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: auto;";
-            
+
             // 2. Create the image element
             const newAiImg = document.createElement('img');
             newAiImg.src = imageUrl;
             newAiImg.alt = `AI Generated Image for prompt: ${userPrompt}`;
             newAiImg.style.cssText = "display: block; width: 100%; max-width: 500px; border-radius: 5px; border: 5px solid lightblue;";
-        
+
             // Add error handler to the image element
             newAiImg.onerror = () => {
                 console.error(`Failed to load AI generated image from: ${newAiImg.src}`);
@@ -229,6 +238,34 @@ aipicButton.addEventListener("click", async (event) => {
         aipicButton.disabled = false;
         aipicButton.innerText = "Generate AI Image";
     }
+});
+
+const promptInfoBtn = document.querySelector("#promptinfbtn");
+const promptGuide = document.querySelector("#promptguide");
+
+promptInfoBtn.addEventListener("mouseover", () => {
+    if (promptGuide.style.display === "flex") {
+        promptGuide.style.display = "none";
+    } else {
+        promptGuide.style.display = "flex";
+        promptGuide.innerHTML = `
+            <p style="max-width: 400px; padding: 10px; background: #e0e0e0; border-radius: 5px; font-size: 14px;">
+                <strong>Prompt Guide:</strong><br>
+                For best results, provide a detailed description of the image you want to generate. Include elements like:
+                <ul>
+                    <li><em>Subject:</em> What is the main focus? (e.g., "a serene landscape")</li>
+                    <li><em>Environment:</em> Where is it set? (e.g., "with a river flowing through a forest")</li>
+                    <li><em>Background:</em> What is in the background? (e.g., "mountains in the background")</li>
+                    <li><em>Atmosphere:</em> What mood or lighting? (e.g., "bathed in warm sunlight, creating a peaceful and inviting atmosphere")</li>
+                </ul>
+                The more specific you are, the better the AI can generate an image that matches your vision!
+            </p>
+        `;
+    }
+});
+
+promptInfoBtn.addEventListener("mouseout", () => {
+    promptGuide.style.display = "none";
 });
 
 /*
