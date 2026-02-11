@@ -4,15 +4,17 @@ siteTheme.style.fontFamily = 'Monospace, sans-serif';
 siteTheme.style.backgroundColor = '#8fcde623';
 
 const header = document.querySelector('#headline');
-header.style.display = 'flex';
-header.style.justifyContent = 'center';
-header.style.alignItems = 'center';
-header.style.backgroundColor = '#001219';
-header.style.color = 'rgb(81, 245, 154)';
-header.style.fontFamily = 'Trebuchet MS, cursive, sans-serif';
-header.style.padding = '20px';
-header.style.border = '5px groove bisque';
-header.style.borderRadius = '10px';
+if (header) {  // ✅ Only style if element exists
+  header.style.display = 'flex';
+  header.style.justifyContent = 'center';
+  header.style.alignItems = 'center';
+  header.style.backgroundColor = '#001219';
+  header.style.color = 'rgb(81, 245, 154)';
+  header.style.fontFamily = 'Trebuchet MS, cursive, sans-serif';
+  header.style.padding = '20px';
+  header.style.border = '5px groove bisque';
+  header.style.borderRadius = '10px';
+}
 
 // const carouselContainer = document.querySelector('#carouselContainer');
 //  carouselContainer.style.display = 'flex';

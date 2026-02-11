@@ -66,6 +66,7 @@ logger.info('✅ All required environment variables configured');
 // STATIC FILE SERVING
 // ============================================================================
 app.use(express.static(path.join(__dirname, 'resources')));
+app.use('/images', express.static(path.join(__dirname, 'resources/images')));
 // ============================================================================
 // BODY PARSING MIDDLEWARE - WITH SIZE LIMITS
 // ============================================================================

@@ -250,18 +250,19 @@ promptInfoBtn.addEventListener('mouseover', () => {
     promptGuide.style.justifyContent = 'flex-start';
     promptGuide.style.alignItems = 'center';
     promptGuide.innerHTML = `
-            <h3 style="margin-bottom: 10px;">🛈 AI Image Generation Prompt Guide</h3>
-            <p style="display: inline-flex; width: 80%; padding: 10px; border-radius: 5px; font-size: 14px;">
-            For best results, provide a detailed description of the image you want to generate. Include elements like:    
+            <h3 style="margin-bottom: 20px;">-- Prompt Guide --</h3>
+            <h6>
+            For best results, provide a detailed description of the image you want to generate. Include elements like:
+            </h6>    
             <br>
-                <ul style="text-align: left; margin-left: 20px; list-style: none;">
+            <ul style="text-align: left; margin-left: 20px; list-style: none;">
                     <li><em>Subject:</em> What is the main focus? (e.g., "a serene landscape")</li>
                     <li><em>Environment:</em> Where is it set? (e.g., "with a river flowing through a forest")</li>
                     <li><em>Background:</em> What is in the background? (e.g., "mountains in the background")</li>
                     <li><em>Atmosphere:</em> What mood or lighting? (e.g., "bathed in warm sunlight, creating a peaceful and inviting atmosphere")</li>
                 </ul>
-                The more specific you are, the better the AI can generate an image that matches your vision!
-            </p>
+            <h6 style="display: inline-flex; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">✨ The more specific you are, the better the AI engine can generate an image that matches your vision! 🎯
+            </h6>
         `;
 });
 
