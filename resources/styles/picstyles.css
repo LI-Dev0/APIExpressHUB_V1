@@ -29,7 +29,7 @@ html {
 @media (max-width: 768px) {
     /* Image containers stack vertically */
     #picContainer {
-        flex-direction: column !important;
+        flex-direction: column-reverse !important;
         padding: 5px;
     }
     
