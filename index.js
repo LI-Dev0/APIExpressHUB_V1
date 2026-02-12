@@ -356,8 +356,6 @@ app.post('/pichubleo', limiter, async (req, res) => {
       width: 1024,
       height: 1024,
       num_images: 1,
-      inference_steps: 20,
-      guidance_scale: 7.0, // Higher values make the image more closely follow the prompt
     };
 
     const createResponse = await axios.post(
