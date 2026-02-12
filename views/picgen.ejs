@@ -71,6 +71,35 @@
             </form>
         </div>
     </div>
+    <!-- Help me recreate this block for a different aipicContainer that would render generations using leonarado ai API instead of Stability API. The form should have the same structure but with different ids and the button should have a different id as well. The heading should also be different to reflect the change in API. -->
+    <div id="aipicContainer" class="container-md mt-4 mb-4"
+        style="display: flex; align-items: center; justify-content: space-evenly; width: 100%;">
+        <div class="container">
+            <div id="aipicListLeo" class="container">
+            </div>
+            <h3 id="aipicSrcLeo" class="container"></h3>
+        </div>
+        <br>
+        <div>
+            <h2 class="callout-info">Generate AI Images using Leonardo AI API!</h2>
+            <button id="promptinfbtnLeo">🛈</button>
+            <article id="promptguideLeo"></article>
+            <form id="aipicFormLeo"
+                style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+                <div
+                    style="display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: space-around;">
+                    <label for="aipicInputLeo">Prompt :</label>
+                    <textarea type="text" id="aipicInputLeo"
+                        placeholder="Enter as detailed a description for a fulfilling result"
+                        style="display: inline-flex; flex-direction: column; align-items: center; justify-content: center;  padding: 5px; border-radius: 4px; border: 1px solid #ccc; width: 500px; height: fit-content; font-family: 'Trebuchet MS', 'Lucida Grande', sans-serif; font-size: 14px; resize: vertical;">
+                    </textarea>
+                </div>
+                <button id="aipicButtonLeo"
+                    style="padding: 15px; border-radius: 5px; border: none; background-color: #231b537e; color: white; cursor: pointer;">Generate
+                    AI Image</button>
+            </form>
+        </div>
+    </div>
     <div id="endpic" class="centered-bg outline p-3 mt-4 mb-4 rounded-3">
         <p>Thanks for visiting PicHub! Hope you enjoyed your experience =)</p>
     </div>

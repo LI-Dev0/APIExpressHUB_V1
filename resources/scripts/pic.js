@@ -113,18 +113,12 @@ aipicList.style.gap = '20px';
 aipicList.style.padding = '20px 0';
 aipicList.style.width = '100%';
 
-// Event listener for AI Image Generation button click
-
-//Diffusion API Simulation Section
-
 // Example of using Stability AI's Diffusion API to generate an image (from Node.js environment)
 
-
-//adapt the above to listen for button click and display image in browser
 aipicButton.addEventListener('click', async (event) => {
-    //halt default page-reload on form submission
+    // halt default page-reload on form submission
     event.preventDefault();
-    //initialise the input prompt specifications from aiInput variable as promptData
+    // initialise the input prompt specifications from aiInput variable as promptData
     const userPrompt = aipicInput.value.trim();
     if (!userPrompt) {
         console.log('Please enter a prompt string to generate an AI image.');
@@ -241,6 +235,7 @@ aipicButton.addEventListener('click', async (event) => {
     }
 });
 
+// Prompt Guide Tooltip Logic
 const promptInfoBtn = document.querySelector('#promptinfbtn');
 const promptGuide = document.querySelector('#promptguide');
 
@@ -310,3 +305,162 @@ promptInfoBtn.addEventListener('mouseout', () => {
 //   throw new Error(`${response.status}: ${response.data.toString()}`);
 //}
 */
+
+// Helper function to simulate next() in this context
+function next() {
+    console.log('Skipping appending broken image.');
+}
+
+// Leonardo AI API Section Recreation
+const aipicListLeo = document.querySelector('#aipicListLeo');
+const aipicButtonLeo = document.querySelector('#aipicButtonLeo');
+const aipicInputLeo = document.querySelector('#aipicInputLeo');
+const aipicSrcLeo = document.querySelector('#aipicSrcLeo');
+
+// Style the AI picture list container for Leonardo AI
+aipicListLeo.style.display = 'flex';
+aipicListLeo.style.flexDirection = 'column';
+aipicListLeo.style.alignItems = 'center';
+aipicListLeo.style.justifyContent = 'center';
+aipicListLeo.style.gap = '20px';
+aipicListLeo.style.padding = '20px 0';
+aipicListLeo.style.width = '100%';
+// Example of using Leonardo AI's API to generate an image (from Node.js environment)
+
+aipicButtonLeo.addEventListener('click', async (event) => {
+    // halt default page-reload on form submission
+    event.preventDefault();
+    // initialise the input prompt specifications from aiInput variable as promptData
+    const userPromptLeo = aipicInputLeo.value.trim();
+    if (!userPromptLeo) {
+        console.log('Please enter a prompt string to generate an AI image.');
+        alert('Please enter a prompt to generate an AI image.');
+        return;
+    }
+    // ⏳ START LOADING STATE
+    aipicButtonLeo.disabled = true;
+    aipicButtonLeo.innerText = 'Generating... 🚀';
+    aipicSrcLeo.textContent = 'Connecting to Leonardo AI... Please wait.';
+    try {
+        // 2. Send the value to the server using 'fetch'
+        const response = await axios.post(
+            '/pichubleo',
+            { prompt: userPromptLeo }, // Data object (Axios stringifies this automatically)
+            {
+                responseType: 'arraybuffer', // REQUIRED for binary image data
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+        // If API returned binary image data, create a Blob and an object URL to display it
+        if (response && response.status === 200) {
+            // Fix: Axios normalizes headers to lowercase
+            const contentType = response.headers['content-type'] || 'image/jpeg';
+            const blob = new Blob([response.data], { type: contentType });
+            const imageUrl = URL.createObjectURL(blob);
+            // 1. Create a container for the image and the download button
+            const card = document.createElement('div');
+            card.className = 'ai-card';
+            card.style.cssText = 'display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #f4f4f4; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); height: auto;';
+            // 2. Create the image element
+            const newAiImgLeo = document.createElement('img');
+            newAiImgLeo.src = imageUrl;
+            newAiImgLeo.alt = `AI Generated Image for prompt: ${userPromptLeo}`;
+            newAiImgLeo.style.cssText = 'display: block; width: 100%; max-width: 500px; border-radius: 5px; border: 5px solid lightblue;';
+            // Add error handler to the image element
+            newAiImgLeo.onerror = () => {
+                console.error(`Failed to load AI generated image from: ${newAiImgLeo.src}`);
+                card.remove(); // Remove the card if image fails to load
+            };
+            // 3. Create the Download Button
+            const downloadBtnLeo = document.createElement('a'); // Use an 'a' tag to act as a button
+            downloadBtnLeo.href = imageUrl;
+            downloadBtnLeo.download = `ai-gen-leo-${Date.now()}.jpg`; // Filename for the user
+            downloadBtnLeo.innerText = '💾 Download Image';
+            downloadBtnLeo.style.cssText = 'padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold;';
+            // 4. Assemble and Add to Page
+            card.appendChild(newAiImgLeo);
+            card.appendChild(downloadBtnLeo);
+            aipicListLeo.prepend(card);
+            aipicSrcLeo.textContent = 'Find the latest pic at ' + newAiImgLeo.src + ' Generation successful!';
+            aipicInputLeo.value = null; // Clear input after generating image
+            // PHASE 1 FIX: Memory leak fix - Revoke object URL when card is removed
+            // Don't revoke immediately after load - image needs the URL to display!
+            let timeoutId = null;
+            let isCardRemoved = false;
+
+            const handleCardRemove = () => {
+                if (isCardRemoved) return; // Prevent duplicate cleanup
+                isCardRemoved = true;
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                }
+                URL.revokeObjectURL(imageUrl);
+                console.log('Image URL revoked when card removed');
+            };
+
+            card.addEventListener('remove', handleCardRemove);
+            // Fallback: Revoke after 1 hour if card stays on page
+            timeoutId = setTimeout(() => {
+                if (!isCardRemoved) {
+                    URL.revokeObjectURL(imageUrl);
+                    console.log('Image URL revoked after 1 hour timeout');
+                }
+            }, 3600000);
+            console.log(`AI image generated successfully for prompt: "${userPromptLeo}"`);
+        } else {
+            console.error('AI image API responded with non-200 status', response && response.status);
+        }
+    } catch (error) {
+        if (error.response?.status === 429) {
+            aipicSrcLeo.textContent = 'Rate limit exceeded. Please wait before trying again.';
+            return;
+        }
+        if (error.response && error.response.data) {
+            // Convert ArrayBuffer error back into a readable string
+            const decoder = new TextDecoder('utf-8');
+            const errorText = decoder.decode(error.response.data);
+            try {
+                const errorJson = JSON.parse(errorText);
+                console.error('Server API Error:', errorJson.error);
+            } catch (e) {
+                console.error('Server Error Text:', errorText);
+            }
+        }
+        console.error('Error generating AI image. Details: ', error);
+        return; // Exit early, don't add broken image
+    } finally {
+        // 💡 ALWAYS RE-ENABLE BUTTON
+        aipicButtonLeo.disabled = false;
+        aipicButtonLeo.innerText = 'Generate AI Image';
+    }
+});
+
+// Prompt Guide Tooltip Logic for Leonardo AI
+const promptInfoBtnLeo = document.querySelector('#promptinfbtnLeo');
+const promptGuideLeo = document.querySelector('#promptguideLeo');
+promptInfoBtnLeo.addEventListener('mouseover', () => {
+    promptGuideLeo.style.display = 'flex';
+    promptGuideLeo.style.flexDirection = 'column';
+    promptGuideLeo.style.justifyContent = 'flex-start';
+    promptGuideLeo.style.alignItems = 'center';
+    promptGuideLeo.innerHTML = `
+            <h3 style="margin-bottom: 20px;">-- Prompt Guide for Leonardo AI --</h3>
+            <h6>
+            For best results with Leonardo AI, provide a detailed description of the image you want to generate. Include elements like:
+            </h6>    
+            <br>
+            <ul style="text-align: left; margin-left: 20px; list-style: none;">
+                    <li><em>Subject:</em> What is the main focus? (e.g., "a futuristic cityscape")</li>
+                    <li><em>Environment:</em> Where is it set? (e.g., "with flying cars and neon lights")</li>
+                    <li><em>Background:</em> What is in the background? (e.g., "towering skyscrapers under a starry sky")</li>
+                    <li><em>Atmosphere:</em> What mood or lighting? (e.g., "illuminated by vibrant neon colors, creating a lively and dynamic atmosphere")</li>
+                </ul>
+            <h6 style="display: inline-flex; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">✨ The more specific you are, the better Leonardo AI can generate an image that matches your vision! 🎯
+            </h6>
+        `;
+});
+
+promptInfoBtnLeo.addEventListener('mouseout', () => {
+    promptGuideLeo.style.display = 'none';
+    promptGuideLeo.innerHTML = '';
+});
