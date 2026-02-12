@@ -353,9 +353,11 @@ app.post('/pichubleo', limiter, async (req, res) => {
     const payload = {
       prompt: cleanPrompt,
       modelId: 'b24e16ff-06e3-43eb-8d33-4416c2d75876', // Leonardo Phoenix model (fast & high quality)
-      width: 512,
-      height: 512,
+      width: 1024,
+      height: 1024,
       num_images: 1,
+      inference_steps: 20,
+      guidance_scale: 7.0, // Higher values make the image more closely follow the prompt
     };
 
     const createResponse = await axios.post(
