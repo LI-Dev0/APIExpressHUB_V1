@@ -13,12 +13,14 @@ html {
     padding: 10px;
     background-color: #00121980;
 }
+
 #aipicContainer img {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 #aipicContainer p {
     font-size: 1.2rem;
     color: #81f59a;
@@ -27,54 +29,77 @@ html {
 
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
+
     /* Image containers stack vertically */
     #picContainer {
         flex-direction: column-reverse !important;
         padding: 5px;
     }
-    
+
     #aipicContainer {
         flex-direction: column !important;
         padding: 5px;
         width: 100%;
     }
-    
+
     /* Image grid becomes single column on mobile */
     #picList {
         grid-template-columns: 1fr !important;
         gap: 5px;
         width: 100%;
     }
-    
+    /* Stability AI image list */
     #aipicList {
         flex-direction: column;
         width: 100%;
         align-items: center;
     }
-    
+
+    /* Leonardo AI image list */
+    #aipicListLeo {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+
     /* Form and textarea responsive */
+    /* Stability AI form */
     #aipicForm {
         width: 100%;
         padding: 10px;
     }
-    
-    #aipicForm > div {
+
+    #aipicForm>div {
         flex-direction: column !important;
         align-items: stretch !important;
     }
-    
+
     #aipicInput {
         width: 100% !important;
         min-height: 80px;
     }
-    
+    /* Leonardo AI form */
+    #aipicFormLeo {
+        width: 100%;
+        padding: 10px;
+    }
+    #aipicFormLeo>div {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    #aipicInputLeo {
+        width: 100% !important;
+        min-height: 80px;
+    }
+
     /* Images scale properly */
     #aipicContainer img,
     #picContainer img {
         max-width: 100%;
         height: auto;
     }
-    
+
     .logo {
         width: 80% !important;
         margin: 10px auto;
@@ -82,18 +107,32 @@ html {
 }
 
 @media (max-width: 480px) {
+
     /* Extra small devices */
+    /* sTABILIty ai */
     #aipicInput {
         font-size: 12px;
         width: 100% !important;
     }
-    
+
     #aipicButton {
         padding: 10px !important;
         font-size: 14px;
     }
-    
+
     .logo {
         width: 90% !important;
     }
+
+    /* leonardo ai */
+    #aipicInputLeo {
+        font-size: 12px;
+        width: 100% !important;
+    }
+
+    #aipicButtonLeo {
+        padding: 10px !important;
+        font-size: 14px;
+    }
+
 }
