@@ -6,7 +6,7 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 16px;
     scroll-behavior: smooth;
     background-color: #001219;
@@ -25,7 +25,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Trebuchet MS', cursive, sans-serif;
+    font-family: 'Trebuchet MS', sans-serif;
     /*    text-shadow: 3px 3px 2px #10860c;*/
     background-color: #042c3b;
     margin: 0;
@@ -370,7 +370,7 @@ footer {
 /* Mobile phones (480px and below) */
 @media (max-width: 480px) {
     html {
-        font-size: 12px;
+        font-size: 14px;
     }
     
     h1 {
@@ -387,11 +387,11 @@ footer {
     
     #welc,
     #welcomeMessage {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
     
     body {
-        font-size: 0.875rem;
+        font-size: 0.9rem;
     }
     
     .navbar-brand {
