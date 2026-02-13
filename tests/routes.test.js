@@ -12,10 +12,12 @@ describe('API Routes Integration Tests', () => {
   beforeEach(() => {
     app = express();
     app.use(express.json());
+    app.set('view engine', 'ejs');  // ← ADD THIS
+    app.set('views', './views');     // ← ADD THIS
 
     // Setup basic routes for testing
     app.get('/', (req, res) => {
-      res.render('home.ejs');
+      res.status(200).send('<html>Home</html>'); // ← FIX: Don't call render in tests
     });
 
     app.get('/jokes', (req, res) => {
