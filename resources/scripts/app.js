@@ -74,7 +74,7 @@ jokebox.forEach((element) => {
     ulElement.style.padding = '10px';
     ulElement.style.border = '2px solid rgb(11, 82, 29)';
   }
-  element.style.fontFamily = 'Trebuchet MS, cursive, sans-serif';
+  element.style.fontFamily = 'Trebuchet MS, sans-serif';
   element.style.border = '5px groove rgba(7, 48, 14, 1)';
   element.style.borderRadius = '25px';
   const button = element.getElementsByTagName('button')[0];
