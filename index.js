@@ -234,8 +234,7 @@ app.post('/pichub', limiter, async (req, res) => {
     // form.append('payload', JSON.stringify(payload), {
     //   contentType: 'application/json', }); // Specify content type for this part
     form.append('prompt', cleanPrompt);
-    // aspect_ratio is optional but can help control the dimensions of the generated image. Common values: '1:1', '16:9', '4:3'
-    form.append('aspect_ratio', '1:1');
+    form.append('aspect_ratio', '1:1'); // aspect_ratio is optional but can help control the dimensions of the generated image. Common values: '1:1', '16:9', '4:3'
     form.append('model', 'sd3.5-flash'); // Use 'sd3.5-large' or 'sd3-medium' (check your tier/credits)
     form.append('output_format', 'jpeg'); // 'jpeg' or 'png' or 'webp' (check your tier/credits)
     form.append('cfg_scale', 6.0); // controls the level of configuration adaptation to prompt specification. 0 -> don't align to prompt spec | 10 -> align to prompt fully
@@ -264,7 +263,7 @@ app.post('/pichub', limiter, async (req, res) => {
     // Check if response is actually an image
     if (response.headers['content-type']?.startsWith('image/')) {
       // Process as image
-      res.set('Content-Type', 'image/jpeg');
+      res.set('Content-Type', response.headers['content-type'] || 'image/jpeg');
       res.send(Buffer.from(response.data));
     } else {
       // Handle as error response
