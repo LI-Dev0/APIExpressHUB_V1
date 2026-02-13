@@ -95,7 +95,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     background-color: #001219;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 fade-in {
@@ -186,7 +186,7 @@ footer {
 }
 
 #footerlinks ul {
-    background-color: #001219;
+    background-color: #00141cc3;
     padding: 0;
 }
 
@@ -282,7 +282,7 @@ footer {
 
 .ai-card {
     transition: transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(134, 71, 180, 0.591);
 }
 
 .ai-card:hover {
