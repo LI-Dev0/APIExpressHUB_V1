@@ -38,7 +38,7 @@ jobs:
         continue-on-error: true
       
       - name: Upload SBOM
-        uses: anchore/sbom-action@v2
+        uses: anchore/sbom-action@v0
         with:
           format: spdx-json
           output-file: sbom.spdx.json

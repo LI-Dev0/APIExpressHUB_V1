@@ -6,7 +6,7 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 16px;
     scroll-behavior: smooth;
     background-color: #001219;
@@ -25,7 +25,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Trebuchet MS', cursive, sans-serif;
+    font-family: 'Trebuchet MS', sans-serif;
     /*    text-shadow: 3px 3px 2px #10860c;*/
     background-color: #042c3b;
     margin: 0;
@@ -95,7 +95,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     background-color: #001219;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 fade-in {
@@ -186,7 +186,7 @@ footer {
 }
 
 #footerlinks ul {
-    background-color: #001219;
+    background-color: #00141cc3;
     padding: 0;
 }
 
@@ -274,18 +274,150 @@ footer {
 }
 
 #aipicList {
-    display: grid;
+    display: flex;
     justify-content: center;
-    grid-template-columns: repeat(autofill, minmax(250px, 1fr));
     gap: 15px;
     padding: 10px 0;
 }
 
 .ai-card {
     transition: transform 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(134, 71, 180, 0.591);
 }
 
 .ai-card:hover {
     transform: translateY(-5px);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Tablets and below (768px) */
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+    
+    body {
+        padding: 0 10px;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+        height: auto;
+        padding: 1rem;
+    }
+    
+    #routename,
+    #routenamepic {
+        font-size: 1.5rem;
+    }
+    
+    #welc,
+    #welcomeMessage {
+        font-size: 1rem;
+        padding: 10px;
+    }
+    
+    /* Navigation becomes vertical stack */
+    #navigationLinks {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .navbar-brand {
+        width: 100%;
+        padding: 10px;
+        border-bottom: 1px solid #001219;
+    }
+    
+    /* Footer responsive */
+    footer {
+        padding: 10px;
+    }
+    
+    footer .container-fluid {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    #footerlinks,
+    #footercontact {
+        width: 100% !important;
+        margin: 10px 0;
+    }
+    
+    #footerfootjoke,
+    #footerfootpic {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    /* Images wrap on mobile */
+    .imgblock {
+        flex-direction: column;
+    }
+    
+    .logo {
+        width: 90%;
+        margin: 10px auto;
+    }
+}
+
+/* Mobile phones (480px and below) */
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        height: auto;
+    }
+    
+    #routename,
+    #routenamepic {
+        font-size: 1.25rem;
+        padding: 1rem;
+    }
+    
+    #welc,
+    #welcomeMessage {
+        font-size: 0.95rem;
+    }
+    
+    body {
+        font-size: 0.9rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1rem;
+    }
+    
+    #footerfootjoke,
+    #footerfootpic {
+        font-size: 0.75rem;
+        padding: 10px 5px;
+    }
+    
+    footer h6 {
+        font-size: 0.8rem;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+    h1 {
+        height: auto;
+        padding: 10px;
+    }
+    
+    #navigationLinks {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
 }
