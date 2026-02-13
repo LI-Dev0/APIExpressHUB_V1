@@ -12,8 +12,8 @@ describe('API Routes Integration Tests', () => {
   beforeEach(() => {
     app = express();
     app.use(express.json());
-    app.set('view engine', 'ejs');  // ← ADD THIS
-    app.set('views', './views');     // ← ADD THIS
+    app.set('view engine', 'ejs');  // Set view engine for testing render calls
+    app.set('views', './views');     // Set views directory for testing render calls
 
     // Setup basic routes for testing
     app.get('/', (req, res) => {
