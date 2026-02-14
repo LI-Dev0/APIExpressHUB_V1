@@ -2,23 +2,36 @@
 
 ARG NODE_VERSION=20-alpine
 
-FROM node:${NODE_VERSION}
-
-ENV NODE_ENV production
-
+# Step 1: Base image for all stages
+FROM node:${NODE_VERSION} AS base
 WORKDIR /usr/src/app
-
-# Copy dependency files to use Docker layer caching.
 COPY package.json package-lock.json ./
 
-# Install dependencies.
+# Step 2: Test stage - Runs tests during build
+FROM base AS test
+RUN npm ci
+COPY . .
+RUN npm test && touch .test-passed
+
+# Step 3: Production dependency installer
+FROM base AS deps
+# Ensure production build fails if tests fail
+COPY --from=test /usr/src/app/.test-passed .test-passed
 RUN npm ci --omit=dev
+
+# Step 4: Final production image
+FROM node:${NODE_VERSION}
+ENV NODE_ENV production
+WORKDIR /usr/src/app
+
+# Copy production dependencies from deps stage
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+
+# Copy application source code
+COPY --chown=node:node . .
 
 # Run the application as a non-root user.
 USER node
-
-# Copy the rest of the source files and ensure they are owned by the node user.
-COPY --chown=node:node . .
 
 # Expose the port that the application listens on.
 EXPOSE 4747
