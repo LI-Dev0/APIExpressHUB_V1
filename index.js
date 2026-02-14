@@ -509,12 +509,15 @@ app.use((err, req, res, next) => {
 });
 
 // ============================================================================
-
 // SERVER LAUNCH & LISTEN
-
-const server = app.listen(port, () => {
-  logger.info(`✅ Server is running on http://localhost:${port} || ${new Date()}`);
-});
+// ============================================================================
+// Only start server if this file is run directly (not imported by tests)
+let server;
+if (require.main === module) {
+  server = app.listen(port, () => {
+    logger.info(`✅ Server is running on http://localhost:${port} || ${new Date()}`);
+  });
+}
 
 // ============================================================================
 // GRACEFUL SHUTDOWN HANDLERS(defined earlier)
@@ -557,6 +560,11 @@ process.on('uncaughtException', (error) => {
 
 process.on('SIGTERM', gracefulShutdown('SIGTERM'));
 process.on('SIGINT', gracefulShutdown('SIGINT'));
+
+// -----------------------------------------
+// EXPORTS FOR TESTING
+// -----------------------------------------
+module.exports = { app, server };
 
 // -----------------------------------------
 // END OF INDEX.JS
