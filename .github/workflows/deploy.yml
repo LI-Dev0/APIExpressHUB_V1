@@ -94,10 +94,11 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Deploy to Railway
-        uses: railway-app/railway-deploy-action@v1
+        uses: railwayapp/cli-action@v1
         with:
-          api-token: ${{ secrets.RAILWAY_TOKEN }}
-          environment: ${{ needs.determine-environment.outputs.environment }}
+          railwayToken: ${{ secrets.RAILWAY_TOKEN }}
+          serviceName: APIExpressHUB_V1
+          env: ${{ needs.determine-environment.outputs.environment }}
 
   notify:
     needs: [deploy, determine-environment]
