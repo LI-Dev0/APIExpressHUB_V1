@@ -9,6 +9,10 @@ on:
       - 'package-lock.json'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   dependency-check:
     runs-on: ubuntu-latest
