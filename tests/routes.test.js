@@ -3,9 +3,9 @@
  * Tests all routes in index.js to increase coverage
  */
 
+const axios = require('axios');
 const request = require('supertest');
 const { app } = require('../index');
-const axios = require('axios');
 
 // Mock axios for external API calls
 jest.mock('axios');
@@ -131,7 +131,7 @@ describe('API Routes Integration Tests', () => {
         .expect('Content-Type', /json/);
 
       expect(response.body).toHaveProperty('value');
-      expect(axios.get).toHaveBeenCalledWith('https://api.chucknorris.io/jokes/random');
+      expect(axios.get).toHaveBeenCalledWith('https://api.chucknorris.io/jokes/random', { timeout: 10000 });
     });
 
     it('should handle Chuck Norris API errors', async () => {
@@ -164,7 +164,7 @@ describe('API Routes Integration Tests', () => {
         .expect('Content-Type', /json/);
 
       expect(response.body).toHaveProperty('joke');
-      expect(axios.get).toHaveBeenCalledWith('https://icanhazdadjoke.com/', { headers: { Accept: 'application/json' } });
+      expect(axios.get).toHaveBeenCalledWith('https://icanhazdadjoke.com/', { headers: { Accept: 'application/json' }, timeout: 10000 });
     });
 
     it('should handle dad joke API errors', async () => {
