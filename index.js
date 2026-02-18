@@ -128,6 +128,26 @@ app.use(cors({
 }));
 
 // ============================================================================
+// BOT DETECTION SYSTEM
+// ============================================================================
+const botIPs = new Set();
+const isBot = (req) => {
+  const clientIP = req.ip || req.connection.remoteAddress;
+  const forwardedIP = req.headers['x-forwarded-for']?.split(',')[0]?.trim();
+  const effectiveIP = forwardedIP || clientIP;
+  
+  // Detect bots attempting POST to unavailable routes (only GET methods exist on / and /jokes)
+  const isInvalidPostAttempt = req.method === 'POST' && (req.path === '/' || req.path === '/jokes');
+  
+  if (isInvalidPostAttempt && !botIPs.has(effectiveIP)) {
+    botIPs.add(effectiveIP);
+    logger.warn(`🤖 Bot detected and flagged: ${effectiveIP} attempting POST to ${req.path}`);
+  }
+  
+  return botIPs.has(effectiveIP);
+};
+
+// ============================================================================
 // RATE LIMITING MIDDLEWARE
 // ============================================================================
 // Increased from 2 to 100 requests per hour for development,, forced back to 2
@@ -136,6 +156,11 @@ const limiter = rateLimit({
   // set rate limit window and max from env variables or defaults
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || 11100000, 10), // 3 hrs + parseInt param 10
   skip: (req) => {
+    // Don't skip rate limiting for detected bots - enforce strict limits
+    if (isBot(req)) {
+      return false;
+    }
+    
     // Skip rate limiting for localhost or specific IPs (development only)
     const myIP = process.env.MY_IP || '127.0.0.1';
     const clientIP = req.ip || req.connection.remoteAddress;
@@ -523,6 +548,17 @@ app.get('/ready', (req, res) => {
 // ERROR HANDLING MIDDLEWARE (MUST BE LAST)
 
 app.use((req, res) => {
+  // Check for bot probe attempts (POST to routes that only accept GET)
+  const isBotProbe = req.method === 'POST' && (req.path === '/' || req.path === '/jokes');
+  
+  if (isBotProbe) {
+    logger.warn(`🤖 Bot probe blocked: ${req.method} ${req.originalUrl} from ${req.ip}`);
+    return res.status(404).json({ 
+      error: 'No exista, perdon',
+      message: 'This route does not exist'
+    });
+  }
+  
   logger.warn(`404 Not Found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({ error: '404 - Route not found' });
 });
