@@ -13,7 +13,6 @@ on:
         default: 'production'
         type: choice
         options:
-          - development
           - staging
           - production
 
@@ -80,6 +79,8 @@ jobs:
             echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             echo "environment=production" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/root" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
           else
             echo "environment=staging" >> $GITHUB_OUTPUT
           fi
@@ -93,12 +94,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Install Railway CLI
+        run: |
+          curl -fsSL https://railway.app/install.sh | sh
+          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+      
       - name: Deploy to Railway
-        uses: railwayapp/cli-action@v1
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
-          service: APIExpressHUB_V1
-          env: ${{ needs.determine-environment.outputs.environment }}
+        run: |
+          railway up --service APIExpressHUB_V1 --environment ${{ needs.determine-environment.outputs.environment }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   notify:
     needs: [deploy, determine-environment]
