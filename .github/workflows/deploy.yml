@@ -72,6 +72,9 @@ jobs:
     name: Determine Deployment Environment
     outputs:
       environment: ${{ steps.set-env.outputs.environment }}
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Set deployment environment
         id: set-env
@@ -92,6 +95,9 @@ jobs:
     name: Deploy to ${{ needs.determine-environment.outputs.environment }}
     environment:
       name: ${{ needs.determine-environment.outputs.environment }}
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v4
       
@@ -110,6 +116,9 @@ jobs:
     needs: [deploy, determine-environment]
     runs-on: ubuntu-latest
     if: always()
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Notify Deployment Status
         uses: actions/github-script@v7
