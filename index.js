@@ -128,9 +128,50 @@ app.use(cors({
 }));
 
 // ============================================================================
-// BOT DETECTION SYSTEM
+// BOT DETECTION SYSTEM WITH MONITORING
 // ============================================================================
 const botIPs = new Set();
+const botDetectionStats = {
+  firstDetection: null,
+  lastDetection: null,
+  totalDetected: 0,
+  detectionsByHour: new Map(),
+};
+
+// Bot IP count monitoring - alerts on growth thresholds
+const logBotGrowth = (ip, path) => {
+  const now = new Date();
+  const currentHour = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}h`;
+  
+  // Track first detection timestamp
+  if (!botDetectionStats.firstDetection) {
+    botDetectionStats.firstDetection = now;
+  }
+  botDetectionStats.lastDetection = now;
+  botDetectionStats.totalDetected++;
+  
+  // Track detections per hour
+  const hourCount = (botDetectionStats.detectionsByHour.get(currentHour) || 0) + 1;
+  botDetectionStats.detectionsByHour.set(currentHour, hourCount);
+  
+  // Log detection with current count
+  logger.warn(`🤖 Bot detected [#${botIPs.size + 1}]: ${ip} attempting POST to ${path}`);
+  
+  // Alert on thresholds
+  if (botIPs.size + 1 === 10) {
+    logger.warn('⚠️  Bot threshold alert: 10 unique bot IPs detected');
+  } else if (botIPs.size + 1 === 50) {
+    logger.warn('⚠️  Bot threshold alert: 50 unique bot IPs detected - consider additional security measures');
+  } else if (botIPs.size + 1 === 100) {
+    logger.error('🚨 Bot threshold CRITICAL: 100 unique bot IPs detected - review security immediately');
+  }
+  
+  // Alert on high hourly detection rate
+  if (hourCount >= 10) {
+    logger.warn(`⚠️  High bot activity: ${hourCount} new bots detected in current hour`);
+  }
+};
+
 const isBot = (req) => {
   const clientIP = req.ip || req.connection.remoteAddress;
   const forwardedIP = req.headers['x-forwarded-for']?.split(',')[0]?.trim();
@@ -141,11 +182,23 @@ const isBot = (req) => {
   
   if (isInvalidPostAttempt && !botIPs.has(effectiveIP)) {
     botIPs.add(effectiveIP);
-    logger.warn(`🤖 Bot detected and flagged: ${effectiveIP} attempting POST to ${req.path}`);
+    logBotGrowth(effectiveIP, req.path);
   }
   
   return botIPs.has(effectiveIP);
 };
+
+// Periodic bot monitoring report (every 6 hours)
+if (!isTestEnv) {
+  setInterval(() => {
+    if (botIPs.size > 0) {
+      const uptime = botDetectionStats.firstDetection 
+        ? Math.round((Date.now() - botDetectionStats.firstDetection.getTime()) / 1000 / 60 / 60)
+        : 0;
+      logger.info(`📊 Bot Monitoring Report: ${botIPs.size} unique IPs flagged | ${botDetectionStats.totalDetected} total attempts | ${uptime}h uptime`);
+    }
+  }, 6 * 60 * 60 * 1000); // 6 hours
+}
 
 // ============================================================================
 // RATE LIMITING MIDDLEWARE
