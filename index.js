@@ -184,23 +184,36 @@ app.get('/jokes', (req, res) => {
 // Chuck Norris Jokes Proxy
 app.get('/api/jokes/chuck', async (req, res) => {
   try {
-    const response = await axios.get('https://api.chucknorris.io/jokes/random');
+    const response = await axios.get('https://api.chucknorris.io/jokes/random', {
+      timeout: 10000 // Add 10-second timeout
+    });
     res.json(response.data);
   } catch (err) {
-    logger.error('Chuck Norris API error:', err.message);
-    res.status(502).json({ error: 'Failed to fetch joke' });
+    const errorMsg = err.code === 'ECONNABORTED' 
+      ? 'API request timed out' 
+      : err.message;
+    logger.error(`Chuck Norris API error: ${errorMsg}`);
+    const statusCode = err.code === 'ECONNABORTED' ? 504 : 502;
+    res.status(statusCode).json({ error: 'Failed to fetch joke' });
   }
 });
 
 // Dad Jokes Proxy
 app.get('/api/jokes/dad', async (req, res) => {
   try {
-    const config = { headers: { Accept: "application/json" } };
+    const config = { 
+      headers: { Accept: "application/json" },
+      timeout: 10000 // Add 10-second timeout
+    };
     const response = await axios.get('https://icanhazdadjoke.com/', config);
     res.json(response.data);
   } catch (err) {
-    logger.error('Dad Jokes API error:', err.message);
-    res.status(502).json({ error: 'Failed to fetch joke' });
+    const errorMsg = err.code === 'ECONNABORTED' 
+      ? 'API request timed out' 
+      : err.message;
+    logger.error(`Dad Jokes API error: ${errorMsg}`);
+    const statusCode = err.code === 'ECONNABORTED' ? 504 : 502;
+    res.status(statusCode).json({ error: 'Failed to fetch joke' });
   }
 });
 
@@ -267,7 +280,7 @@ app.post('/pichub', limiter, async (req, res) => {
           Accept: 'image/*',
         },
         responseType: 'arraybuffer',
-        timeout: parseInt(process.env.REQUEST_TIMEOUT_MS || 60000, 10), // 1 minute timeout
+        timeout: parseInt(process.env.REQUEST_TIMEOUT_MS || 30000, 10), // Reduce to 30s
       },
     );
 
