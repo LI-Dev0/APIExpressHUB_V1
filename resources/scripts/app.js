@@ -33,7 +33,7 @@ const butt = document.querySelector('.djbutton');
 const getDadJoke = async () => {
   try {
     const config = { headers: { Accept: 'application/json' } };
-    const res = await axios.get('/api/jokes/dad', config);
+    const res = await axios.get('https://icanhazdadjoke.com/', config);
     console.table('Joke fetched:', res.data.joke);
     return res.data.joke;
   } catch (e) {
@@ -72,10 +72,10 @@ jokebox.forEach((element) => {
     ulElement.style.backgroundColor = '#a6d2e438';
     ulElement.style.color = 'rgba(81, 245, 154, 1)';
     ulElement.style.padding = '10px';
-    ulElement.style.border = '2px solid rgb(11, 82, 29)';
+    ulElement.style.border = '2px solid #32598263';
   }
   element.style.fontFamily = 'Trebuchet MS, sans-serif';
-  element.style.border = '5px groove rgba(7, 48, 14, 1)';
+  element.style.border = '5px groove #32598281';
   element.style.borderRadius = '25px';
   const button = element.getElementsByTagName('button')[0];
   button.style.backgroundColor = 'rgba(81, 245, 154, 1)';
@@ -104,7 +104,7 @@ const chuckNorrisJoke = document.querySelector('#chuckNorrisJoke');
 
 chuckNorrisBtn.addEventListener('click', async () => {
   try {
-    const res = await axios.get('/api/jokes/chuck');
+    const res = await axios.get('https://api.chucknorris.io/jokes/random');
     const chuckNorrisJokeText = document.createElement('li');
     chuckNorrisJokeText.style.margin = '10px';
     chuckNorrisJokeText.style.padding = '10px';
