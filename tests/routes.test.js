@@ -120,7 +120,9 @@ describe('API Routes Integration Tests', () => {
         data: {
           id: 'test123',
           value: 'Chuck Norris can divide by zero.',
-          url: 'https://api.chucknorris.io/jokes/test123'
+          url: 'https://api.chucknorris.io/jokes/test123',
+          icon_url: 'https://api.chucknorris.io/img/avatar/chuck-norris.png',
+          categories: ['dev']
         }
       };
 
@@ -131,7 +133,9 @@ describe('API Routes Integration Tests', () => {
         .expect(200)
         .expect('Content-Type', /text\/html/);
 
-      expect(response.body).toHaveProperty('value');
+      // Since response is HTML, check text content instead of JSON body
+      expect(response.text).toContain('Chuck Norris can divide by zero.');
+      expect(response.text).toContain('DEV');
       expect(axios.get).toHaveBeenCalledWith('https://api.chucknorris.io/jokes/random', { timeout: 10000 });
     });
 
@@ -141,7 +145,7 @@ describe('API Routes Integration Tests', () => {
       const response = await request(app)
         .get('/api/jokes/chuck')
         .expect(502)
-        .expect('Content-Type', /text\/html/);
+        .expect('Content-Type', /json/);
 
       expect(response.body).toHaveProperty('error', 'Failed to fetch joke');
     });
@@ -164,7 +168,9 @@ describe('API Routes Integration Tests', () => {
         .expect(200)
         .expect('Content-Type', /text\/html/);
 
-      expect(response.body).toHaveProperty('joke');
+      // Since response is HTML, check text content instead of JSON body
+      expect(response.text).toContain('Why don\'t eggs tell jokes? They\'d crack each other up.');
+      expect(response.text).toContain('DAD JOKE');
       expect(axios.get).toHaveBeenCalledWith('https://icanhazdadjoke.com/', { headers: { Accept: 'application/json' }, timeout: 10000 });
     });
 
@@ -174,7 +180,7 @@ describe('API Routes Integration Tests', () => {
       const response = await request(app)
         .get('/api/jokes/dad')
         .expect(502)
-        .expect('Content-Type', /text\/html/);
+        .expect('Content-Type', /json/);
 
       expect(response.body).toHaveProperty('error', 'Failed to fetch joke');
     });
