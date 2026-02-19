@@ -142,21 +142,21 @@ const botDetectionStats = {
 const logBotGrowth = (ip, path) => {
   const now = new Date();
   const currentHour = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}h`;
-  
+
   // Track first detection timestamp
   if (!botDetectionStats.firstDetection) {
     botDetectionStats.firstDetection = now;
   }
   botDetectionStats.lastDetection = now;
   botDetectionStats.totalDetected++;
-  
+
   // Track detections per hour
   const hourCount = (botDetectionStats.detectionsByHour.get(currentHour) || 0) + 1;
   botDetectionStats.detectionsByHour.set(currentHour, hourCount);
-  
+
   // Log detection with current count
   logger.warn(`🤖 Bot detected [#${botIPs.size + 1}]: ${ip} attempting POST to ${path}`);
-  
+
   // Alert on thresholds
   if (botIPs.size + 1 === 10) {
     logger.warn('⚠️  Bot threshold alert: 10 unique bot IPs detected');
@@ -165,7 +165,7 @@ const logBotGrowth = (ip, path) => {
   } else if (botIPs.size + 1 === 100) {
     logger.error('🚨 Bot threshold CRITICAL: 100 unique bot IPs detected - review security immediately');
   }
-  
+
   // Alert on high hourly detection rate
   if (hourCount >= 10) {
     logger.warn(`⚠️  High bot activity: ${hourCount} new bots detected in current hour`);
@@ -176,15 +176,15 @@ const isBot = (req) => {
   const clientIP = req.ip || req.connection.remoteAddress;
   const forwardedIP = req.headers['x-forwarded-for']?.split(',')[0]?.trim();
   const effectiveIP = forwardedIP || clientIP;
-  
+
   // Detect bots attempting POST to unavailable routes (only GET methods exist on / and /jokes)
   const isInvalidPostAttempt = req.method === 'POST' && (req.path === '/' || req.path === '/jokes');
-  
+
   if (isInvalidPostAttempt && !botIPs.has(effectiveIP)) {
     botIPs.add(effectiveIP);
     logBotGrowth(effectiveIP, req.path);
   }
-  
+
   return botIPs.has(effectiveIP);
 };
 
@@ -192,7 +192,7 @@ const isBot = (req) => {
 if (!isTestEnv) {
   setInterval(() => {
     if (botIPs.size > 0) {
-      const uptime = botDetectionStats.firstDetection 
+      const uptime = botDetectionStats.firstDetection
         ? Math.round((Date.now() - botDetectionStats.firstDetection.getTime()) / 1000 / 60 / 60)
         : 0;
       logger.info(`📊 Bot Monitoring Report: ${botIPs.size} unique IPs flagged | ${botDetectionStats.totalDetected} total attempts | ${uptime}h uptime`);
@@ -213,7 +213,7 @@ const limiter = rateLimit({
     if (isBot(req)) {
       return false;
     }
-    
+
     // Skip rate limiting for localhost or specific IPs (development only)
     const myIP = process.env.MY_IP || '127.0.0.1';
     const clientIP = req.ip || req.connection.remoteAddress;
@@ -265,10 +265,23 @@ app.get('/api/jokes/chuck', async (req, res) => {
     const response = await axios.get('https://api.chucknorris.io/jokes/random', {
       timeout: 10000 // Add 10-second timeout
     });
-    res.json(response.data);
+    // return res.json(response.data);
+    /* res.json({
+      joke: response.data.value,
+      category: response.data.categories[0] || 'Uncategorized',
+    }); */
+    //return htlm response with joke and category badge
+    res.send(`<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 8px; max-width: 600px; margin: 20px auto;">
+  <h1 style="display: flex; align-items: center; background-color: #007bff; color: white; padding: 10px; border-radius: 4px; margin-bottom: 10px;"><img src="${response.data.icon_url}" alt="Chuck Norris" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">Chuck Norris Joke</h1>
+      <h2 style="color: #333;">${response.data.value}</h2>
+  <span style="display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #007bff; color: white; border-radius: 4px; font-size: 12px;">
+    ${response.data.categories[0] ? response.data.categories[0].toUpperCase() : 'UNCATEGORIZED'}
+  </span>
+</div>
+    `);
   } catch (err) {
-    const errorMsg = err.code === 'ECONNABORTED' 
-      ? 'API request timed out' 
+    const errorMsg = err.code === 'ECONNABORTED'
+      ? 'API request timed out'
       : err.message;
     logger.error(`Chuck Norris API error: ${errorMsg}`);
     const statusCode = err.code === 'ECONNABORTED' ? 504 : 502;
@@ -279,15 +292,21 @@ app.get('/api/jokes/chuck', async (req, res) => {
 // Dad Jokes Proxy
 app.get('/api/jokes/dad', async (req, res) => {
   try {
-    const config = { 
+    const config = {
       headers: { Accept: "application/json" },
       timeout: 10000 // Add 10-second timeout
     };
     const response = await axios.get('https://icanhazdadjoke.com/', config);
-    res.json(response.data);
+    res.send(`<div style="font-family: Roboto-Mono, sans-serif; padding: 20px; background-color: #847171d2; border-radius: 8px; max-width: 600px; margin: 20px auto;">
+  <span style="display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #007bff; color: white; border-radius: 4px; font-size: 12px;">
+    DAD JOKE
+  </span>
+  <h2 style="color: #333; margin-top: 10px; color: #174b82c4; ">${response.data.joke}</h2>
+
+</div>`);
   } catch (err) {
-    const errorMsg = err.code === 'ECONNABORTED' 
-      ? 'API request timed out' 
+    const errorMsg = err.code === 'ECONNABORTED'
+      ? 'API request timed out'
       : err.message;
     logger.error(`Dad Jokes API error: ${errorMsg}`);
     const statusCode = err.code === 'ECONNABORTED' ? 504 : 502;
@@ -406,7 +425,7 @@ app.post('/pichub', limiter, async (req, res) => {
 
     // Handle network errors, timeouts, and other non-response errors
     let errorDetails = error.message || String(error);
-    
+
     // Handle AggregateError (multiple errors)
     if (error.errors && Array.isArray(error.errors)) {
       errorDetails = `AggregateError: ${error.errors.map(e => e.message || String(e)).join('; ')}`;
@@ -415,16 +434,16 @@ app.post('/pichub', limiter, async (req, res) => {
     else if (error.code) {
       errorDetails = `${error.code}: ${error.message || error.syscall || 'Network error'}`;
     }
-    
+
     logger.error(`❌ Error proxying to Stability AI: ${errorDetails}`);
-    
+
     // Map specific error codes to appropriate HTTP status codes
     let statusCode = 500;
     if (error.code === 'ECONNABORTED') statusCode = 504; // Gateway Timeout
     else if (error.code === 'ENOTFOUND') statusCode = 503; // Service Unavailable (DNS issue)
     else if (error.code === 'ECONNREFUSED') statusCode = 503; // Service Unavailable (connection refused)
     else if (error.code === 'ETIMEDOUT') statusCode = 504; // Gateway Timeout
-    
+
     res.status(statusCode).json({ error: 'Failed to connect to image generation service. Please try again later.' });
   }
 });
@@ -560,21 +579,21 @@ app.post('/pichubleo', limiter, async (req, res) => {
 
     // Handle network errors, timeouts, and other non-response errors
     let errorDetails = error.message || String(error);
-    
+
     if (error.errors && Array.isArray(error.errors)) {
       errorDetails = `AggregateError: ${error.errors.map(e => e.message || String(e)).join('; ')}`;
     } else if (error.code) {
       errorDetails = `${error.code}: ${error.message || error.syscall || 'Network error'}`;
     }
-    
+
     logger.error(`❌ Error proxying to Leonardo AI: ${errorDetails}`);
-    
+
     let statusCode = 500;
     if (error.code === 'ECONNABORTED') statusCode = 504;
     else if (error.code === 'ENOTFOUND') statusCode = 503;
     else if (error.code === 'ECONNREFUSED') statusCode = 503;
     else if (error.code === 'ETIMEDOUT') statusCode = 504;
-    
+
     res.status(statusCode).json({ error: 'Failed to connect to image generation service. Please try again later.' });
   }
 });
@@ -603,15 +622,15 @@ app.get('/ready', (req, res) => {
 app.use((req, res) => {
   // Check for bot probe attempts (POST to routes that only accept GET)
   const isBotProbe = req.method === 'POST' && (req.path === '/' || req.path === '/jokes');
-  
+
   if (isBotProbe) {
     logger.warn(`🤖 Bot probe blocked: ${req.method} ${req.originalUrl} from ${req.ip}`);
-    return res.status(404).json({ 
+    return res.status(404).json({
       error: 'No exista, perdon',
       message: 'This route does not exist'
     });
   }
-  
+
   logger.warn(`404 Not Found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({ error: '404 - Route not found' });
 });
