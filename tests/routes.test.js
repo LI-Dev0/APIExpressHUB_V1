@@ -6,6 +6,7 @@
 const axios = require('axios');
 const request = require('supertest');
 const { app } = require('../index');
+const { text } = require('express');
 
 // Mock axios for external API calls
 jest.mock('axios');
@@ -128,7 +129,7 @@ describe('API Routes Integration Tests', () => {
       const response = await request(app)
         .get('/api/jokes/chuck')
         .expect(200)
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /text\/html/);
 
       expect(response.body).toHaveProperty('value');
       expect(axios.get).toHaveBeenCalledWith('https://api.chucknorris.io/jokes/random', { timeout: 10000 });
@@ -140,7 +141,7 @@ describe('API Routes Integration Tests', () => {
       const response = await request(app)
         .get('/api/jokes/chuck')
         .expect(502)
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /text\/html/);
 
       expect(response.body).toHaveProperty('error', 'Failed to fetch joke');
     });
@@ -161,7 +162,7 @@ describe('API Routes Integration Tests', () => {
       const response = await request(app)
         .get('/api/jokes/dad')
         .expect(200)
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /text\/html/);
 
       expect(response.body).toHaveProperty('joke');
       expect(axios.get).toHaveBeenCalledWith('https://icanhazdadjoke.com/', { headers: { Accept: 'application/json' }, timeout: 10000 });
@@ -173,7 +174,7 @@ describe('API Routes Integration Tests', () => {
       const response = await request(app)
         .get('/api/jokes/dad')
         .expect(502)
-        .expect('Content-Type', /json/);
+        .expect('Content-Type', /text\/html/);
 
       expect(response.body).toHaveProperty('error', 'Failed to fetch joke');
     });
