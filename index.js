@@ -78,6 +78,39 @@ if (!isTestEnv) {
 // ============================================================================
 app.use(express.static(path.join(__dirname, 'resources')));
 app.use('/images', express.static(path.join(__dirname, 'resources/images')));
+
+// ============================================================================
+// FAVICON & APPLE TOUCH ICON ROUTES (Prevent 404s from browsers/Apple devices)
+// ============================================================================
+app.get('/favicon.ico', (req, res) => {
+  // Serve favicon if exists, otherwise send 204 No Content to prevent logs
+  const faviconPath = path.join(__dirname, 'resources', 'favicon.ico');
+  res.sendFile(faviconPath, (err) => {
+    if (err) {
+      res.status(204).end(); // No Content - prevents unnecessary 404 logs
+    }
+  });
+});
+
+app.get('/apple-touch-icon.png', (req, res) => {
+  const iconPath = path.join(__dirname, 'resources', 'apple-touch-icon.png');
+  res.sendFile(iconPath, (err) => {
+    if (err) {
+      res.status(204).end();
+    }
+  });
+});
+
+app.get('/apple-touch-icon-precomposed.png', (req, res) => {
+  // Same file as apple-touch-icon.png
+  const iconPath = path.join(__dirname, 'resources', 'apple-touch-icon.png');
+  res.sendFile(iconPath, (err) => {
+    if (err) {
+      res.status(204).end();
+    }
+  });
+});
+
 // ============================================================================
 // BODY PARSING MIDDLEWARE - WITH SIZE LIMITS
 // ============================================================================
@@ -271,10 +304,10 @@ app.get('/api/jokes/chuck', async (req, res) => {
       category: response.data.categories[0] || 'Uncategorized',
     }); */
     //return htlm response with joke and category badge
-    res.send(`<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; border-radius: 8px; max-width: 600px; margin: 20px auto;">
-  <h1 style="display: flex; align-items: center; background-color: #007bff; color: white; padding: 10px; border-radius: 4px; margin-bottom: 10px;"><img src="${response.data.icon_url}" alt="Chuck Norris" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">Chuck Norris Joke</h1>
-      <h2 style="color: #333;">${response.data.value}</h2>
-  <span style="display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #007bff; color: white; border-radius: 4px; font-size: 12px;">
+    res.send(`<div style="font-family: Arial, sans-serif; padding: 20px; border-radius: 8px; max-width: 600px; margin: 20px auto;">
+  <h2 style="display: flex; align-items: center; background-color: #274668a8; color: white; padding: 10px; border-radius: 4px; margin-bottom: 10px;">Chuck Norris Joke<span style="display: inline-block; margin: 5px; padding: 2px 4px; color: white; border-radius: 4px; font-size: 12px;"><img src="${response.data.icon_url}" alt="Chuck Norris" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"></span></h2>
+      <h4 style="color: #4cd7a7fd;">${response.data.value}</h4>
+  <span style="display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #274668a8; color: white; border-radius: 4px; font-size: 12px;">
     ${response.data.categories[0] ? response.data.categories[0].toUpperCase() : 'UNCATEGORIZED'}
   </span>
 </div>
@@ -297,11 +330,11 @@ app.get('/api/jokes/dad', async (req, res) => {
       timeout: 10000 // Add 10-second timeout
     };
     const response = await axios.get('https://icanhazdadjoke.com/', config);
-    res.send(`<div style="font-family: Roboto-Mono, sans-serif; padding: 20px; background-color: #847171d2; border-radius: 8px; max-width: 600px; margin: 20px auto;">
-  <span style="display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #007bff; color: white; border-radius: 4px; font-size: 12px;">
+    res.send(`<div style="font-family: Roboto-Mono, sans-serif; padding: 20px;  border-radius: 8px; max-width: 600px; margin: 20px auto;">
+  <span style="display: inline-block; margin-bottom: 10px; padding: 5px 10px; background-color: #546475b0; color: white; border-radius: 4px; font-size: 12px;">
     DAD JOKE
   </span>
-  <h2 style="color: #333; margin-top: 10px; color: #174b82c4; ">${response.data.joke}</h2>
+  <h2 id="djoke" style="color: #4cd7a7fd; margin-top: 10px;">${response.data.joke}</h2>
 
 </div>`);
   } catch (err) {
@@ -596,6 +629,15 @@ app.post('/pichubleo', limiter, async (req, res) => {
 
     res.status(statusCode).json({ error: 'Failed to connect to image generation service. Please try again later.' });
   }
+});
+
+// Policy Page
+app.get('/policy', (req, res) => {
+  res.render('policy.ejs', {
+    title: 'API Express Hub - Policy',
+    //headline: 'API Express Hub - Policy',
+    //welcomeMessage: 'This is the policy page. Here we would outline the terms of use, privacy policy, and any disclaimers regarding the use of our API proxy services. Please ensure you read and understand our policies before using the service.',
+  });
 });
 
 // ============================================================================

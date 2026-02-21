@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" class="container-fluid m-0"
+    style="background-image: url('https://picsum.photos/id/317/1200'); background-position:top; background-color: bisque; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/styles/styler.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body class="container flex bg-dark-subtle border border-dark backdrop-blur rounded-3">
+    <div class="container-fluid">
+        <h1 class="text-center text-white p-3 mt-4 mb-4 rounded-3">
+            <span aria-label="smiley" role="img">🤖 </span>
+            APIExpressHub
+            <span aria-label="robot" role="img">&#128646;</span>
+        </h1>
+    </div>
+    <div id="welc" class="container-fluid text-center p-5 row bg-primary-subtle">
+        <h2> Hello, World! Welcome to APIExpressHub
+        </h2>
+        <h4>-- This is a basic <a href="https://ejs.co/" class="text-decoration-none">EJS</a> templating
+            Web App</h4>
+    </div>
+    <div>
+        <section id="tips">
+            <h3 class="callout-info">Tips to get you started!</h3>
+            <ul class="callout-info">
+                <li>Use the navigation links below to explore different API functionalities!</li>
+                <li>For developer related material, check out the source code -- or hyper-extended commit history - on
+                    <a href="https://github.com/LIGunna93/APIExpressHUB" class="text-decoration-none">GitHub</a>
+                </li>
+                <li>You only have to click to call a route to generate some pictures!</li>
+            </ul>
+        </section>
+    </div>
+    <hr class="container-fluid border-dark">
+    <div id="navigationLinks"
+        class="container-fluid text-dark p-3 gap-3 flex-row justify-content-center d-flex mt-4 mb-4 rounded-3">
+        <h6 class="p-3 bg-primary-subtle text-center">Navigate to <a href="/jokes"
+                class="text-decoration-none">JokeHub</a> to
+            see some funny jokes!</h6>
+        <h6 class="p-3 bg-primary-subtle text-center">Navigate to <a href="/pichub"
+                class="text-decoration-none">PicHub</a> to generate some pictures!</h6>
+    </div>
+    <hr class="container-fluid border-dark">
+    <h4 class="callout-info text-center p-3" style="background-color: transparent;">Have a great time exploring the
+        APIs! 😊</h4>
+    <hr>
+
+    <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3 bg-primary-subtle text-dark">
+
+        <div class="container-fluid flex text-center p-3 justify-content-center d-flex gap-5">
+            <div id="footercontact" class="container-sm d-flex border p-3 rounded-2 boxshadow-dark boxshadow-hover">
+                <p>💬</p>
+                <p style="font-size: larger; font-weight: 900;">Ping me for any queries or feedback!</p>
+                <p>Phone: <a href="callto:+491788728575">+1234567890</a></p>
+                <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+            </div>
+            <div id="footerlinks" class="container-sm d-flex p-3 rounded-2">
+                <p>🖲</p>
+                <p style="font-size: larger; font-weight: 900;">Keep up with me at these endpoints!</p>
+                <ul style="background-color: transparent;">
+                    <a href="https://www.linkedin.com/in/lio-ilu-93/"><img
+                            src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a>
+                    <a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
+                            alt="x" /></a>
+                    <a href="https://github.com/LIGunna93"><img src="https://img.icons8.com/nolan/40/github.png"
+                            alt="github" /></a>
+                </ul>
+            </div>
+
+        </div>
+        <hr class="container-fluid border-dark">
+        <section class="container-fluid">
+            <p style="display: inline-flex;">&copy; 2025 APIExpressHub</p>
+            <p style="display: inline-flex;"><a href="/policy">Privacy Policy</a></p>
+            <h6 style="display: inline-flex;">A design by <em>DevLI</em> of LI Dev</h6>
+        </section>
+    </footer>
+</body>
+
+</html>
