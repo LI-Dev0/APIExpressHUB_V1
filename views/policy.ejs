@@ -1,77 +1,231 @@
 <!DOCTYPE html>
 <html lang="en" class="container-fluid m-0"
-    style="background-image: url('https://picsum.photos/id/392/500'); background-position:top; background-color: bisque; background-repeat: repeat-y; background-attachment: repeat; background-size: cover;">
+    style="background-image: url('https://picsum.photos/id/317/1200'); background-position:center; background-color: bisque; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
-    <link rel="stylesheet" href="/resources/styles/styler.css">
+    <title>Privacy Policy - APIExpressHub</title>
+    <meta name="description" content="Privacy Policy and Terms of Service for APIExpressHub - Learn how we handle your data and API usage.">
+    <link rel="stylesheet" href="/styles/styler.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
-<body class="container-lg col bg-dark-subtle">
-    <div>
-        <h1 class="text-center text-white p-3 mt-4 mb-4 rounded-3">
-            <span aria-label="smiley" role="img">😃 </span>
-            APIExpressHub
-            <span aria-label="robot" role="img">🤖</span>
+<body class="container flex bg-dark border border-dark backdrop-blur rounded-3">
+    <!-- Header -->
+    <div class="container-fluid">
+        <h1 class="gradient-title mt-4">
+            <span aria-label="shield" role="img">🛡️</span>
+            Privacy Policy
         </h1>
+        <p class="text-center" style="color: #a6d2e4; font-size: 1.1rem; margin-bottom: 30px;">
+            <a href="/" style="text-decoration: none; color: #81f59a;">← Back to Home</a>
+        </p>
     </div>
-    <div class="container-fluid text-center p-5 row">
-        <h2> Hello, World! Welcome to APIExpressHub <h4>-- This is a basic <a href="https://ejs.co/"
-                    class="text-decoration-none">EJS</a> templating
-                Web App.</h4>
-        </h2>
-    </div>
-    <div>
-        <section id="tips">
-            <h3 class="callout-info">Tips to get you started!</h3>
-            <ul class="callout-info">
-                <li>Use the navigation links below to explore different API functionalities!</li>
-                <li>Feel free to check out the source code on <a href="https://github.com/LI-Dev/APIsExpressHub"
-                        class="text-decoration-none">GitHub</a></li>
-                <li>You only have to click to call a route once, then simply tap the enter
-                    button to your preference 😊</li>
-            </ul>
+
+    <!-- Policy Content -->
+    <div class="container-lg p-4 mb-4 rounded-3" style="background: rgba(166, 210, 228, 0.15); backdrop-filter: blur(10px);">
+        <p style="text-align: center; color: #c8e3ed; font-size: 1rem; margin-bottom: 30px;">
+            <strong>Last Updated:</strong> February 2026
+        </p>
+
+        <!-- Introduction -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">📋 Introduction</h2>
+            <p style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                APIExpressHub is a free hub for accessing AI image generation and joke APIs. 
+                We respect your privacy and are committed to protecting any data associated with your usage. 
+                This policy outlines how we handle information when you use our services.
+            </p>
+        </section>
+
+        <!-- Information We Collect -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">📊 Information We Collect</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <h4 style="color: bisque; font-size: 1.3rem; margin-top: 20px;">Usage Data</h4>
+                <ul style="color: #c8e3ed;">
+                    <li>IP addresses (for rate limiting and bot detection)</li>
+                    <li>API request timestamps and endpoints accessed</li>
+                    <li>Browser type and device information (standard HTTP headers)</li>
+                    <li>Error logs for debugging purposes</li>
+                </ul>
+
+                <h4 style="color: bisque; font-size: 1.3rem; margin-top: 20px;">Content You Submit</h4>
+                <ul style="color: #c8e3ed;">
+                    <li>AI image generation prompts (text descriptions)</li>
+                    <li>Request parameters sent to our APIs</li>
+                </ul>
+
+                <p style="margin-top: 15px;">
+                    <strong>We do NOT collect:</strong> Personal identifying information, email addresses, 
+                    account credentials, or any tracking cookies beyond essential functionality.
+                </p>
+            </div>
+        </section>
+
+        <!-- How We Use Your Information -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">🎯 How We Use Your Information</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <ul style="color: #c8e3ed;">
+                    <li><strong>Service Delivery:</strong> Process your API requests and return results</li>
+                    <li><strong>Rate Limiting:</strong> Enforce fair usage limits to prevent abuse</li>
+                    <li><strong>Security:</strong> Detect and prevent malicious bot activity</li>
+                    <li><strong>Improvement:</strong> Monitor performance and fix technical issues</li>
+                    <li><strong>Compliance:</strong> Maintain logs as required by our infrastructure providers</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Third-Party Services -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">🔗 Third-Party Services</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <p>Our service integrates with external APIs and services:</p>
+                <ul style="color: #c8e3ed;">
+                    <li><strong>Stability AI:</strong> AI image generation (covered by their privacy policy)</li>
+                    <li><strong>Leonardo AI:</strong> AI image generation (covered by their privacy policy)</li>
+                    <li><strong>icanhazdadjoke.com:</strong> Dad jokes API</li>
+                    <li><strong>Chuck Norris API:</strong> Chuck Norris jokes</li>
+                    <li><strong>Picsum Photos:</strong> Random placeholder images</li>
+                    <li><strong>Bootstrap CDN & Icons8:</strong> UI resources</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    When you use these features, data is sent to respective third-party services. 
+                    We are not responsible for their privacy practices. Please review their individual policies.
+                </p>
+            </div>
+        </section>
+
+        <!-- Data Retention -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">💾 Data Retention</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <ul style="color: #c8e3ed;">
+                    <li>Access logs are retained for a limited period (typically 30-90 days)</li>
+                    <li>Error logs are kept for debugging and are periodically purged</li>
+                    <li>We do not permanently store user-generated prompts or images</li>
+                    <li>Images generated are temporarily processed and not saved to our servers</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Your Rights -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">🔐 Your Rights</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <p>You have the right to:</p>
+                <ul style="color: #c8e3ed;">
+                    <li>Use our service anonymously without creating an account</li>
+                    <li>Request information about data associated with your IP address</li>
+                    <li>Stop using our service at any time (no account deletion needed)</li>
+                    <li>Contact us with privacy concerns or questions</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Rate Limiting & Fair Use -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">⚖️ Rate Limiting & Fair Use</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <p>
+                    To ensure service availability for all users, we enforce rate limits based on IP address. 
+                    Excessive automated requests or abuse may result in temporary blocking. 
+                    Our bot detection system helps maintain service quality for legitimate users.
+                </p>
+            </div>
+        </section>
+
+        <!-- Security -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">🔒 Security</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <p>
+                    We implement industry-standard security measures including HTTPS encryption, 
+                    Helmet.js security headers, CORS protection, and input validation. 
+                    However, no internet transmission is 100% secure. Use our service at your own discretion.
+                </p>
+            </div>
+        </section>
+
+        <!-- Children's Privacy -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">👶 Children's Privacy</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <p>
+                    Our service does not knowingly collect information from children under 13. 
+                    The joke APIs provide family-friendly content suitable for general audiences.
+                </p>
+            </div>
+        </section>
+
+        <!-- Changes to Policy -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">📝 Changes to This Policy</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <p>
+                    We may update this privacy policy from time to time. 
+                    Changes will be posted on this page with an updated "Last Updated" date. 
+                    Continued use of the service after changes constitutes acceptance.
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="mb-5">
+            <h2 style="color: #81f59a; font-size: 1.8rem; margin-bottom: 15px;">📧 Contact Us</h2>
+            <div style="color: azure; line-height: 1.8; font-size: 1.05rem;">
+                <p>If you have questions about this privacy policy or our practices, please contact:</p>
+                <div style="background: rgba(0, 18, 25, 0.5); padding: 20px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #81f59a;">
+                    <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:devliops@outlook.com" style="color: bisque; text-decoration: none;">devliops@outlook.com</a></p>
+                    <p style="margin: 5px 0;"><strong>GitHub:</strong> <a href="https://github.com/LIGunna93/APIExpressHUB" style="color: bisque; text-decoration: none;">@LIGunna93/APIExpressHUB</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <section class="mb-4">
+            <div style="background: rgba(72, 66, 105, 0.3); padding: 20px; border-radius: 10px; border: 2px solid var(--pic-accent);">
+                <p style="color: bisque; text-align: center; margin: 0; font-size: 0.95rem; line-height: 1.6;">
+                    <strong>⚠️ Disclaimer:</strong> This service is provided "as is" without warranties. 
+                    We are not liable for third-party API availability, content generated, or service interruptions. 
+                    Use responsibly and respect API provider terms of service.
+                </p>
+            </div>
         </section>
     </div>
-    <div id="navigationLinks"
-        class="container-fluid text-dark p-3 gap-3 flex-row justify-content-center d-flex mt-4 mb-4 rounded-3">
-        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/jokes"
-                class="text-decoration-none">JokeHub</a> to
-            see some funny jokes!</h6>
-        <h6 class="container-sm border border-success p-3 bg-primary-subtle text-center">Navigate to <a href="/picgen"
-                class="text-decoration-none">PicGen</a> to generate some pictures!</h6>
-    </div>
-    <hr>
-    <h4 class="callout-info text-center p-3">Hope you have a great time exploring the APIs! 😊</h4>
-    <hr>
 
-    <footer class="container col text-white p-3 mt-4 mb-4 rounded-3"">
+    <hr class="container-fluid border-dark mt-4">
 
-        <div id=" footer" class="container-fluid">
-        <h6>Catch me at any of the below endpoints! =)</h6>
-        <p>Phone: <a href="callto:+1234567890">+1234567890</a></p>
-        <p>Email: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
-
-        <p>Check out my Socials to keep up with the latest developments-
-        <ul>
-            <li><a href="https://www.linkedin.com/in/lio-ilu-93/"><img
-                        src="https://img.icons8.com/nolan/40/linkedin.png" alt="linkedin" /></a></li>
-            <li><a href="https://x.com/IluDev93"><img src="https://img.icons8.com/nolan/40/twitterx.png"
-                        alt="twitterx" /></a></li>
-            <li></li>
-        </ul>
+    <!-- Footer -->
+    <footer class="container-lg flex p-3 mt-4 mb-0 rounded-3 bg-primary-subtle text-dark">
+        <div class="container-fluid flex text-center p-3 justify-content-center d-flex gap-5">
+            <div id="footercontact" class="container-sm d-flex border p-3 rounded-2 boxshadow-dark boxshadow-hover">
+                <p>💬</p>
+                <p style="font-size: larger; font-weight: 900;">Contact for queries or feedback!</p>
+                <p>📞: <a href="callto:+491788728575">+1234567890</a></p>
+                <p>📧: <a href="mailto:devliops@outlook.com">devliops@outlook.com</a></p>
+            </div>
+            <div id="footerlinks" class="container-sm d-flex p-3 rounded-2">
+                <p>🖲</p>
+                <p style="font-size: larger; font-weight: 900;">Connect with me!</p>
+                <ul style="background-color: transparent;">
+                    <a href="https://www.linkedin.com/in/lio-ilu-93/" aria-label="LinkedIn"><img
+                            src="https://img.icons8.com/nolan/40/linkedin.png" alt="LinkedIn" /></a>
+                    <a href="https://x.com/IluDev93" aria-label="Twitter/X"><img src="https://img.icons8.com/nolan/40/twitterx.png"
+                            alt="Twitter/X" /></a>
+                    <a href="https://github.com/LIGunna93" aria-label="GitHub"><img src="https://img.icons8.com/nolan/40/github.png"
+                            alt="GitHub" /></a>
+                </ul>
+            </div>
         </div>
-        <hr class="container-fluid border-primary-subtle">
-        <section id="footer" class="container-lg row">
-            <p>&copy; 2025 APIExpressHub</p>
-            <p><a href="">Privacy Policy</a></p>
-            <h6>A design by <em>DevLI</em> of LI Dev</h6>
+        <hr class="container-fluid border-dark">
+        <section class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+            <p style="margin: 5px;">&copy; 2025-2026 APIExpressHub</p>
+            <p style="margin: 5px;"><a href="/" style="text-decoration: none; color: inherit;">Home</a></p>
+            <h6 style="margin: 5px;">A design by <em>DevLI</em> of LI Dev</h6>
         </section>
     </footer>
 </body>
