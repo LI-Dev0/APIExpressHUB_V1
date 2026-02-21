@@ -17,9 +17,6 @@ picContButt?.addEventListener('pointerover', (e) => {
         targetButton.style.boxShadow = '0 0 4px 4px #231b537e';
         targetButton.innerText = 'Fetch!';
     }
-    const rect = e.target.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
 });
 
 // Remove box shadow on mouseout
@@ -157,6 +154,7 @@ aipicButton.addEventListener('click', async (event) => {
             newAiImg.src = imageUrl;
             newAiImg.alt = `AI Generated Image for prompt: ${userPrompt}`;
             newAiImg.style.cssText = 'display: block; width: 100%; max-width: 500px; border-radius: 5px; border: 5px solid lightblue;';
+            newAiImg.className = 'feature-card feature-card-pic';
 
             // Add error handler to the image element
             newAiImg.onerror = () => {

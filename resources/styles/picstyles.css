@@ -27,6 +27,33 @@ html {
     margin-top: 10px;
 }
 
+/* AI Image Generation Buttons */
+#aipicButton,
+#aipicButtonLeo {
+    padding: 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #231b537e;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+#aipicButton:hover,
+#aipicButtonLeo:hover {
+    background-color: #2e2367;
+    box-shadow: 0 8px 16px rgba(35, 27, 83, 0.6), 0 0 20px rgba(129, 245, 154, 0.4);
+    transform: translateY(-2px);
+}
+
+#aipicButton:active,
+#aipicButtonLeo:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
 
