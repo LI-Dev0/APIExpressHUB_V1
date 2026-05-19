@@ -200,7 +200,7 @@ const logBotGrowth = (ip, path) => {
   }
 
   // Alert on high hourly detection rate
-  if (hourCount >= 10) {
+  if (hourCount >= 5) {
     logger.warn(`⚠️  High bot activity: ${hourCount} new bots detected in current hour`);
   }
 };
@@ -238,7 +238,7 @@ if (!isTestEnv) {
 // ============================================================================
 // Increased from 2 to 100 requests per hour for development,, forced back to 2
 // Set to 30/hour in production for safety via env variable
-const limiter = rateLimit({
+const plimiter = rateLimit({
   // set rate limit window and max from env variables or defaults
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || 11100000, 10), // 3 hrs + parseInt param 10
   skip: (req) => {
@@ -266,6 +266,34 @@ const limiter = rateLimit({
   },
 });
 
+// Jokes Limitier - separate limiter for jokes route to prevent abuse while allowing more traffic to homepage
+const jLimitr = rateLimit({
+  windowMs: parseInt(process.env.JOKES_RATE_LIMIT_WINDOW_MS || 60 * 60 * 1000, 10), // 1 hour
+  skip: (req) => {
+    // Don't skip rate limiting for detected bots - enforce strict limits
+    if (isBot(req)) {
+      return false;
+    }
+
+    // Skip rate limiting for localhost or specific IPs (development only)
+    const myIP = process.env.MY_IP;
+    const clientIP = req.ip || req.connection.remoteAddress;
+    // Support X-Forwarded-For for Docker/load balancer environments
+    const forwardedIP = req.headers['x-forwarded-for']?.split(',')[0]?.trim();
+    const effectiveIP = forwardedIP || clientIP;
+
+    return effectiveIP === '::1' || effectiveIP === myIP;
+  },
+  max: parseInt(process.env.JOKES_RATE_LIMIT_MAX || 10, 10), // 20 requests per hour to jokes route
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests to jokes, please try again later! 🤡',
+  handler: (req, res) => {
+    logger.warn(`Jokes rate limit exceeded for IP: ${req.ip}`);
+    res.status(429).json({ error: 'Too many requests to jokes' });
+  },
+});
+
 // This middleware executes for every request to '/jokes' and log the timestamp and request details.
 app.use(['/', '/jokes', '/pichub'], (req, res, next) => {
   try {
@@ -277,6 +305,8 @@ app.use(['/', '/jokes', '/pichub'], (req, res, next) => {
   next(); // Proceed to the next middleware or route handler
 });
 
+// App use limiter for all routes starting with /api/jokes to prevent abuse of joke endpoints
+app.use('/api/jokes/dad', jLimitr);
 // HomepageRenders
 app.get('/', (req, res) => {
   res.render('home.ejs', { title: 'API Express Hub', env });
@@ -293,7 +323,7 @@ app.get('/jokes', (req, res) => {
 });
 
 // Chuck Norris Jokes Proxy
-app.get('/api/jokes/chuck', async (req, res) => {
+app.get('/api/jokes/chuck', jLimitr, async (req, res) => {
   try {
     const response = await axios.get('https://api.chucknorris.io/jokes/random', {
       timeout: 10000 // Add 10-second timeout
@@ -323,7 +353,7 @@ app.get('/api/jokes/chuck', async (req, res) => {
 });
 
 // Dad Jokes Proxy
-app.get('/api/jokes/dad', async (req, res) => {
+app.get('/api/jokes/dad', jLimitr, async (req, res) => {
   try {
     const config = {
       headers: { Accept: "application/json" },
@@ -359,7 +389,7 @@ app.get('/pichub', (req, res) => {
 // eslint-disable-next-line max-len
 // Proxy route to call Stability AI (server-side) and forward image binary to client. This keeps the API key server-side and avoids exposing it in client code.
 
-app.post('/pichub', limiter, async (req, res) => {
+app.post('/pichub', plimiter, async (req, res) => {
   const promptPreview = (req.body && typeof req.body.prompt === 'string')
     ? req.body.prompt.substring(0, 20)
     : 'Invalid or missing prompt';
@@ -482,7 +512,7 @@ app.post('/pichub', limiter, async (req, res) => {
 });
 
 // Leonardo AI Proxy Route - Uses 2-step async generation flow
-app.post('/pichubleo', limiter, async (req, res) => {
+app.post('/pichubleo', plimiter, async (req, res) => {
   const promptPreview = (req.body && typeof req.body.prompt === 'string')
     ? req.body.prompt.substring(0, 20)
     : 'Invalid or missing prompt';

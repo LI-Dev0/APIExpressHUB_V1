@@ -21,7 +21,7 @@ RUN npm ci --omit=dev
 
 # Step 4: Final production image
 FROM node:${NODE_VERSION}
-ENV NODE_ENV production
+ENV NODE_ENV=production
 WORKDIR /usr/src/app
 
 # Copy production dependencies from deps stage
@@ -34,7 +34,7 @@ COPY --chown=node:node . .
 USER node
 
 # Expose the port that the application listens on.
-EXPOSE 4747
+EXPOSE 4700
 
 # Run the application.
 CMD [ "npm", "start" ]
