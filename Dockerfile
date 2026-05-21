@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 RUN npm test && touch .test-passed
 
-# Step 3: Production dependency installer
+# Step 3: Pro   duction dependency installer
 FROM base AS deps
 # Ensure production build fails if tests fail
 COPY --from=test /usr/src/app/.test-passed .test-passed
@@ -32,6 +32,9 @@ COPY --chown=node:node . .
 
 # Run the application as a non-root user.
 USER node
+
+# Set environment variables for the application.
+ENV PORT=4700
 
 # Expose the port that the application listens on.
 EXPOSE 4700
